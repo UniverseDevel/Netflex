@@ -1,0 +1,84 @@
+{
+    "manifest_version": 2,
+
+    "default_locale": "en",
+    "name": "__MSG_name__",
+    "short_name": "__MSG_short_name__",
+    "description": "__MSG_description__",
+    "version": "6.2.9",
+    "author": "__MSG_provider__",
+
+    "icons": {
+        "16": "images/netflex_16.png",
+        "48": "images/netflex_48.png",
+        "128": "images/netflex.png"
+    },
+
+    "browser_action": {
+        "default_icon": "images/netflex.png"
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "*://www.netflix.com/*"
+            ],
+            "js": [
+                "libs/dompurify/purify.js",
+                "libs/jquery/jquery.js",
+                "libs/fontawesome/fontawesome.js",
+
+                "scripts/global.js",
+
+                "scripts/functions.js",
+                "scripts/objects.js",
+                "scripts/distribution.js",
+                "scripts/vars.js",
+
+                "scripts/options.js",
+
+                "scripts/assistant.js",
+                "scripts/rating.js",
+
+                "libs/fireworks/fireworks.js",
+
+                "scripts/versions.js",
+                "scripts/init.js"
+            ]
+        }
+    ],
+
+    "background": {
+        "scripts": [
+            "libs/dompurify/purify.js",
+            "libs/jquery/jquery.js",
+
+            "scripts/global.js",
+
+            "scripts/functions.js",
+            "scripts/objects.js",
+            "scripts/distribution.js",
+            "scripts/vars.js",
+
+            "scripts/versions.js",
+
+            "scripts/background.js"
+        ]
+    },
+
+    "permissions": [
+        "*://*.netflix.com/*",
+        "*://*.wikidata.org/*",
+        "*://*.omdbapi.com/*",
+        "storage"
+    ],
+
+    "web_accessible_resources": [
+        "images/netflex.png",
+        "CHANGELOG",
+
+        "styles/extension.css",
+
+        "libs/dompurify/purify.min.js.map"
+    ]
+}

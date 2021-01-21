@@ -1,0 +1,110 @@
+1.0      - 23.11.2017 - Release with features: skipping to next video, reloading stuck video.
+1.1      - 25.11.2017 - Added skipping of recaps and intros.
+1.2      - 28.11.2017 - Added icon to indicate extension state.
+1.3      - 29.11.2017 - Added key bindings.
+1.4      - 05.12.2017 - Bugfixes.
+1.5      - 11.12.2017 - Added feature to open new window with Netflix page on clicking extension icon.
+1.6      - 24.12.2017 - Added 'Random video play' key bind.
+1.7      - 02.01.2018 - Added 'Previous video' key binding.
+1.8      - 23.01.2018 - Bugfixes.
+1.9      - 21.05.2018 - Added delay between starting next title.
+2.0      - 24.05.2018 - Added customizable options, fixed 'Random video play' code after Netflix update.
+2.1      - 25.05.2018 - Added customizable options for key bindings, removed volume controls as Netflix already has them, bugfixes, code optimisation, status icon made smaller.
+2.2      - 25.05.2018 - Removed unnecessary permissions.
+2.3      - 27.05.2018 - Bugfixes, prevention of multiple key bindings with same key.
+2.4      - 28.05.2018 - Skip interruption feature added.
+2.5      - 29.05.2018 - Bugfixes, removal of unused features.
+2.6      - 07.06.2018 - Fixed issue with random title play.
+2.7      - 23.07.2018 - Added disable all extension features by clicking on status icon, auto mute trailer on top of browser page, extension status updated more frequently.
+2.8      - 30.07.2018 - Added feature to automatically pause video if not in focus with possibility to configure sensitivity and also feature to autostart video if regained focus.
+2.9      - 14.08.2018 - Added support for changed method of showing suggested titles after movie ends, smoothened status icon appearing when bar is longer hidden and was removed as object.
+2.10     - 29.08.2018 - Added support for hiding extension status icon, added smoother transitions between status colors.
+2.11     - 29.08.2018 - Added feature to not hide control bar when hovering mouse over extension status icon.
+2.12     - 30.08.2018 - Bugfixes.
+2.13     - 02.09.2018 - Bugfixes, injection method changes, performance optimisation, 'Random video play' optimisation.
+2.14     - 03.09.2018 - Added support for 'Random video play' on search screen as well.
+2.15     - 07.09.2018 - Bugfixes.
+2.16     - 08.09.2018 - Added extension status delimiter from report a problem button, added extension status text blending in.
+2.17     - 08.09.2018 - Bugfixes.
+2.18     - 09.09.2018 - Fixed problems with extension status text jumping around.
+2.19     - 10.09.2018 - Bugfixes.
+2.20     - 12.09.2018 - Bugfixes.
+2.21     - 11.10.2018 - Added little easter egg.
+2.22     - 21.10.2018 - Fixed 'Skip Recap' and 'Skip Intro' buttons not being triggered because of different text case for some videos.
+3.0      - 22.11.2018 - Multiple fixes due to interface update by Netflix, many other related bugs fixed.
+3.1      - 26.11.2018 - Fixed trailer muting problem, fixed problem when un-pausing video after skipping intro/replay messed event handlers and pause button behaved like play.
+3.2      - 12.12.2018 - Status icon animation adjusted to fit with other controls.
+3.3      - 21.12.2018 - Added option to disable touch screen play/pause functionality.
+3.4      - 07.01.2019 - Adjusted extension versioning.
+3.5      - 06.02.2019 - Fixed fireworks, some code generalization for flexible use, added button for direct access to extension options page.
+3.6      - 10.02.2019 - Rework of DNF error of localised texts, added localised skip intro/recap support to work on other Netflix languages.
+3.7      - 10.02.2019 - Changed logo and promo images so they are distinct from Netflix original logo.
+3.8      - 13.02.2019 - Added ability to re-inject extension after update, fixed opening of options page, fixed code of experimental handling volume multiplier, added experimental configuration to extension options page, removed debug tab from options page is extension is running in production environment.
+4.0.0    - 08.03.2019 - Bugfixes, code reorganisation, added support for showing title ratings.
+4.1.0    - 22.03.2019 - Added support for removing trailer video previews, adjustment of trailer audio mute for multiple instances of these audio buttons, reworked timers so faster loops can be added, fixed issue with auto-starting selected video when returning from player, added extension Developer tools tab in Chrome Developer tools, added subtitles highlighting.
+4.2.0    - 01.05.2019 - Changed way how intros and recaps are skipped, some changes to Chrome Developer tools to show tab only on Netflix tab, it works only there anyways, subtitles highlighting support multiple different highlight styles.
+4.3.0    - 04.05.2019 - Fix for multi-line subtitles not highlighting properly.
+4.4.0    - 22.06.2019 - Added support for Chromecast via Chrome Browser.
+4.5.0    - 01.07.2019 - Fixed issue with infinite page reload when extension detects it is stuck, added new type of next episode starting code support.
+4.6.0    - 31.08.2019 - Added delay timer for video stuck reload to prevent account locking in case reloads are happening in close succession, changed way how extension checks its position on Netflix page, added check for Netflix Site Error message to prevent any activity when account is blocked, extensions status icon is now shown on all pages extension is active on to have a chance to enable/disable functionalities by clicking on it, revised code that injected extension into Netflix to to prevent unintended injections on pages that are not meant to be changed by this extension.
+4.6.1    - 08.09.2019 - Added support for miniseries ratings, change of description to inform about ratings issues.
+4.7.0    - 20.09.2019 - Changed how rating are obtained to have better accuracy and higher obtain chance by getting IMDb ID from Wikidata via Netflix ID. This solution is also localisation free. We still rely on external APIs and that data are there in the first place.
+4.8.0    - 27.09.2019 - Removed touch screen disable feature.
+4.9.0    - 17.10.2019 - Added support for missing localizations so Skip recap and intro features work on them.
+4.10.0   - 22.10.2019 - Removed Chrome Developer tools due to weird permissions it required from users.
+4.11.0   - 03.11.2019 - Added feature to hide descriptions of titles, option to hide all subtitles and option to define own API keys. Some bugs were squashed. Fixed multiple problems with Kids profile. Added button in options menu to set specific configuration to default value and added about section with change log.
+4.12.0   - 20.11.2019 - Added support for next episode button to work during next episode is suggested. Added support for multiple title IDs within ratings data. Added clickable links to show ratings information for users to go and see title information on IMDb, RT or MetaCritic if available. Moved version dependant changes from background to init script as background cannot change extension scope.
+4.13.0   - 25.11.2019 - Added support for new button style to start next episode, this new style seems to be used for all series and replaces all old buttons.
+4.13.1   - 28.11.2019 - Fixed problem where next button was not correctly triggered when animation on the button was not finished, fixed order in which are version dependant changes applied.
+4.13.2   - 10.12.2019 - Fixed problem where next button was not correctly triggered when animation on the button was not finished again.
+4.14.0   - 29.12.2019 - Fixed problem with some ratings that were found, but do not contain IMDb ID. Added feature to hide disliked titles. Random title feature no longer include disliked titles.
+4.14.1   - 20.03.2019 - Minor text corrections, disable of trailer remove feature due to changes on Netflix page that causes Netflix errors.
+4.14.2   - 05.08.2020 - Minor text corrections, added support for new Next episode button style.
+4.15.0   - 02.09.2020 - Added feature to stop playing next video of series in case next video is different title, multiple text fixes.
+4.15.1   - 06.09.2020 - Added feature to stop playing next video of movies in case next video is different title, added support for dark mode in configuration, code optimisation.
+4.16.0   - 09.09.2020 - Added support for new browser UI.
+5.0.0    - 30.09.2020 - Moved options into Netflix page extension status information bubble. Added option to switch between where configuration will be shown, when pressing options button in extension status information bubble. Added auto-save into options page. Added trademark symbols to all meaningful places in extension description and texts, including full disclaimer inside about page in options. Fixed color of extension status information bubble text in kids profile.
+5.0.1    - 12.10.2020 - Small text corrections and fixes.
+5.1.0    - 13.10.2020 - Added feature to auto-disable extension features when on Kids profile. Added proper handling and message for ratings daily limit error and invalid API key. Fixed bug with obtaining Netflix title ID for ratings. Fixed loop overflow on ratings. Removed obsolete trailer audio mute feature.
+6.0.0    - 31.10.2020 - Expanded to Edge, Firefox and Opera browsers. Added all used external sites into permissions, this is required by other browsers and Chrome should require it too, but it doesn't. Added information about next ratings refresh when hovering mouse over ratings information. Added missing permissions for other browsers to work correctly. Fixed loop overflow on ratings. Fixed Developer tools for debugging purposes. Fixed trailer stopping. Removed 'Close' button on options page that was pointless. Reworked how localised messages are used. Reworked key bindings. Reworked localised message handling and removed unnecessary splits in messages. Reworked initialisation of extension and re-injection process to include support for Firefox. Reworked some configuration variables and debug options.
+6.0.1    - 01.11.2020 - Fixed Changelog color in options page for Firefox.
+6.0.2    - 01.11.2020 - Fixed missing localised message.
+6.0.3    - 01.11.2020 - Small fixes.
+6.0.4    - 01.11.2020 - Fixed error when extension is re-injected and not all variables are properly loaded. Fixed startup of extension and process of making sure to correctly unload and load context.
+6.0.5    - 04.11.2020 - Added support for ratings in new 'Remind me' title window. Fixed incorrect loading of assistant code on login page. Fixed problem with occasional random title selection to be of invalid object type. Fixed way how content is inserted into web page for Firefox to be happy and stop disabling extension from their store. Removed confusing location check function.
+6.0.6    - 05.11.2020 - Added icon sizes as per manifest file to remove warnings for Firefox.
+6.1.0    - 23.11.2020 - Major bugfixes and refactoring. Added a way how to disable key bindings. Added options to adjust video filters and speed. Added delay to hiding status pop-up bubble. Added new fields to description hiding and configuration to specify what exactly should be hidden. Changed how ratings are displayed, if we already have ratings obtained it will be shown on title, if not when moved over a title ratings will be fetched. Changed description/image removal to blurring. More fixes for proper code loading/unloading. Rework of configuration handling to be faster, more reliable and auto generated. Rework of status data text generation. Reworked most of DOM element handling. Removed base64 values with images as new handling of extension context does not need them anymore. Removed map link from purify.js to avoid unnecessary console warnings. Removed clickable links on ratings to allow better functionality.
+6.1.1    - 23.11.2020 - Fixed configuration migration.
+6.2.0    - 25.11.2020 - Bugfixes. Added option to position ratings in tiles. Added option to disable ratings linking to rating source. Added option to change ratings size in tiles. Added option to align ratings text in tiles. Fixed issue when clicking on ratings object in tile started video playback, this also means anchors can return. Changed style of shown ratings to be a little more nicer. Fixed issue with version dependant changes to be applied only when Netflix is opened instead of every time when extension is enabled by moving them back to background script. Removed tabs permission as it seem we can work without it.
+6.2.1    - 26.11.2020 - Added support for new type of 'Play next episode' button. Added option to enable video features settings, made them disabled by default to prevent affecting other extensions. Improved performance by moving status object generation to per need basis, instead of constant generation. Removed Save button from options page as it is now obsolete.
+6.2.2    - 27.11.2020 - Added ratings showing for billboard title. Fixed problem with temporary features not being reset on next video. Fixed problem when key bindings were triggered during searching for title. Removed support for options on browser extension management page.
+6.2.3    - 27.11.2020 - Added option to adjust amount of blur for spoilers to be able to make text disappear completely.
+6.2.4    - 28.11.2020 - Reworked how options are generated to remove unnecessary iframe that was causing for some users problems with blocked content. Removed option to hide status icon as there is no longer a way how to bring it back.
+6.2.5    - 30.11.2020 - Clean-up of unused files.
+6.2.6    - 02.12.2020 - Fixed insertion of details about ratings into correct object.
+6.2.7    - 06.12.2020 - Bugfixes. Major fix for catching upsell elements to prevent Netflix plan changes.
+6.2.8    - 10.01.2021 - Bugfixes. Added key binding to temporarily hide subtitles. Added debug option to simulate production environment in development or test environment. Added Font Awesome library and removed picture icons. Added worker responsible for page reloading so page reload is centralised action that is strictly controlled/limited. Added statistics tab in configurations to view some background information. Styles have been moved into external file and external files with styles are now injected for better handling. Fixed version dependant changes to not apply changes to local storage on Netflix page by moving it from background again, this can be done because we no longer need to maintain configuration at two places, extension management configuration was removed in versions before. Fixed problem with ratings not being removed when expired after loading from local storage.
+6.2.9    - 11.01.2021 - Bugfixes.
+
+TODO:
+
+- General:
+    - Move as much styles as possible into CSS file and use classes instead.
+    - Reload delay is not counting down to 60 second difference. 6.2.7 (fixed in 6.2.8?)
+- Firefox:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1413872
+- Safari support:
+    - Safari is no longer supported on Windows... Need to find some virtual macOS platform for Hyper-V, this might not be easy...
+    - https://developer.apple.com/forums/thread/94567
+    - https://developer.apple.com/documentation/safariservices/safari_web_extensions/converting_a_web_extension_for_safari
+
+- Ideas:
+    - Add more customization options for subtitles (fonts, colors, sizes).
+    - Audio and video sync controls.
+    - Replace checkboxes, radios and range inputs in options with font awesome icons and https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+
+Known issues:
+
+- None.
+- Possible new Netflix video player UI.
+- Incoming manifest v3

@@ -1,0 +1,2414 @@
+{
+    "name":{
+        "message":"Netflix™ Extended",
+        "description":""
+    },
+    "short_name":{
+        "message":"Netflex",
+        "description":""
+    },
+    "description":{
+        "message":"Extension for Netflix™ to skip intros, recaps, start next movie/episode in faster pace and many more.",
+        "description":""
+    },
+    "founder":{
+        "message":"Martin Suchy",
+        "description":""
+    },
+    "provider":{
+        "message":"Martin Suchy",
+        "description":""
+    },
+    "developer":{
+        "message":"Martin Suchy",
+        "description":""
+    },
+    "disclaimer":{
+        "message":"NETFLIX is a trademark of Netflix, Inc.. This application and its developer are in no way affiliated with Netflix, Inc..<br><br>The software is provided \"as is\", without a warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.",
+        "description":""
+    },
+    "version":{
+        "message":"Version",
+        "description":""
+    },
+    "founded_by":{
+        "message":"Founded by",
+        "description":""
+    },
+    "developed_by":{
+        "message":"Developed by",
+        "description":""
+    },
+    "provided_by":{
+        "message":"Provided by",
+        "description":""
+    },
+    "changelog":{
+        "message":"Changelog",
+        "description":""
+    },
+    "donate":{
+        "message":"Support developer:",
+        "description":""
+    },
+    "paypal":{
+        "message":"PayPal",
+        "description":""
+    },
+    "patreon":{
+        "message":"Patreon",
+        "description":""
+    },
+    "extension_install":{
+        "message":"Installing extension.",
+        "description":""
+    },
+    "extension_enable":{
+        "message":"Extension enabled.",
+        "description":""
+    },
+    "extension_disable":{
+        "message":"Extension disabled.",
+        "description":""
+    },
+    "extension_update":{
+        "message":"Updating extension.",
+        "description":""
+    },
+    "extension_autoinject_failed":{
+        "message":"Failed to auto-inject tabs.",
+        "description":""
+    },
+    "extension_webstore":{
+        "message":"Extension Webstore",
+        "description":""
+    },
+    "netflix_changes":{
+        "message":"This feature is disabled due to changes on Netflix™ side that cause problems while using this extension. This may be temporary until workaround is found or permanent when there is no fix found in reasonable time. If there is no fix, this feature might get removed.",
+        "description":""
+    },
+    "dnf_error":{
+        "message":"Translation error",
+        "description":""
+    },
+    "lang_key_missing":{
+        "message":"Unable to locate lang key '{0}'.",
+        "description":""
+    },
+    "ratings_error_message":{
+        "message":"ERROR: {0} (response status: {1}).",
+        "description":""
+    },
+    "error_message":{
+        "message":"NETFLEX ERROR: ",
+        "description":""
+    },
+    "warn_message":{
+        "message":"NETFLEX WARNING: ",
+        "description":""
+    },
+    "output_message":{
+        "message":"NETFLEX OUTPUT: ",
+        "description":""
+    },
+    "info_message":{
+        "message":"NETFLEX INFO: ",
+        "description":""
+    },
+    "debug_message":{
+        "message":"NETFLEX DEBUG: ",
+        "description":""
+    },
+    "extension_version":{
+        "message":"Current version: {0}",
+        "description":""
+    },
+    "last_version":{
+        "message":"Last version: {0}",
+        "description":""
+    },
+    "previous_version":{
+        "message":"Previous version: {0}",
+        "description":""
+    },
+    "applied_version":{
+        "message":"Applied version: {0}",
+        "description":""
+    },
+    "success":{
+        "message":"Success.",
+        "description":""
+    },
+    "failed":{
+        "message":"Failed.",
+        "description":""
+    },
+    "versions_reset_value":{
+        "message":"Resetting configuration value of variable '{0}'.",
+        "description":""
+    },
+    "versions_remove_variable":{
+        "message":"Removing configuration variable '{0}'.",
+        "description":""
+    },
+    "versions_rename_variable":{
+        "message":"Renaming configuration variable from '{0}' to '{1}'.",
+        "description":""
+    },
+    "versions_rename_localStorage":{
+        "message":"Renaming local storage item from '{0}' to '{1}'.",
+        "description":""
+    },
+    "options":{
+        "message":"Options",
+        "description":""
+    },
+    "options_open":{
+        "message":"Opening options page...",
+        "description":""
+    },
+    "extension_feature_reset_cfg":{
+        "message":"Reset to configured value",
+        "description":""
+    },
+    "extension_feature_reset_default":{
+        "message":"Reset to default value",
+        "description":""
+    },
+    "features":{
+        "message":"More features",
+        "description":""
+    },
+    "no_features_available":{
+        "message":"There are no features available on this page, or there are no valid features enabled.",
+        "description":""
+    },
+    "feature_tempHideSubtitles":{
+        "message":"Temporary hide subtitles (lasts until next video):",
+        "description":""
+    },
+    "feature_videoSpeedRate":{
+        "message":"Temporary video speed rate (lasts until next video):",
+        "description":""
+    },
+    "feature_videoBrightness":{
+        "message":"Temporary video brightness (lasts until next video):",
+        "description":""
+    },
+    "feature_videoContrast":{
+        "message":"Temporary video contrast (lasts until next video):",
+        "description":""
+    },
+    "feature_videoGrayscale":{
+        "message":"Temporary video grayscale effect (lasts until next video):",
+        "description":""
+    },
+    "feature_videoHue":{
+        "message":"Temporary video hue (lasts until next video):",
+        "description":""
+    },
+    "feature_videoInvert":{
+        "message":"Temporary video color invert (lasts until next video):",
+        "description":""
+    },
+    "feature_videoSaturation":{
+        "message":"Temporary video saturation (lasts until next video):",
+        "description":""
+    },
+    "feature_videoSepia":{
+        "message":"Temporary video sepia effect (lasts until next video):",
+        "description":""
+    },
+    "loop_overflow":{
+        "message":"Loop '{0}' had {1} loop(s) from last check, normal count is equal or lower than {2} loop(s).",
+        "description":""
+    },
+    "log_type_unknown":{
+        "message":"Log type '{0}' is unknown.",
+        "description":""
+    },
+    "version_changed":{
+        "message":"Playing next episode...",
+        "description":""
+    },
+    "next_episode":{
+        "message":"Playing next episode...",
+        "description":""
+    },
+    "skipping_intro":{
+        "message":"Skipping intro...",
+        "description":""
+    },
+    "skipping_recap":{
+        "message":"Skipping recap...",
+        "description":""
+    },
+    "skipping_interrupter":{
+        "message":"Skipping interruption...",
+        "description":""
+    },
+    "second":{
+        "message":"second",
+        "description":""
+    },
+    "second_less5":{
+        "message":"seconds",
+        "description":""
+    },
+    "seconds":{
+        "message":"seconds",
+        "description":""
+    },
+    "ratings_wiki_missing_netflix_id":{
+        "message":"Missing Netflix ID (<span style='user-select: all;'>{0}</span>) at <a href='{1}' style='text-decoration: underline;' target='_blank'>Wikidata</a>.<br>{2}",
+        "description":""
+    },
+    "ratings_wiki_missing_imdb_id":{
+        "message":"Missing IMDb ID (<a href='{0}' style='text-decoration: underline;' target='_blank'>search</a>) at <a href='{1}' style='text-decoration: underline;' target='_blank'>Wikidata</a>.<br>{2}",
+        "description":""
+    },
+    "video_stuck":{
+        "message":"Video seems to be stuck for {0} {1} out of {2}...",
+        "description":""
+    },
+    "page_reload":{
+        "message":"Page reload request was detected within all limits, reloading...",
+        "description":""
+    },
+    "page_reload_cancelled":{
+        "message":"Page reload was cancelled.",
+        "description":""
+    },
+    "page_reload_delay":{
+        "message":"Reload is being delayed. To prevent account from being blocked, reload will be performed once there is difference at least {0} {1}...",
+        "description":""
+    },
+    "page_reload_delay_info":{
+        "message":"Reload delayed for another {0} {1}.",
+        "description":""
+    },
+    "prev_episode_manual":{
+        "message":"Starting previous episode...",
+        "description":""
+    },
+    "prev_episode_manual_no_history":{
+        "message":"No more episodes in history.",
+        "description":""
+    },
+    "next_video_stop":{
+        "message":"Next video is not from same title and extension is configured to stop playing.",
+        "description":""
+    },
+    "next_video_delay":{
+        "message":"Next video is not from same series, delaying next episode for {0} {1} out of {2}...",
+        "description":""
+    },
+    "lost_focus_pause":{
+        "message":"Video was paused as video player lost focus.",
+        "description":""
+    },
+    "gained_focus_play":{
+        "message":"Video was started as video player gained focus and video was previously paused by extension.",
+        "description":""
+    },
+    "rand_video_failed_select":{
+        "message":"Selection of random title failed.",
+        "description":""
+    },
+    "rand_video_failed_play":{
+        "message":"Starting of random title failed.",
+        "description":""
+    },
+    "rand_video_success":{
+        "message":"Random title was selected: {0}.",
+        "description":""
+    },
+    "trailer_stopped":{
+        "message":"Trailer was stopped.",
+        "description":""
+    },
+    "disliked_hidden":{
+        "message":"Disliked title was hidden.",
+        "description":""
+    },
+    "description_hidden":{
+        "message":"Description was hidden.",
+        "description":""
+    },
+    "assistant_enabled":{
+        "message":"All extension assistant features were enabled.",
+        "description":""
+    },
+    "assistant_disabled":{
+        "message":"All extension assistant features were disabled.",
+        "description":""
+    },
+    "rate_extension":{
+        "message":"Click here to rate extension",
+        "description":""
+    },
+    "status_text_ok":{
+        "message":"Everything seems OK.<br>Click on status icon to disable all assistant features.",
+        "description":""
+    },
+    "status_text_errors":{
+        "message":"Consider reloading Netflix™, errors were detected.",
+        "description":""
+    },
+    "status_text_update":{
+        "message":"Extension state changed. Either it was updated, reloaded, disabled or uninstalled. Extension should handle this situation on its own, but it is recommended to reload Netflix™ for changes to correctly apply.",
+        "description":""
+    },
+    "status_text_disabled":{
+        "message":"Extension assistant features are currently disabled.<br>Click on status icon to enable all assistant features.",
+        "description":""
+    },
+    "status_text_broken":{
+        "message":"Consider reloading Netflix™, extension is not working.",
+        "description":""
+    },
+    "rating_imdb":{
+        "message":"IMDb",
+        "description":""
+    },
+    "rating_rt":{
+        "message":"RT",
+        "description":""
+    },
+    "rating_meta":{
+        "message":"Meta",
+        "description":""
+    },
+    "rating_daily_limit":{
+        "message":"Ratings daily limit reached, retry in 24 hours.",
+        "description":""
+    },
+    "rating_invalid_key":{
+        "message":"Provided API key is invalid.",
+        "description":""
+    },
+    "rating_no_rating":{
+        "message":"No ratings found.",
+        "description":""
+    },
+    "rating_id_not_found":{
+        "message":"Unable to obtain title ID.",
+        "description":""
+    },
+    "rating_display_error":{
+        "message":"Unable to display ratings.",
+        "description":""
+    },
+    "rating_next_refresh":{
+        "message":"Next refresh at {0}.",
+        "description":""
+    },
+    "ratings_reason":{
+        "message":"Reason: {0}.",
+        "description":""
+    },
+    "ratings_imdb_id_not_found":{
+        "message":"Wikidata did not provide IMDb identification.",
+        "description":""
+    },
+    "ratings_no_data_wikidata":{
+        "message":"No data were provided from Wikidata.",
+        "description":""
+    },
+    "ratings_no_data_omdb_api":{
+        "message":"No data were provided from OMDB API.",
+        "description":""
+    },
+    "ratings_unknown_error":{
+        "message":"Unknown.",
+        "description":""
+    },
+    "help_wikidata":{
+        "message":"Help make WikiData better for everyone. Visit https://www.wikidata.org/w/index.php?search={0}, find correct title in results and add Netflix™ ID: {1}.",
+        "description":""
+    },
+    "data_loading":{
+        "message":"Loading...",
+        "description":""
+    },
+    "options_title":{
+        "message":"Netflix™ Extended Options",
+        "description":""
+    },
+    "options_default":{
+        "message":"Default",
+        "description":""
+    },
+    "options_min":{
+        "message":"Min",
+        "description":""
+    },
+    "options_max":{
+        "message":"Max",
+        "description":""
+    },
+    "options_off":{
+        "message":"Off",
+        "description":""
+    },
+    "changelog_fetch_failed":{
+        "message":"Obtaining changelog failed. Try reloading extension.",
+        "description":""
+    },
+    "menu_assistant":{
+        "message":"Assistant",
+        "description":""
+    },
+    "menu_ratings":{
+        "message":"Ratings",
+        "description":""
+    },
+    "menu_video":{
+        "message":"Video",
+        "description":""
+    },
+    "menu_timers":{
+        "message":"Timers",
+        "description":""
+    },
+    "menu_bindings":{
+        "message":"Key bindings",
+        "description":""
+    },
+    "menu_storage":{
+        "message":"Storage",
+        "description":""
+    },
+    "menu_api":{
+        "message":"API keys",
+        "description":""
+    },
+    "menu_statistics":{
+        "message":"Statistics",
+        "description":""
+    },
+    "menu_about":{
+        "message":"About",
+        "description":""
+    },
+    "menu_debug":{
+        "message":"Debug",
+        "description":""
+    },
+    "cfg_loading":{
+        "message":"Loading configuration...",
+        "description":""
+    },
+    "cfg_loaded":{
+        "message":"Configuration loaded.",
+        "description":""
+    },
+    "cfg_saving":{
+        "message":"Saving configuration...",
+        "description":""
+    },
+    "cfg_saved":{
+        "message":"Configuration saved.",
+        "description":""
+    },
+    "cfg_changed":{
+        "message":"Configuration has changed.",
+        "description":""
+    },
+    "cfg_logLevel_name":{
+        "message":"Log level",
+        "description":""
+    },
+    "cfg_logLevel_description":{
+        "message":"Turns on/off output for specific message types. Option that is chosen will mark output messages of that type that will be shown together with messages of types below, messages of type above will not be shown.",
+        "description":""
+    },
+    "cfg_debug_name":{
+        "message":"Debug options",
+        "description":""
+    },
+    "cfg_debug_description":{
+        "message":"Turns on/off debug output for various categories.",
+        "description":""
+    },
+    "cfg_simulateProduction_name":{
+        "message":"Simulate production environment",
+        "description":""
+    },
+    "cfg_simulateProduction_description":{
+        "message":"Turns on/off debug simulation of production environment.",
+        "description":""
+    },
+    "cfg_skipIntros_name":{
+        "message":"Skip intros",
+        "description":""
+    },
+    "cfg_skipIntros_description":{
+        "message":"Turns on/off intro skipping feature.",
+        "description":""
+    },
+    "cfg_skipRecaps_name":{
+        "message":"Skip recaps",
+        "description":""
+    },
+    "cfg_skipRecaps_description":{
+        "message":"Turns on/off recap skipping feature.",
+        "description":""
+    },
+    "cfg_skipInterrupter_name":{
+        "message":"Skip interruption",
+        "description":""
+    },
+    "cfg_skipInterrupter_description":{
+        "message":"Turns on/off skipping interruption feature. Interruption happens when other features are disabled and every few episodes Netflix™ will ask you, if you are still watching.",
+        "description":""
+    },
+    "cfg_trailerVideoStop_name":{
+        "message":"Stop trailers",
+        "description":""
+    },
+    "cfg_trailerVideoStop_description":{
+        "message":"Turns on/off stopping of all trailer video previews.",
+        "description":""
+    },
+    "cfg_nextEpisode_name":{
+        "message":"Start next episode",
+        "description":""
+    },
+    "cfg_nextEpisode_description":{
+        "message":"Turns on/off automated start of next episode.",
+        "description":""
+    },
+    "cfg_nextEpisodeStopMovies_name":{
+        "message":"Stop movies on different title",
+        "description":""
+    },
+    "cfg_nextEpisodeStopMovies_description":{
+        "message":"Turns on/off automated stopping of next movie, if it is from different title.",
+        "description":""
+    },
+    "cfg_nextEpisodeStopSeries_name":{
+        "message":"Stop series on different title",
+        "description":""
+    },
+    "cfg_nextEpisodeStopSeries_description":{
+        "message":"Turns on/off automated stopping of next episode, if it is from different title.",
+        "description":""
+    },
+    "cfg_hideSpoilers_name":{
+        "message":"Blur spoilers",
+        "description":""
+    },
+    "cfg_hideSpoilers_description":{
+        "message":"Turns on/off blurring of spoilers.",
+        "description":""
+    },
+    "cfg_spoilersBlurAmount_name":{
+        "message":"Spoilers blur amount",
+        "description":""
+    },
+    "cfg_spoilersBlurAmount_description":{
+        "message":"Sets how much should spoiler texts be blurred. The more the texts are blurred the more invisible they seem.",
+        "description":""
+    },
+    "cfg_hideSpoilersObjects_name":{
+        "message":"Blur spoilers objects",
+        "description":""
+    },
+    "cfg_hideSpoilersObjects_description":{
+        "message":"Turns on/off blurring of spoilers of specific type.",
+        "description":""
+    },
+    "cfg_hideDisliked_name":{
+        "message":"Hide disliked titles",
+        "description":""
+    },
+    "cfg_hideDisliked_description":{
+        "message":"Turns on/off hiding of disliked titles.",
+        "description":""
+    },
+    "cfg_autoDisableKids_name":{
+        "message":"Disable extension on Kids profile",
+        "description":""
+    },
+    "cfg_autoDisableKids_description":{
+        "message":"Turns on/off automatic disabling of extension features when on Kids profile. It is possible to manually override this by clicking on extension status icon until next page reload or profile change.",
+        "description":""
+    },
+    "cfg_pauseOnBlur_name":{
+        "message":"Pause video if not focused",
+        "description":""
+    },
+    "cfg_pauseOnBlur_description":{
+        "message":"Sets sensitivity of automated pausing of the video, in case window or tab is not active.<br><br>~ Disabled - Video will not be paused. This also disables 'Play video if focused' feature.<br>~ Low - Video will be paused if tab is switched or browser is minimized.<br>~ High - Video will be paused if video player is not in focus (behavior should include actions from Low setting).",
+        "description":""
+    },
+    "cfg_playOnFocus_name":{
+        "message":"Play video if focused",
+        "description":""
+    },
+    "cfg_playOnFocus_description":{
+        "message":"Turns on/off automated start of video, if it was paused by 'Pause video if not focused' when video windows is in focus again.",
+        "description":""
+    },
+    "cfg_showCategories_name":{
+        "message":"Show advanced categories",
+        "description":""
+    },
+    "cfg_showCategories_description":{
+        "message":"Turns on/off browse page feature to show advanced title categories.",
+        "description":""
+    },
+    "cfg_highlightSubtitles_name":{
+        "message":"Highlight subtitles",
+        "description":""
+    },
+    "cfg_highlightSubtitles_description":{
+        "message":"Sets subtitle highlight style.<br><br>~ Hide subtitles - All subtitles will be hidden.<br>~ Disabled - Subtitles will not be highlighted by extension, but might be highlighted by Netflix™.<br>~ Shadow - Subtitles shadow will be darker and more visible around them, if Netflix™ provides subtitles with black background this will have no effect.<br>~ Background - Subtitles will receive background that will be 50% transparent, if Netflix™ provides subtitles with black background this will have no effect.",
+        "description":""
+    },
+    "cfg_showRatings_name":{
+        "message":"Show ratings",
+        "description":""
+    },
+    "cfg_showRatings_description":{
+        "message":"Turns on/off ratings display and collection. Already collected ratings will stay in local storage but will not be used.",
+        "description":""
+    },
+    "cfg_ratingsAnchors_name":{
+        "message":"Links to rating sites",
+        "description":""
+    },
+    "cfg_ratingsAnchors_description":{
+        "message":"Turns on/off feature to redirect to web of rating source when clicked on ratings.",
+        "description":""
+    },
+    "cfg_ratingsWikidataAnchors_name":{
+        "message":"Show data for Wikidata editing",
+        "description":""
+    },
+    "cfg_ratingsWikidataAnchors_description":{
+        "message":"<span style='font-weight: bold;'>This is advised only for advanced users or regular Wikidata contributors.</span><br>Turns on/off feature to show links to Wikidata for adding identifications for movies to improve ratings. This will also show Netflix™ title ID in link and in UI to provide relevant data. Some titles will need to be searched manually, in case title name is in language that is not available by Wikidata. If title is completely missing from Wikidata, new title page will have to be created and both IMDb and Netflix™ IDs have to be added. If IMDb ID is missing it has to be searched and added to Wikidata. Data should automatically refresh within one hour.",
+        "description":""
+    },
+    "cfg_ratingsTileSize_name":{
+        "message":"Ratings text size on tiles",
+        "description":""
+    },
+    "cfg_ratingsTileSize_description":{
+        "message":"Sets text size of ratings data shown on browse tiles.",
+        "description":""
+    },
+    "cfg_ratingsTilePosition_name":{
+        "message":"Ratings position on tiles",
+        "description":""
+    },
+    "cfg_ratingsTilePosition_description":{
+        "message":"Sets position where should ratings data be shown on browse tiles.",
+        "description":""
+    },
+    "cfg_ratingsTileTextAlign_name":{
+        "message":"Ratings text align on tiles",
+        "description":""
+    },
+    "cfg_ratingsTileTextAlign_description":{
+        "message":"Sets align of ratings text on browse tiles.",
+        "description":""
+    },
+    "cfg_enableVideoFeatures_name":{
+        "message":"Video features",
+        "description":""
+    },
+    "cfg_enableVideoFeatures_description":{
+        "message":"Turns on/off all video features. Netflix™ playback speed will be ignored while this option is enabled. Other extension with similar video functions might stop working as expected.",
+        "description":""
+    },
+    "cfg_videoSpeedRate_name":{
+        "message":"Video speed rate",
+        "description":""
+    },
+    "cfg_videoSpeedRate_description":{
+        "message":"Sets video speed rate at which will every title play. This can be temporarily overwritten by status bubble controls. Too sudden changes can de-synchronize audio and video, page refresh can fix that.",
+        "description":""
+    },
+    "cfg_videoBrightness_name":{
+        "message":"Video brightness",
+        "description":""
+    },
+    "cfg_videoBrightness_description":{
+        "message":"Sets video brightness at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoContrast_name":{
+        "message":"Video contrast",
+        "description":""
+    },
+    "cfg_videoContrast_description":{
+        "message":"Sets video contrast at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoGrayscale_name":{
+        "message":"Video grayscale effect",
+        "description":""
+    },
+    "cfg_videoGrayscale_description":{
+        "message":"Sets video grayscale effect at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoHue_name":{
+        "message":"Video hue",
+        "description":""
+    },
+    "cfg_videoHue_description":{
+        "message":"Sets video hue at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoInvert_name":{
+        "message":"Video color invert",
+        "description":""
+    },
+    "cfg_videoInvert_description":{
+        "message":"Sets video color invert at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoSaturation_name":{
+        "message":"Video saturation",
+        "description":""
+    },
+    "cfg_videoSaturation_description":{
+        "message":"Sets video saturation at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoSepia_name":{
+        "message":"Video sepia effect",
+        "description":""
+    },
+    "cfg_videoSepia_description":{
+        "message":"Sets video sepia effect at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_timeFromLoadLimit_name":{
+        "message":"Browser load time wait",
+        "description":""
+    },
+    "cfg_timeFromLoadLimit_description":{
+        "message":"How many seconds should extension wait, after page is loaded, before considering something might be wrong. For people with slower computers, this might need to be adjusted.",
+        "description":""
+    },
+    "cfg_loadingTimeLimit_name":{
+        "message":"Data load time wait",
+        "description":""
+    },
+    "cfg_loadingTimeLimit_description":{
+        "message":"How many seconds should extension wait, while video is loaded, before considering something might be wrong. For people with slower connections, this might need to be adjusted.",
+        "description":""
+    },
+    "cfg_stuckTimeLimit_name":{
+        "message":"Video stuck timeout",
+        "description":""
+    },
+    "cfg_stuckTimeLimit_description":{
+        "message":"How many seconds should extension wait, before reloading web page, after browser and data load time wait timers ran out. This gives some space, in case nothing is wrong, only loading times were longer. Off value disables automated page reload if video does not start playing as expected, default Netflix™ behavior should apply.",
+        "description":""
+    },
+    "cfg_forceReloadDelay_name":{
+        "message":"Repeated reload delay",
+        "description":""
+    },
+    "cfg_forceReloadDelay_description":{
+        "message":"How many seconds should extension wait before repeated page reloads when extension detects something is wrong. This delay should prevent accidental account locking for 24 hours for too many requests to Netflix™ servers.",
+        "description":""
+    },
+    "cfg_nextTitleDelayLimit_name":{
+        "message":"Next title delay",
+        "description":""
+    },
+    "cfg_nextTitleDelayLimit_description":{
+        "message":"How many seconds should extension wait, before starting next different title. Off value disables automated start for next videos in case titles are different, default Netflix™ behavior should apply.",
+        "description":""
+    },
+    "cfg_keepHistory_name":{
+        "message":"Played history",
+        "description":""
+    },
+    "cfg_keepHistory_description":{
+        "message":"How many movies/episodes should extension keep history of. Off value disables history of previous videos and also 'Play previous' feature.",
+        "description":""
+    },
+    "cfg_omdbApi_name":{
+        "message":"OMDB API key",
+        "description":""
+    },
+    "cfg_omdbApi_description":{
+        "message":"API key for OMDB API (Free API keys can be generated here: <a href='https://omdbapi.com/apikey.aspx' style='display: unset;' target='_blank'>https://omdbapi.com/apikey.aspx</a>).",
+        "description":""
+    },
+    "cfg_exitPlayerKey_name":{
+        "message":"Exit player",
+        "description":""
+    },
+    "cfg_exitPlayerKey_description":{
+        "message":"Define key, that will exit Netflix™ video player back to video selection.",
+        "description":""
+    },
+    "cfg_prevEpisodeKey_name":{
+        "message":"Previous episode",
+        "description":""
+    },
+    "cfg_prevEpisodeKey_description":{
+        "message":"Define key, that will return to previous played video, if there is some stored via 'Played history' feature.",
+        "description":""
+    },
+    "cfg_nextEpisodeKey_name":{
+        "message":"Next episode",
+        "description":""
+    },
+    "cfg_nextEpisodeKey_description":{
+        "message":"Define key, that will skip to next episode, if there is some available.",
+        "description":""
+    },
+    "cfg_randomMovieKey_name":{
+        "message":"Play random video",
+        "description":""
+    },
+    "cfg_randomMovieKey_description":{
+        "message":"Define key, that will start a random movie while on video selection screen.",
+        "description":""
+    },
+    "cfg_toggleAssistantKey_name":{
+        "message":"Toggle extension assistant",
+        "description":""
+    },
+    "cfg_toggleAssistantKey_description":{
+        "message":"Define key, that will enable/disable extension assistant features.",
+        "description":""
+    },
+    "cfg_hideSubtitlesKey_name":{
+        "message":"Temporary hide subtitles",
+        "description":""
+    },
+    "cfg_hideSubtitlesKey_description":{
+        "message":"Define key, that will temporarily hide subtitles. Effect lasts until next episode or title.",
+        "description":""
+    },
+    "cfg_bubbleHideDelay_description":{
+        "message":"How long should status bubble stay open after mouse leaves DOM object area. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_bubbleHideDelay_name":{
+        "message":"Status bubble hide delay",
+        "description":""
+    },
+    "cfg_controlsSwitchTimer_description":{
+        "message":"How often should mouse move events be switched on video player controls to keep it open while working with extension icon or bubble and options. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_controlsSwitchTimer_name":{
+        "message":"Controls switch timer",
+        "description":""
+    },
+    "cfg_debugControlsSwitchTimer_description":{
+        "message":"How often should DOM elements be removed when debugging simulation of mouse movement events is turned on. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_debugControlsSwitchTimer_name":{
+        "message":"Debug controls switch timer",
+        "description":""
+    },
+    "cfg_devToolsRefreshTimer_description":{
+        "message":"How often should data in DevTools be refreshed. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_devToolsRefreshTimer_name":{
+        "message":"DevTools data refresh timer",
+        "description":""
+    },
+    "cfg_devToolsConfigLoadTimer_description":{
+        "message":"How often should configuration in DevTools be refreshed. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_devToolsConfigLoadTimer_name":{
+        "message":"DevTools configuration load timer",
+        "description":""
+    },
+    "cfg_elementHandlerTimer_description":{
+        "message":"How often should extension icon be updated. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_elementHandlerTimer_name":{
+        "message":"Element handler timer",
+        "description":""
+    },
+    "cfg_environmentUpdateTimer_description":{
+        "message":"How often should environment variables and events be updated. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_environmentUpdateTimer_name":{
+        "message":"Environment update timer",
+        "description":""
+    },
+    "cfg_errorExtensionReloadDelay_description":{
+        "message":"How long should extension reload be delayed after too many core errors have occurred. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_errorExtensionReloadDelay_name":{
+        "message":"Error extension reload delay",
+        "description":""
+    },
+    "cfg_injectorTimer_description":{
+        "message":"How often should event injection occur. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_injectorTimer_name":{
+        "message":"Injector timer",
+        "description":""
+    },
+    "cfg_pageReloadTimer_description":{
+        "message":"How often should timer check if page reload is requested. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_pageReloadTimer_name":{
+        "message":"Page reload timer",
+        "description":""
+    },
+    "cfg_keyEventProcessingDelay_description":{
+        "message":"How often should extension check for pressed key binds. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_keyEventProcessingDelay_name":{
+        "message":"Key event processing timer",
+        "description":""
+    },
+    "cfg_netflixAssistantTimer_description":{
+        "message":"How often should Netflix™ assistant actions to be performed. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_netflixAssistantTimer_name":{
+        "message":"Netflix™ assistant timer",
+        "description":""
+    },
+    "cfg_netflixRatingsTimer_description":{
+        "message":"How often should Netflix™ ratings to be checked and inserted. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_netflixRatingsTimer_name":{
+        "message":"Netflix™ ratings timer",
+        "description":""
+    },
+    "cfg_playPauseButtonDelay_description":{
+        "message":"How long should play/pause button click be delayed after intro or recap was skipped to prevent video from staying playing/paused after the activity. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_playPauseButtonDelay_name":{
+        "message":"Play/Pause button delay",
+        "description":""
+    },
+    "cfg_skippingPreventionTimer_description":{
+        "message":"How long should be the delay before extension starts to skip intros/recaps after skipping intro/recap before. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_skippingPreventionTimer_name":{
+        "message":"Skipping prevention timer",
+        "description":""
+    },
+    "cfg_startupTimer_description":{
+        "message":"How often should check for possible startup occur. Changing this value may require extension reload.",
+        "description":""
+    },
+    "cfg_startupTimer_name":{
+        "message":"Startup timer",
+        "description":""
+    },
+    "cfg_load_timedout":{
+        "message":"Loading configuration failed.",
+        "description":""
+    },
+    "button_reset":{
+        "message":"Reset all to default",
+        "description":""
+    },
+    "button_reset_debug":{
+        "message":"Reset all debug options to default",
+        "description":""
+    },
+    "button_reset_bindings":{
+        "message":"Reset all key binding options to default",
+        "description":""
+    },
+    "button_reset_video":{
+        "message":"Reset all video options to default",
+        "description":""
+    },
+    "button_reload":{
+        "message":"Reload extension",
+        "description":""
+    },
+    "button_default":{
+        "message":"Reset to default",
+        "description":""
+    },
+    "button_debug":{
+        "message":"Show debug options",
+        "description":""
+    },
+    "confirm_reset":{
+        "message":"Are you sure you want to reset all values to default?",
+        "description":""
+    },
+    "option_unknown":{
+        "message":"Unknown",
+        "description":""
+    },
+    "logLevel_type_unknown":{
+        "message":"Unknown",
+        "description":""
+    },
+    "logLevel_type_debug":{
+        "message":"Debug",
+        "description":""
+    },
+    "logLevel_type_info":{
+        "message":"Info",
+        "description":""
+    },
+    "logLevel_type_warn":{
+        "message":"Warn",
+        "description":""
+    },
+    "logLevel_type_error":{
+        "message":"Error",
+        "description":""
+    },
+    "logLevel_type_none":{
+        "message":"None",
+        "description":""
+    },
+    "logLevel_type_output":{
+        "message":"Output",
+        "description":""
+    },
+    "pauseOnBlur_type_disabled":{
+        "message":"Disabled",
+        "description":""
+    },
+    "pauseOnBlur_type_low":{
+        "message":"Low",
+        "description":""
+    },
+    "pauseOnBlur_type_high":{
+        "message":"High",
+        "description":""
+    },
+    "highlightSubtitles_type_hidden":{
+        "message":"Hide subtitles",
+        "description":""
+    },
+    "highlightSubtitles_type_disabled":{
+        "message":"Disabled",
+        "description":""
+    },
+    "highlightSubtitles_type_shadow":{
+        "message":"Shadow",
+        "description":""
+    },
+    "highlightSubtitles_type_background":{
+        "message":"Background",
+        "description":""
+    },
+    "hideSpoilersObjects_type_description":{
+        "message":"Descriptions",
+        "description":""
+    },
+    "hideSpoilersObjects_type_episode_name":{
+        "message":"Episode names",
+        "description":""
+    },
+    "hideSpoilersObjects_type_episode_picture":{
+        "message":"Episode pictures",
+        "description":""
+    },
+    "hideSpoilersObjects_type_runner_thumbnail":{
+        "message":"Runner thumbnails",
+        "description":""
+    },
+    "ratingsTilePosition_type_top_left":{
+        "message":"Top left",
+        "description":""
+    },
+    "ratingsTilePosition_type_top_center":{
+        "message":"Top center",
+        "description":""
+    },
+    "ratingsTilePosition_type_top_right":{
+        "message":"Top right",
+        "description":""
+    },
+    "ratingsTilePosition_type_middle_left":{
+        "message":"Middle left",
+        "description":""
+    },
+    "ratingsTilePosition_type_middle_center":{
+        "message":"Middle center",
+        "description":""
+    },
+    "ratingsTilePosition_type_middle_right":{
+        "message":"Middle right",
+        "description":""
+    },
+    "ratingsTilePosition_type_bottom_left":{
+        "message":"Bottom left",
+        "description":""
+    },
+    "ratingsTilePosition_type_bottom_center":{
+        "message":"Bottom center",
+        "description":""
+    },
+    "ratingsTilePosition_type_bottom_right":{
+        "message":"Bottom right",
+        "description":""
+    },
+    "ratingsTileTextAlign_type_left":{
+        "message":"Left",
+        "description":""
+    },
+    "ratingsTileTextAlign_type_center":{
+        "message":"Center",
+        "description":""
+    },
+    "ratingsTileTextAlign_type_right":{
+        "message":"Right",
+        "description":""
+    },
+    "ratingsTileTextAlign_type_same_as_position":{
+        "message":"Same as horizontal position of tile ratings",
+        "description":""
+    },
+    "debug_type_init":{
+        "message":"Initialisation",
+        "description":""
+    },
+    "debug_type_startup":{
+        "message":"Startup",
+        "description":""
+    },
+    "debug_type_options_generation":{
+        "message":"Options generation",
+        "description":""
+    },
+    "debug_type_configuration":{
+        "message":"Configuration",
+        "description":""
+    },
+    "debug_type_overflow":{
+        "message":"Overflow",
+        "description":""
+    },
+    "debug_type_keypress":{
+        "message":"Key press",
+        "description":""
+    },
+    "debug_type_assistant_loop":{
+        "message":"Assistant loop",
+        "description":""
+    },
+    "debug_type_main_loop":{
+        "message":"Main loop",
+        "description":""
+    },
+    "debug_type_mouse_simulation":{
+        "message":"Mouse movement simulation",
+        "description":""
+    },
+    "debug_type_fractions_counter":{
+        "message":"Time fractions counter",
+        "description":""
+    },
+    "debug_type_background":{
+        "message":"Background communication",
+        "description":""
+    },
+    "debug_type_core_errors":{
+        "message":"Core errors",
+        "description":""
+    },
+    "debug_type_environment":{
+        "message":"Environment refresh",
+        "description":""
+    },
+    "debug_type_dom_activities":{
+        "message":"DOM activities",
+        "description":""
+    },
+    "debug_type_dom_events":{
+        "message":"DOM events",
+        "description":""
+    },
+    "debug_type_ratings":{
+        "message":"Ratings",
+        "description":""
+    },
+    "debug_message_without_access":{
+        "message":"Debug message did not provide any access information. Original message was '{0}'.",
+        "description":""
+    },
+    "debug_variables_nodata":{
+        "message":"No data available.",
+        "description":""
+    },
+    "debug_variables_noloop":{
+        "message":"Unable to loop trough object (last known key: '{0}').",
+        "description":""
+    },
+    "debug_warning_notice":{
+        "message":"Changing any of following values may lead to poor performance or unexpected behavior and ultimately may break extension.",
+        "description":""
+    },
+    "error_core":{
+        "message":"CORE ERROR DETECTED: {0}.",
+        "description":""
+    },
+    "error_core_assistant_delay":{
+        "message":"CORE ERROR DETECTED: Assistant call is too old, restarting assistant loop ({0} - {1} = {2} > {3}).",
+        "description":""
+    },
+    "fireworks_start":{
+        "message":"Yay! Fireworks!",
+        "description":""
+    },
+    "object_category_unknown":{
+        "message":"Unknown object category '{0}'.",
+        "description":""
+    },
+    "object_category_error":{
+        "message":"Error while obtaining object with category name '{0}'. Error: {1}",
+        "description":""
+    },
+    "wrong_configuration_type":{
+        "message":"Provided configuration item '{0}' is of wrong type '{1}', expected type is '{2}'.",
+        "description":""
+    },
+    "show_debug_variables_hint":{
+        "message":"Show debug variables as JSON (default) or HTML.",
+        "description":""
+    },
+    "unsupported_cfg_type":{
+        "message":"Configuration type '{0}' is not supported.",
+        "description":""
+    },
+    "unsupported_browser":{
+        "message":"Unsupported browser running extension.",
+        "description":""
+    },
+    "version_changes":{
+        "message":"Applying changes for version before {0}.",
+        "description":""
+    },
+    "adjusting_stored_data":{
+        "message":"Adjusting stored data.",
+        "description":""
+    },
+    "error_reload":{
+        "message":"Extension detected too many critical errors. It will self reload within few seconds.",
+        "description":""
+    },
+    "devtools_tabs_error":{
+        "message":"Netflix™ Extended DevTools work only with Netflix™ tab.",
+        "description":""
+    },
+    "devtools_page_loading":{
+        "message":"DevTools page loading...",
+        "description":""
+    },
+    "devtools_resume":{
+        "message":"Resume",
+        "description":""
+    },
+    "devtools_pause":{
+        "message":"Pause",
+        "description":""
+    },
+    "devtools_show_content":{
+        "message":"Show content",
+        "description":""
+    },
+    "devtools_loading_error":{
+        "message":"Problem with loading DevTools: {0}.",
+        "description":""
+    },
+    "stat_extension_actions":{
+        "message":"Extension actions",
+        "description":""
+    },
+    "stat_actions":{
+        "message":"Action",
+        "description":""
+    },
+    "stat_actions_count":{
+        "message":"Count",
+        "description":""
+    },
+    "stat_actions_none":{
+        "message":"No actions statistics available yet.",
+        "description":""
+    },
+    "stat_ratings_states":{
+        "message":"Stored ratings states",
+        "description":""
+    },
+    "stat_storage":{
+        "message":"Storage",
+        "description":""
+    },
+    "stat_storage_type":{
+        "message":"Storage type",
+        "description":""
+    },
+    "stat_storage_percentage":{
+        "message":"Percentage",
+        "description":""
+    },
+    "stat_storage_size":{
+        "message":"Used size/Total size",
+        "description":""
+    },
+    "stat_storage_size_unknown":{
+        "message":"Unable to determine size at this moment.",
+        "description":""
+    },
+    "stat_storage_local":{
+        "message":"Local",
+        "description":""
+    },
+    "stat_storage_extension":{
+        "message":"Extension",
+        "description":""
+    },
+    "stat_ratings":{
+        "message":"Ratings",
+        "description":""
+    },
+    "stat_ratings_general":{
+        "message":"General",
+        "description":""
+    },
+    "stat_ratings_total_stored":{
+        "message":"Total stored ratings",
+        "description":""
+    },
+    "stat_ratings_total_size":{
+        "message":"Total ratings size",
+        "description":""
+    },
+    "stat_ratings_api_limit":{
+        "message":"API key limit reached for today",
+        "description":""
+    },
+    "stat_ratings_expire_24h":{
+        "message":"Ratings expiring within 24 hours",
+        "description":""
+    },
+    "stat_ratings_expire_1w":{
+        "message":"Ratings expiring within 1 week",
+        "description":""
+    },
+    "stat_hideSpoilers":{
+        "message":"Spoilers hidden",
+        "description":""
+    },
+    "stat_hideDisliked":{
+        "message":"Disliked titles hidden",
+        "description":""
+    },
+    "stat_trailerVideoStop":{
+        "message":"Trailers stopped",
+        "description":""
+    },
+    "stat_nextEpisode":{
+        "message":"Next episodes started",
+        "description":""
+    },
+    "stat_nextEpisodeStopSeries":{
+        "message":"Stopped on different title (series)",
+        "description":""
+    },
+    "stat_nextEpisodeStopMovies":{
+        "message":"Stopped on different title (movies)",
+        "description":""
+    },
+    "stat_pauseOnBlur":{
+        "message":"Paused on blur",
+        "description":""
+    },
+    "stat_playOnFocus":{
+        "message":"Played on focus after pause on blur",
+        "description":""
+    },
+    "stat_highlightSubtitles":{
+        "message":"Subtitles highlighted",
+        "description":""
+    },
+    "stat_skipIntros":{
+        "message":"Intros skipped",
+        "description":""
+    },
+    "stat_skipRecaps":{
+        "message":"Recaps skipped",
+        "description":""
+    },
+    "stat_skipInterrupter":{
+        "message":"Interrupters skipped",
+        "description":""
+    },
+    "stat_randomTitle":{
+        "message":"Random titles started",
+        "description":""
+    },
+    "stat_keyBinding":{
+        "message":"Key bindings used",
+        "description":""
+    },
+    "stat_loaded_api":{
+        "message":"Ratings loaded from API",
+        "description":""
+    },
+    "stat_wiki_call":{
+        "message":"Wikidata attempted calls",
+        "description":""
+    },
+    "stat_wikidata_imdb_not_available":{
+        "message":"Wikidata calls with no IMDb ID",
+        "description":""
+    },
+    "stat_wikidata_finished":{
+        "message":"Wikidata successful calls",
+        "description":""
+    },
+    "stat_wikidata_not_available":{
+        "message":"Wikidata calls with no Netflix™ ID",
+        "description":""
+    },
+    "stat_wikidata_timeout":{
+        "message":"Wikidata calls with timeout",
+        "description":""
+    },
+    "stat_wikidata_error":{
+        "message":"Wikidata calls with error",
+        "description":""
+    },
+    "stat_api_call":{
+        "message":"OMDB API attempted calls",
+        "description":""
+    },
+    "stat_api_finished":{
+        "message":"OMDB API successful calls",
+        "description":""
+    },
+    "stat_api_not_available":{
+        "message":"OMDB API calls without ratings",
+        "description":""
+    },
+    "stat_api_timeout":{
+        "message":"OMDB API calls with timeout",
+        "description":""
+    },
+    "stat_api_limit":{
+        "message":"OMDB API calls with API limit reached",
+        "description":""
+    },
+    "stat_api_invalid":{
+        "message":"OMDB API calls with invalid key",
+        "description":""
+    },
+    "stat_api_error":{
+        "message":"OMDB API calls with error",
+        "description":""
+    },
+    "stat_loaded_storage":{
+        "message":"Ratings loaded from storage",
+        "description":""
+    },
+    "browsecat_army_dramas":{
+        "message":"Army dramas",
+        "description":""
+    },
+    "browsecat_mockumentaries":{
+        "message":"Mockumentaries",
+        "description":""
+    },
+    "browsecat_tv_show":{
+        "message":"TV Show",
+        "description":""
+    },
+    "browsecat_sports_documentaries":{
+        "message":"Sports documentaries",
+        "description":""
+    },
+    "browsecat_belgian_movies":{
+        "message":"Belgian movies",
+        "description":""
+    },
+    "browsecat_independent_dramas":{
+        "message":"Independent dramas",
+        "description":""
+    },
+    "browsecat_anime_dramas":{
+        "message":"Anime dramas",
+        "description":""
+    },
+    "browsecat_lgbtq_dramas":{
+        "message":"LGBTQ dramas",
+        "description":""
+    },
+    "browsecat_movies_for_ages_8_to_10":{
+        "message":"Movies for ages 8 to 10",
+        "description":""
+    },
+    "browsecat_children_family_movies":{
+        "message":"Children & family movies",
+        "description":""
+    },
+    "browsecat_dark_comedies":{
+        "message":"Dark comedies",
+        "description":""
+    },
+    "browsecat_monster_movies":{
+        "message":"Monster movies",
+        "description":""
+    },
+    "browsecat_steamy_thrillers":{
+        "message":"Steamy thrillers",
+        "description":""
+    },
+    "browsecat_country_westernfolk":{
+        "message":"Country & western/folk",
+        "description":""
+    },
+    "browsecat_travel_adventure_documentaries":{
+        "message":"Travel & adventure documentaries",
+        "description":""
+    },
+    "browsecat_romantical_dramas":{
+        "message":"Romantical dramas",
+        "description":""
+    },
+    "browsecat_romantic_dramas":{
+        "message":"Romantic dramas",
+        "description":""
+    },
+    "browsecat_action_adventure":{
+        "message":"Action & adventure",
+        "description":""
+    },
+    "browsecat_tv_scifi_fantasy":{
+        "message":"TV Sci-Fi & fantasy",
+        "description":""
+    },
+    "browsecat_late_night_comedies":{
+        "message":"Late Night comedies",
+        "description":""
+    },
+    "browsecat_scifi_fantasy":{
+        "message":"Sci-Fi & Fantasy",
+        "description":""
+    },
+    "browsecat_action_scifi_fantasy":{
+        "message":"Action Sci-Fi & fantasy",
+        "description":""
+    },
+    "browsecat_latin_american_movies":{
+        "message":"Latin american movies",
+        "description":""
+    },
+    "browsecat_scifi_horror_movies":{
+        "message":"Sci-Fi horror movies",
+        "description":""
+    },
+    "browsecat_music":{
+        "message":"Music",
+        "description":""
+    },
+    "browsecat_military_action_adventure":{
+        "message":"Military action & adventure",
+        "description":""
+    },
+    "browsecat_foreign_dramas":{
+        "message":"Foreign dramas",
+        "description":""
+    },
+    "browsecat_science_navature_documentaries":{
+        "message":"Science & navature documentaries",
+        "description":""
+    },
+    "browsecat_anime_action":{
+        "message":"Anime action",
+        "description":""
+    },
+    "browsecat_political_comedies":{
+        "message":"Political comedies",
+        "description":""
+    },
+    "browsecat_anime_scifi":{
+        "message":"Anime Sci-Fi",
+        "description":""
+    },
+    "browsecat_documentaires_spirituels":{
+        "message":"Documentaires spirituels",
+        "description":""
+    },
+    "browsecat_world_music_concerts":{
+        "message":"World music concerts",
+        "description":""
+    },
+    "browsecat_anime_features":{
+        "message":"Anime features",
+        "description":""
+    },
+    "browsecat_biographical_dramas":{
+        "message":"Biographical dramas",
+        "description":""
+    },
+    "browsecat_independent_thrillers":{
+        "message":"Independent thrillers",
+        "description":""
+    },
+    "browsecat_rock_pop_concerts":{
+        "message":"Rock & pop concerts",
+        "description":""
+    },
+    "browsecat_alien_scifi":{
+        "message":"Alien Sci-Fi",
+        "description":""
+    },
+    "browsecat_teen_comedies":{
+        "message":"Teen comedies",
+        "description":""
+    },
+    "browsecat_biographical_documentaries":{
+        "message":"Biographical documentaries",
+        "description":""
+    },
+    "browsecat_dramas_based_on_real_life":{
+        "message":"Dramas based on real life",
+        "description":""
+    },
+    "browsecat_social_cultural_documentaries":{
+        "message":"Social & cultural documentaries",
+        "description":""
+    },
+    "browsecat_african_movies":{
+        "message":"African movies",
+        "description":""
+    },
+    "browsecat_scifi_dramas":{
+        "message":"Sci-Fi dramas",
+        "description":""
+    },
+    "browsecat_social_issues_dramas":{
+        "message":"Social issues dramas",
+        "description":""
+    },
+    "browsecat_chinese_movies":{
+        "message":"Chinese movies",
+        "description":""
+    },
+    "browsecat_military_documentaries":{
+        "message":"Military documentaries",
+        "description":""
+    },
+    "browsecat_independent_comedies":{
+        "message":"Independent comedies",
+        "description":""
+    },
+    "browsecat_tv_mysteries":{
+        "message":"TV mysteries",
+        "description":""
+    },
+    "browsecat_sports_movies":{
+        "message":"Sports movies",
+        "description":""
+    },
+    "browsecat_foreign_comedies":{
+        "message":"Foreign comedies",
+        "description":""
+    },
+    "browsecat_cult_scifi_fantasy":{
+        "message":"Cult Sci-Fi & fantasy",
+        "description":""
+    },
+    "browsecat_miniseries":{
+        "message":"Miniseries",
+        "description":""
+    },
+    "browsecat_satires":{
+        "message":"Satires",
+        "description":""
+    },
+    "browsecat_dramas_based_on_books":{
+        "message":"Dramas based on books",
+        "description":""
+    },
+    "browsecat_showbiz_dramas":{
+        "message":"Showbiz dramas",
+        "description":""
+    },
+    "browsecat_foreign_documentaries":{
+        "message":"Foreign documentaries",
+        "description":""
+    },
+    "browsecat_australian_movies":{
+        "message":"Australian movies",
+        "description":""
+    },
+    "browsecat_eastern_european_movies":{
+        "message":"Eastern European movies",
+        "description":""
+    },
+    "browsecat_sports_comedies":{
+        "message":"Sports comedies",
+        "description":""
+    },
+    "browsecat_historical_documentaries":{
+        "message":"Historical documentaries",
+        "description":""
+    },
+    "browsecat_movies_for_ages_5_to_7":{
+        "message":"Movies for ages 5 to 7",
+        "description":""
+    },
+    "browsecat_romantic_comedies":{
+        "message":"Romantic comedies",
+        "description":""
+    },
+    "browsecat_psychological_thrillers":{
+        "message":"Psychological thrillers",
+        "description":""
+    },
+    "browsecat_animal_tales":{
+        "message":"Animal tales",
+        "description":""
+    },
+    "browsecat_korean_movies":{
+        "message":"Korean movies",
+        "description":""
+    },
+    "browsecat_dramas":{
+        "message":"Dramas",
+        "description":""
+    },
+    "browsecat_middle_eastern_movies":{
+        "message":"Middle Eastern movies",
+        "description":""
+    },
+    "browsecat_movies_for_ages_2_to_4":{
+        "message":"Movies for ages 2 to 4",
+        "description":""
+    },
+    "browsecat_foreign_scifi_fantasy":{
+        "message":"Foreign Sci-Fi & fantasy",
+        "description":""
+    },
+    "browsecat_comedies":{
+        "message":"Comedies",
+        "description":""
+    },
+    "browsecat_political_dramas":{
+        "message":"Political dramas",
+        "description":""
+    },
+    "browsecat_martial_arts_boxing_wrestling":{
+        "message":"Martial arts, boxing & wrestling",
+        "description":""
+    },
+    "browsecat_anime_series":{
+        "message":"Anime series",
+        "description":""
+    },
+    "browsecat_movies_for_ages_0_to_2":{
+        "message":"Movies for ages 0 to 2",
+        "description":""
+    },
+    "browsecat_documentaries":{
+        "message":"Documentaries",
+        "description":""
+    },
+    "browsecat_crime_dramas":{
+        "message":"Crime dramas",
+        "description":""
+    },
+    "browsecat_scifi_adventure":{
+        "message":"Sci-Fi adventure",
+        "description":""
+    },
+    "browsecat_movies_for_ages_11_to_12":{
+        "message":"Movies for ages 11 to 12",
+        "description":""
+    },
+    "browsecat_satanic_stories":{
+        "message":"Satanic stories",
+        "description":""
+    },
+    "browsecat_political_documentaries":{
+        "message":"Political documentaries",
+        "description":""
+    },
+    "browsecat_independent_movies":{
+        "message":"Independent movies",
+        "description":""
+    },
+    "browsecat_romantic_foreign_movies":{
+        "message":"Romantic foreign movies",
+        "description":""
+    },
+    "browsecat_sports_dramas":{
+        "message":"Sports dramas",
+        "description":""
+    },
+    "browsecat_anime":{
+        "message":"Anime",
+        "description":""
+    },
+    "browsecat_adventures":{
+        "message":"Adventures",
+        "description":""
+    },
+    "browsecat_foreign_movies":{
+        "message":"Foreign movies",
+        "description":""
+    },
+    "browsecat_film_noir":{
+        "message":"Film Noir",
+        "description":""
+    },
+    "browsecat_westerns":{
+        "message":"Westerns",
+        "description":""
+    },
+    "browsecat_italian_movies":{
+        "message":"Italian movies",
+        "description":""
+    },
+    "browsecat_foreign_gay_lesbian_movies":{
+        "message":"Foreign gay & lesbian movies",
+        "description":""
+    },
+    "browsecat_slasher_and_serial_killer_movies":{
+        "message":"Slasher and serial killer movies",
+        "description":""
+    },
+    "browsecat_foreign_horror_movies":{
+        "message":"Foreign horror movies",
+        "description":""
+    },
+    "browsecat_horror_movies":{
+        "message":"Horror movies",
+        "description":""
+    },
+    "browsecat_romantic_movies":{
+        "message":"Romantic movies",
+        "description":""
+    },
+    "browsecat_thrillers":{
+        "message":"Thrillers",
+        "description":""
+    },
+    "browsecat_martial_arts_movies":{
+        "message":"Martial arts movies",
+        "description":""
+    },
+    "browsecat_spy_thrillers":{
+        "message":"Spy thrillers",
+        "description":""
+    },
+    "browsecat_southeast_asian_movies":{
+        "message":"Southeast Asian movies",
+        "description":""
+    },
+    "browsecat_scandinavian_movies":{
+        "message":"Scandinavian movies",
+        "description":""
+    },
+    "browsecat_teen_dramas":{
+        "message":"Teen dramas",
+        "description":""
+    },
+    "browsecat_animes_comedies":{
+        "message":"Animes comedies",
+        "description":""
+    },
+    "browsecat_anime_comedies":{
+        "message":"Anime comedies",
+        "description":""
+    },
+    "browsecat_sports_fitness":{
+        "message":"Sports & Fitness",
+        "description":""
+    },
+    "browsecat_urban_dance_concerts":{
+        "message":"Urban & dance concerts",
+        "description":""
+    },
+    "browsecat_crime_action_adventure":{
+        "message":"Crime action & adventure",
+        "description":""
+    },
+    "browsecat_screwball_comedies":{
+        "message":"Screwball comedies",
+        "description":""
+    },
+    "browsecat_fantasy_movies":{
+        "message":"Fantasy movies",
+        "description":""
+    },
+    "browsecat_reality_tv":{
+        "message":"Reality TV",
+        "description":""
+    },
+    "browsecat_crime_documentaries":{
+        "message":"Crime documentaries",
+        "description":""
+    },
+    "browsecat_romantic_independent_movies":{
+        "message":"Romantic independent movies",
+        "description":""
+    },
+    "browsecat_mysteries":{
+        "message":"Mysteries",
+        "description":""
+    },
+    "browsecat_religious_documentaries":{
+        "message":"Religious documentaries",
+        "description":""
+    },
+    "browsecat_movies_based_on_childrens_books":{
+        "message":"Movies based on children's books",
+        "description":""
+    },
+    "browsecat_tv_documentaries":{
+        "message":"TV documentaries",
+        "description":""
+    },
+    "browsecat_comic_book_and_superhero_movies":{
+        "message":"Comic book and superhero movies",
+        "description":""
+    },
+    "browsecat_slapstick_comedies":{
+        "message":"Slapstick comedies",
+        "description":""
+    },
+    "browsecat_jazz_easy_listening":{
+        "message":"Jazz & easy listening",
+        "description":""
+    },
+    "browsecat_foreign_thrillers":{
+        "message":"Foreign thrillers",
+        "description":""
+    },
+    "browsecat_tv_comedies":{
+        "message":"TV comedies",
+        "description":""
+    },
+    "browsecat_japanese_movies":{
+        "message":"Japanese movies",
+        "description":""
+    },
+    "browsecat_indian_movies":{
+        "message":"Indian movies",
+        "description":""
+    },
+    "browsecat_crime_thrillers":{
+        "message":"Crime thrillers",
+        "description":""
+    },
+    "browsecat_political_thrillers":{
+        "message":"Political thrillers",
+        "description":""
+    },
+    "browsecat_dutch_movies":{
+        "message":"Dutch movies",
+        "description":""
+    },
+    "browsecat_education_for_kids":{
+        "message":"Education for kids",
+        "description":""
+    },
+    "browsecat_tv_action_adventure":{
+        "message":"TV action & adventure",
+        "description":""
+    },
+    "browsecat_anime_horror":{
+        "message":"Anime horror",
+        "description":""
+    },
+    "browsecat_spy_action_adventure":{
+        "message":"Spy action & adventure",
+        "description":""
+    },
+    "browsecat_latin_music":{
+        "message":"Latin music",
+        "description":""
+    },
+    "browsecat_british_movies":{
+        "message":"British movies",
+        "description":""
+    },
+    "browsecat_cult_horror_movies":{
+        "message":"Cult horror movies",
+        "description":""
+    },
+    "browsecat_scifi_thrillers":{
+        "message":"Sci-Fi thrillers",
+        "description":""
+    },
+    "browsecat_experimental_movies":{
+        "message":"Experimental movies",
+        "description":""
+    },
+    "browsecat_supernatural_thrillers":{
+        "message":"Supernatural thrillers",
+        "description":""
+    },
+    "browsecat_anime_fantasy":{
+        "message":"Anime fantasy",
+        "description":""
+    },
+    "browsecat_tv_cartoons":{
+        "message":"TV cartoons",
+        "description":""
+    },
+    "browsecat_standup_comedy":{
+        "message":"Stand-up Comedy",
+        "description":""
+    },
+    "browsecat_standup_comedies":{
+        "message":"Stand-up comedies",
+        "description":""
+    },
+    "browsecat_russian_movies":{
+        "message":"Russian movies",
+        "description":""
+    },
+    "browsecat_tv_dramas":{
+        "message":"TV dramas",
+        "description":""
+    },
+    "browsecat_independent_action_adventure":{
+        "message":"Independent action & adventure",
+        "description":""
+    },
+    "browsecat_foreign_action_adventure":{
+        "message":"Foreign action & adventure",
+        "description":""
+    },
+    "browsecat_adult_animation":{
+        "message":"Adult animation",
+        "description":""
+    },
+    "browsecat_baseball_movies":{
+        "message":"Baseball movies",
+        "description":""
+    },
+    "browsecat_boxing_movies":{
+        "message":"Boxing movies",
+        "description":""
+    },
+    "browsecat_soccer_movies":{
+        "message":"Soccer movies",
+        "description":""
+    },
+    "browsecat_basketball_movies":{
+        "message":"Basketball movies",
+        "description":""
+    },
+    "browsecat_football_movies":{
+        "message":"Football movies",
+        "description":""
+    },
+    "browsecat_musicals_comedies":{
+        "message":"Musicals comedies",
+        "description":""
+    },
+    "browsecat_musicals":{
+        "message":"Musicals",
+        "description":""
+    },
+    "browsecat_showbiz_musicals":{
+        "message":"Showbiz musicals",
+        "description":""
+    },
+    "browsecat_hijacking_movies":{
+        "message":"Hijacking movies",
+        "description":""
+    },
+    "browsecat_military_tv_shows":{
+        "message":"Military TV shows",
+        "description":""
+    },
+    "browsecat_crime_tv_shows":{
+        "message":"Crime TV shows",
+        "description":""
+    },
+    "browsecat_kids_tv":{
+        "message":"Kids' TV",
+        "description":""
+    },
+    "browsecat_art_house_movies":{
+        "message":"Art House movies",
+        "description":""
+    },
+    "browsecat_classic_dramas":{
+        "message":"Classic dramas",
+        "description":""
+    },
+    "browsecat_classic_romantic_movies":{
+        "message":"Classic romantic movies",
+        "description":""
+    },
+    "browsecat_classic_movies":{
+        "message":"Classic movies",
+        "description":""
+    },
+    "browsecat_classic_comedies":{
+        "message":"Classic comedies",
+        "description":""
+    },
+    "browsecat_gangster_movies":{
+        "message":"Gangster movies",
+        "description":""
+    },
+    "browsecat_classic_musical_comedy":{
+        "message":"Classic musical comedy",
+        "description":""
+    },
+    "browsecat_classic_musicals":{
+        "message":"Classic musicals",
+        "description":""
+    },
+    "browsecat_classic_foreign_movies":{
+        "message":"Classic foreign movies",
+        "description":""
+    },
+    "browsecat_steamy_romantic_movies":{
+        "message":"Steamy romantic movies",
+        "description":""
+    },
+    "browsecat_quirky_romance":{
+        "message":"Quirky romance",
+        "description":""
+    },
+    "browsecat_supernatural_horror_movies":{
+        "message":"Supernatural horror movies",
+        "description":""
+    },
+    "browsecat_action_comedies":{
+        "message":"Action comedies",
+        "description":""
+    },
+    "browsecat_action_thrillers":{
+        "message":"Action thrillers",
+        "description":""
+    },
+    "browsecat_deep_sea_horror_movies":{
+        "message":"Deep sea horror movies",
+        "description":""
+    },
+    "browsecat_classic_tv_shows":{
+        "message":"Classic TV shows",
+        "description":""
+    },
+    "browsecat_classic_action_adventure":{
+        "message":"Classic action & adventure",
+        "description":""
+    },
+    "browsecat_classic_thrillers":{
+        "message":"Classic thrillers",
+        "description":""
+    },
+    "browsecat_classic_scifi_fantasy":{
+        "message":"Classic Sci-Fi & fantasy",
+        "description":""
+    },
+    "browsecat_classic_westerns":{
+        "message":"Classic westerns",
+        "description":""
+    },
+    "browsecat_classic_war_movies":{
+        "message":"Classic war movies",
+        "description":""
+    },
+    "browsecat_family_features":{
+        "message":"Family features",
+        "description":""
+    },
+    "browsecat_british_tv_shows":{
+        "message":"British TV shows",
+        "description":""
+    },
+    "browsecat_teen_screams":{
+        "message":"Teen screams",
+        "description":""
+    },
+    "browsecat_science_nature":{
+        "message":"Science & nature",
+        "description":""
+    },
+    "browsecat_faith_spirituality_movies":{
+        "message":"Faith & spirituality movies",
+        "description":""
+    },
+    "browsecat_kids_music":{
+        "message":"Kids music",
+        "description":""
+    },
+    "browsecat_epics":{
+        "message":"Epics",
+        "description":""
+    },
+    "browsecat_silent_movies":{
+        "message":"Silent movies",
+        "description":""
+    },
+    "browsecat_stage_musicals":{
+        "message":"Stage musicals",
+        "description":""
+    },
+    "browsecat_spanish_movies":{
+        "message":"Spanish movies",
+        "description":""
+    },
+    "browsecat_irish_movies":{
+        "message":"Irish movies",
+        "description":""
+    },
+    "browsecat_french_movies":{
+        "message":"French movies",
+        "description":""
+    },
+    "browsecat_german_movies":{
+        "message":"German movies",
+        "description":""
+    },
+    "browsecat_disney_musicals":{
+        "message":"Disney musicals",
+        "description":""
+    },
+    "browsecat_teen_tv_shows":{
+        "message":"Teen TV shows",
+        "description":""
+    },
+    "browsecat_greek_movies":{
+        "message":"Greek movies",
+        "description":""
+    },
+    "browsecat_new_zealand_movies":{
+        "message":"New Zealand movies",
+        "description":""
+    },
+    "browsecat_disney":{
+        "message":"Disney",
+        "description":""
+    },
+    "browsecat_korean_tv_shows":{
+        "message":"Korean TV shows",
+        "description":""
+    },
+    "browsecat_food_travel":{
+        "message":"Food & travel",
+        "description":""
+    },
+    "browsecat_cult_tv_shows":{
+        "message":"Cult TV shows",
+        "description":""
+    },
+    "browsecat_zombie_horror_movies":{
+        "message":"Zombie horror movies",
+        "description":""
+    },
+    "browsecat_vampire_horror_movies":{
+        "message":"Vampire horror movies",
+        "description":""
+    },
+    "browsecat_werewolf_horror_movies":{
+        "message":"Werewolf horror movies",
+        "description":""
+    },
+    "browsecat_asian_action_movies":{
+        "message":"Asian action movies",
+        "description":""
+    },
+    "browsecat_tv_horror":{
+        "message":"TV horror",
+        "description":""
+    },
+    "browsecat_horror_comedies":{
+        "message":"Horror comedies",
+        "description":""
+    },
+    "browsecat_horror_comedy":{
+        "message":"Horror comedy",
+        "description":""
+    },
+    "browsecat_music_concert_documentaries":{
+        "message":"Music & concert documentaries",
+        "description":""
+    },
+    "browsecat_romantic_favorites":{
+        "message":"Romantic favorites",
+        "description":""
+    },
+    "browsecat_turkish_movies":{
+        "message":"Turkish movies",
+        "description":""
+    },
+    "browsecat_familyfriendly_christmas_films":{
+        "message":"Family-friendly christmas films",
+        "description":""
+    },
+    "browsecat_romantic_christmas_films":{
+        "message":"Romantic christmas films",
+        "description":""
+    },
+    "browsecat_christmas_children_family_films":{
+        "message":"Christmas children & family films",
+        "description":""
+    },
+    "browsecat_feelgood_christmas_children_family_films":{
+        "message":"Feel-good christmas children & family films",
+        "description":""
+    },
+    "browsecat_goofy_christmas_children_family_films":{
+        "message":"Goofy christmas children & family films",
+        "description":""
+    },
+    "browsecat_christmas_children_family_films_from_the_1990s":{
+        "message":"Christmas children & family films from the 1990s",
+        "description":""
+    },
+    "browsecat_christmas_children_family_films_for_ages_5_to_7":{
+        "message":"Christmas children & family films for ages 5 to 7",
+        "description":""
+    },
+    "browsecat_christmas_children_family_films_for_ages_8_to_10":{
+        "message":"Christmas children & family films for ages 8 to 10",
+        "description":""
+    },
+    "browsecat_christmas_children_family_films_for_ages_11_to_12":{
+        "message":"Christmas children & family films for ages 11 to 12",
+        "description":""
+    },
+    "browsecat_european_christmas_children_family_films":{
+        "message":"European christmas children & family films",
+        "description":""
+    },
+    "browsecat_british_christmas_children_family_films":{
+        "message":"British christmas children & family films",
+        "description":""
+    },
+    "browsecat_canadian_christmas_children_family_films":{
+        "message":"Canadian christmas children & family films",
+        "description":""
+    },
+    "dummy":{
+        "message":"Template",
+        "description":""
+    }
+}

@@ -1,0 +1,200 @@
+.netflex_hide {
+	display: none !important;
+}
+
+#extension_options_scrollable {
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+	font-size: 12px;
+	color: #ffffff;
+	background-color: transparent;
+}
+
+#extension_options_scrollable .sidebar {
+	width: 112px;
+	height: 400px;
+	position: fixed !important;
+	z-index: 2;
+	overflow: auto;
+	padding-top: 13px !important;
+	padding-bottom: 15px !important;
+}
+
+#extension_options_scrollable .content {
+	height: 400px;
+	width: 377px;
+	position: absolute !important;
+	z-index: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	word-wrap: break-word;
+	padding-right: 3px;
+}
+
+#extension_options_scrollable .status {
+	width: 367px;
+	height: 12px;
+	display: block;
+	line-height: 12px;
+	position: fixed !important;
+	overflow: hidden;
+	z-index: 3;
+	background-color: #ffffff;
+}
+
+#extension_options_scrollable .controls {
+	width: 360px;
+	position: fixed !important;
+	overflow: hidden;
+	z-index: 1;
+	display: block;
+	background-color: #ffffff;
+	padding-bottom: 3px;
+}
+
+#extension_options_scrollable .marginLeftContent {
+	background-color: transparent;
+	margin-left: 120px;
+}
+
+#extension_options_scrollable .marginTopContent {
+	background-color: transparent;
+	margin-top: 30px;
+}
+
+#extension_options_scrollable .marginTopControls {
+	background-color: transparent;
+	margin-top: 13px;
+}
+
+#extension_options_scrollable .option {
+	width: 95%;
+}
+
+#extension_options_scrollable .block,
+#extension_options_scrollable .item {
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-bottom: 1px;
+	text-align: left;
+	border: none;
+	white-space: normal;
+	float: none;
+	outline: 0;
+}
+
+#extension_options_scrollable .item {
+	color: #ffffff;
+	background-color: #000000;
+}
+
+#extension_options_scrollable .control {
+	border: none;
+	white-space: normal;
+	float: none;
+	outline: 0;
+	position: relative;
+	color: #ffffff;
+	background-color: #000000;
+}
+
+#extension_options_scrollable .item:hover:not(.active),
+#extension_options_scrollable .control:hover:enabled {
+	color: #ffffff !important;
+	background-color: #00b642 !important;
+}
+
+#extension_options_scrollable .active:hover {
+	color: #000000 !important;
+	background-color: #00b642 !important;
+}
+
+#extension_options_scrollable .active {
+	color: #ffffff !important;
+	background-color: #00b642 !important;
+}
+
+#extension_options_scrollable .hidden {
+	display: none;
+}
+
+#extension_options_scrollable .hint,
+#extension_options_scrollable .option_recommended {
+	color: #999999;
+	font-style: italic;
+	font-size: 12px;
+}
+
+#extension_options_scrollable label {
+	font-size: 13px;
+}
+
+#extension_options_scrollable .cfg_name, .stats_name {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#extension_options_scrollable .cfg_notice {
+	font-size: 13px;
+}
+
+#extension_options_scrollable .cfg_current_value {
+	font-size: 14px;
+	position: relative;
+	top: -5px;
+}
+
+#extension_options_scrollable .green {
+	color: #00b642;
+}
+
+#extension_options_scrollable .orange {
+	color: #E77400;
+}
+
+#extension_options_scrollable .right {
+	float: right;
+}
+
+#extension_options_scrollable .left {
+	float: left;
+}
+
+#extension_options_scrollable .about_extension_name {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+#extension_options_scrollable .about_changelog {
+	width: 100%;
+	height: 200px;
+	overflow-y: scroll;
+	white-space: pre-wrap;
+	font-family: Lucida Console;
+}
+
+#extension_options_scrollable .about_changelog_text {
+	font-weight: bold;
+	font-size: 10px;
+}
+
+#extension_options_scrollable a {
+	color: #00b642;
+}
+
+#extension_options_scrollable a:hover {
+	color: #ffffff;
+}
+
+#extension_options_scrollable input,
+#extension_options_scrollable select {
+	background: transparent;
+	color: #ffffff;
+	border: 1px solid #ffffff;
+}
+
+#extension_options_scrollable select option {
+	background-color: #000000;
+}

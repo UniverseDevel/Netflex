@@ -1,0 +1,58 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    font-size: x-small;
+}
+input {
+    font-size: x-small;
+}
+.controls {
+    width: 100%;
+    padding: 5px;
+    position: fixed;
+    display: block;
+    background: #ffffff;
+    z-index: 9999;
+    border-bottom: 2px solid #000000;
+}
+.data_output {
+    position: relative;
+    top: 30px;
+    display: block;
+}
+table {
+    width: 100%;
+    border-spacing: 0px;
+    border-collapse: separate;
+    border: 1px solid #000000;
+    font-size: x-small;
+}
+tr:nth-child(odd) {
+    background: #cccccc;
+}
+tr:nth-child(even) {
+    background: #ffffff;
+}
+tr:hover {
+    background: #add8e6;
+}
+th, td {
+    vertical-align: top;
+    text-align: left;
+    border: 1px solid #000000;
+}
+th {
+    width: 120px;
+}
+.td_type {
+    width: 120px;
+}
+.sticky {
+    position: sticky;
+    top: 35px;
+}
+.highlight {
+    background: #FFC0CB;
+}
