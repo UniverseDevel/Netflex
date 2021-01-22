@@ -25,8 +25,8 @@ function load_webstore_urls() {
 }
 
 function load_vcs_urls() {
-    var donations = {
+    var source = {
         'github': 'https://github.com/YOUR_PROFILE_NAME/YOUR_PROJECT_NAME/'
     };
-    return donations;
+    return source;
 };
