@@ -164,6 +164,7 @@ function generate_options() {
                         <span id="about_provider_name" class="about_provider_name"></span><br>
                         <span id="about_developer_name" class="about_developer_name"></span><br><br>
                         <span id="about_donate" class="about_donate"></span><br><br>
+                        <span id="about_source" class="about_source"></span><br><br>
                         <span id="about_disclaimer" class="about_disclaimer"></span><br><br>
                         <span id="about_web_store" class="about_web_store"></span><br><br>
                         <button id="button_debug" class="control button_debug"></button>

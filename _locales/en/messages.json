@@ -59,6 +59,14 @@
         "message":"Patreon",
         "description":""
     },
+    "source":{
+        "message":"Source:",
+        "description":""
+    },
+    "github":{
+        "message":"GitHub",
+        "description":""
+    },
     "extension_install":{
         "message":"Installing extension.",
         "description":""

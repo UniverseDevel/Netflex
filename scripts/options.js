@@ -527,6 +527,19 @@ function fill_about() {
         addDOM(document.getElementById('about_donate'), getLang('donate') + ' ' + donations);
     }
 
+    var source = [];
+    if (source_urls['patreon'] != '') {
+        source.push('<a href="' + source_urls['github'] + '" style="display: unset;" target="_blank">' + getLang('github') + '</a>');
+    }
+    if (source.length == 0) {
+        show_source_link = false;
+    } else {
+        source = source.join(', ');
+    }
+    if (show_source_link) {
+        addDOM(document.getElementById('about_source'), getLang('source') + ' ' + source);
+    }
+
     setText('about_extension_name', 'name');
     setText('about_changelog_text', 'changelog');
 

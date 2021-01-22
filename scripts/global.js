@@ -532,6 +532,8 @@ var lang_keys = [
     'disliked_hidden',
     'dnf_error',
     'donate',
+    'source',
+    'github',
     'dummy',
     'error_core',
     'error_core_assistant_delay',

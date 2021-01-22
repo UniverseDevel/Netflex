@@ -698,6 +698,7 @@ function environment_update() {
         debug_variables['variables']['cadmium_version'] = cadmium_version;
         debug_variables['variables']['cadmium_version_normalized'] = cadmium_version_normalized;
         debug_variables['variables']['show_donation_link'] = show_donation_link;
+        debug_variables['variables']['show_source_link'] = show_source_link;
         debug_variables['variables']['donation_urls'] = donation_urls;
         debug_variables['variables']['webstore_urls'] = webstore_urls;
         debug_variables['variables']['options_tab_selected'] = options_tab_selected;
