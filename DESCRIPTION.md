@@ -104,16 +104,16 @@ External APIs:
 - OMDb API - https://omdbapi.com/
 - Wikidata - https://query.wikidata.org/
 
-GitHub Repo:
-
-https://github.com/UniverseDevel/Netflex/
-
 Extension permissions:
 
 - *://*.netflix.com/* - access domain netflix.com
 - *://*.wikidata.org/* - access domain wikidata.org (only used if ratings are enabled)
 - *://*.omdbapi.com/* - access domain omdbapi.com (only used if ratings are enabled)
 - storage - access internal browser storage to save user configuration
+
+Source code:
+
+- GitHub: https://github.com/UniverseDevel/Netflex/
 
 Supported browsers (all in their own web stores):
 
