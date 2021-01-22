@@ -13,7 +13,7 @@ function load_donation_urls() {
     return donations;
 };
 
-function load_webstore_urls() {
+function load_stores_urls() {
     var stores = {
         'chrome': 'https://chrome.google.com/webstore/detail/' + extension_id,
         'edge': 'https://microsoftedge.microsoft.com/addons/detail/' + extension_id,
@@ -24,7 +24,7 @@ function load_webstore_urls() {
     return stores;
 }
 
-function load_vcs_urls() {
+function load_source_urls() {
     var source = {
         'github': 'https://github.com/YOUR_PROFILE_NAME/YOUR_PROJECT_NAME/'
     };
