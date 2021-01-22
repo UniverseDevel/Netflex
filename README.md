@@ -1,5 +1,5 @@
 # Netflex
-Extension for Netflix to skip intros, recaps, start next movie/episode in faster pace and many more.
+Single package of features that makes using of Netflix more enjoyable.
 
 # Description
 [Netflix Extended description](DESCRIPTION.md)
