@@ -23,3 +23,10 @@ function load_webstore_urls() {
     };
     return stores;
 }
+
+function load_vcs_urls() {
+    var donations = {
+        'github': 'https://github.com/YOUR_PROFILE_NAME/YOUR_PROJECT_NAME/'
+    };
+    return donations;
+};
