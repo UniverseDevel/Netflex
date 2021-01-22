@@ -18,7 +18,7 @@ function load_webstore_urls() {
         'chrome': 'https://chrome.google.com/webstore/detail/' + extension_id,
         'edge': 'https://microsoftedge.microsoft.com/addons/detail/' + extension_id,
         'firefox': 'https://addons.mozilla.org/firefox/addon/' + extension_id,
-        'opera': 'https://addons.opera.com/en/extensions/details/YOUR_EXTENSION_ID/',
+        'opera': 'https://addons.opera.com/extensions/details/YOUR_EXTENSION_ID/',
         'unknown': ''
     };
     return stores;
