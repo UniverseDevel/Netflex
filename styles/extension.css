@@ -177,7 +177,8 @@
 
 #extension_options_scrollable .about_changelog_text {
 	font-weight: bold;
-	font-size: 10px;
+	text-decoration: underline;
+	font-size: 12px;
 }
 
 #extension_options_scrollable a {
