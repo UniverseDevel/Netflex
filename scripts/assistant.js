@@ -109,7 +109,7 @@ function generate_status_data(status_text) {
         'SHOW_OPTIONS_ICON': ((!isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
         'OPTIONS': getLang('options'),
         'STATUS_TEXT': status_text,
-        'WEBSTORE_URL': webstore_urls[browser],
+        'WEBSTORE_URL': stores_urls[browser],
         'SHOW_WEBSTORE': ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
         'RATE_EXTENSION': getLang('rate_extension'),
         'SHOW_DONATIONS': ((show_donation_link) ? '' : 'display: none;'),

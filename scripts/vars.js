@@ -72,8 +72,8 @@ var netflix_profile = localStorage.getItem('netflex_profile');
 
 var api_keys = load_api_keys();
 var donation_urls = load_donation_urls();
-var webstore_urls = load_webstore_urls();
-var source_urls = load_vcs_urls();
+var stores_urls = load_stores_urls();
+var source_urls = load_source_urls();
 
 var show_donation_link = true;
 var show_source_link = true;

@@ -507,8 +507,8 @@ function fill_about() {
     addDOM(document.getElementById('about_disclaimer'), getLang('disclaimer'));
     addDOM(document.getElementById('about_extension_version'), getLang('version') + ' ' + extension_version);
 
-    if (webstore_urls[browser] != '') {
-        addDOM(document.getElementById('about_web_store'), '<a href="' + webstore_urls[browser] + '" style="display: unset;" target="_blank">' + getLang('extension_webstore') + '</a>');
+    if (stores_urls[browser] != '') {
+        addDOM(document.getElementById('about_web_store'), '<a href="' + stores_urls[browser] + '" style="display: unset;" target="_blank">' + getLang('extension_webstore') + '</a>');
     }
 
     var donations = [];
