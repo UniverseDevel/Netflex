@@ -387,6 +387,10 @@ function generate_ratings_object(object, object_id) {
             } else if (findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'videoMerchPlayer--boxart-wrapper')) {
                 var parent = findChildClass(object, 'previewModal--player_container');
                 var position_object = findChildClass(object, 'videoMerchPlayer--boxart-wrapper');
+            } else if (findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')) {
+                var parent = findChildClass(object, 'titleCard-imageWrapper');
+                var position_object = findChildClass(object, 'ptrack-content');
+                var position_from_top_spacer = 10;
             } else if (findChildClass(object, 'logo-and-text meta-layer') && findChildClass(object, 'titleWrapper')) {
                 var parent = findChildClass(object, 'logo-and-text meta-layer');
                 var position_object = findChildClass(object, 'titleWrapper');
@@ -821,6 +825,7 @@ function netflix_ratings() {
                        object_class.includes('previewModal--container mini-modal')
                     || object_class.includes('bob-card')
                     || object_class.includes('volatile-billboard-animations-container')
+                    || object_class.includes('titleCard--container')
                 )) {
                     try {
                         object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
@@ -828,18 +833,25 @@ function netflix_ratings() {
                 }
                 if (object_id == '' && object_class.includes('slider-refocus title-card')) {
                     object_id = (findChildClass(object, 'slider-refocus').getAttribute('href').replace('/watch/','') + '?').split('?')[0];
-
-                    // WARNING: Setting enableProactiveTileRatings to true will eat trough OMDB API key limit like crazy
-                    if (!enableProactiveTileRatings) {
-                        if (!ratingsDB[ratings_version].hasOwnProperty('nflx' + object_id)) {
-                            continue;
-                        }
-                    }
                 }
 
                 // Object ID that is not a number is invalid
                 if (isNaN(object_id)) {
                     object_id = '';
+                }
+
+                // Some object may cause too much requests, so unless we already have their data
+                // or proactive ratings collection is allowed, we skip
+                if (object_id != '' && (
+                       object_class.includes('slider-refocus title-card')
+                    || object_class.includes('titleCard--container')
+                )) {
+                    // WARNING: Setting enableProactiveRatings to true will eat trough OMDB API key limit like crazy
+                    if (!enableProactiveRatings) {
+                        if (!ratingsDB[ratings_version].hasOwnProperty('nflx' + object_id)) {
+                            continue;
+                        }
+                    }
                 }
 
                 // If we cannot get title ID we cannot continue
@@ -866,6 +878,7 @@ function netflix_ratings() {
                     || findChildClass(object, 'previewModal--detailsMetadata-left') && findChildClass(object, 'preview-modal-synopsis')
                     || findChildClass(object, 'previewModal--metadatAndControls-container') && findChildClass(object, 'buttonControls--container mini-modal')
                     || findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')
+                    || findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')
                     || findChildClass(object, 'slider-refocus')) {
                     // Get ratings only if ratings element is missing or expired
                     if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {

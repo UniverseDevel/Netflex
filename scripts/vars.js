@@ -88,6 +88,8 @@ var logo_icon = extension_extension.getURL('images/netflex.png');
 var changelog_page = extension_extension.getURL('CHANGELOG');
 
 var control_panel = 'none';
+var bubble_offset_right = 0;
+var bubble_offset_bottom = 0;
 var status_profile = 'init';
 var status_profile_old = 'none';
 var status_color = 'init';
@@ -199,7 +201,7 @@ var visibleWND = true;
 var hiddenCFG = false;
 var pausedByExtension = false;
 
-var enableProactiveTileRatings = false; // WARNING: This will eat trough OMDB API key limit like crazy
+var enableProactiveRatings = false; // WARNING: This will eat trough OMDB API key limit like crazy
 var ratings_limit_reached = false;
 var ratings_version = 'v2';
 
@@ -225,16 +227,18 @@ var rating_expiration_error = 1; // Days
 // Always store as UPPERCASE
 var loc_skip_intro = [
     'LEWATI INTRO', // Bahasa Indonesia
+    // Bahasa Melayu
     'SPRING INTRO OVER', // Dansk
     'INTRO ÜBERSPRINGEN', // Deutsch
     'SKIP INTRO', // English
     'OMITIR INTRO', // Español
     'IGNORER L\'INTRODUCTION', // Français
+    // Hrvatski
     'SALTA L\'INTRO', // Italiano
     'RUKA UTANGULIZI', // Kiswahili
     'BEVEZETÉS KIHAGYÁSA', // Magyar
     'INTRO OVERSLAAN', // Nederlands
-    'HOPP OVER INTRO', // Norsk bokmål
+    'HOPP OVER INTRO', // Norsk Bokmål
     'POMIŃ CZOŁÓWKĘ', // Polski
     'PULAR ABERTURA', // Português
     'FĂRĂ INTRODUCERE', // Română
@@ -244,8 +248,10 @@ var loc_skip_intro = [
     'İNTROYU ATLA', // Türkçe
     'PŘESKOČIT ÚVOD', // Čeština
     'ΠΑΡΆΛΕΙΨΗ ΕΙΣΑΓΩΓΉς', // Ελληνικά
+    // Русский
     'דלג על התקציר', // עברית
     'تخطي المقدمة', // العربية
+    // हिन्दी
     'ข้ามตอนต้น', // ไทย
     '跳过简介', // 中文
     'イントロをスキップ', // 日本語
@@ -255,16 +261,18 @@ var loc_skip_intro = [
 // Always store as UPPERCASE
 var loc_skip_recap = [
     'LEWATI RINGKASAN', // Bahasa Indonesia
+    // Bahasa Melayu
     'SPRING RESUMÉ OVER', // Dansk
     'RÜCKBLICK ÜBERSPRINGEN', // Deutsch
     'SKIP RECAP', // English
     'OMITIR RESUMEN', // Español
     'IGNORER LE RÉCAP', // Français
+    // Hrvatski
     'SALTA IL RIASSUNTO', // Italiano
     'RUKA MARUDIO', // Kiswahili
     'ÖSSZEFOGLALÓ KIHAGYÁSA', // Magyar
     'OVERZICHT OVERSLAAN', // Nederlands
-    'HOPP OVER SAMMENDRAG', // Norsk bokmål
+    'HOPP OVER SAMMENDRAG', // Norsk Bokmål
     'POMIŃ PODSUMOWANIE', // Polski
     'PULAR O RESUMO', // Português
     'FĂRĂ RECAPITULARE', // Română
@@ -274,8 +282,10 @@ var loc_skip_recap = [
     'ÖZETI ATLA', // Türkçe
     'PŘESKOČIT REKAPITULACI', // Čeština
     'ΠΑΡΆΛΕΙΨΗ ΠΕΡΊΛΗΨΗς', // Ελληνικά
+    // Русский
     'דלג על ההקדמה', // עברית
     'تخطي الملخص', // العربية
+    // हिन्दी
     'ข้ามความเดิม', // ไทย
     '跳过剧情回顾', // 中文
     '本編へスキップ', // 日本語

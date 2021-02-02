@@ -633,6 +633,8 @@ function status_updater() {
         var icon_size = null;
         var icon_shade = null;
         var icon_space = null;
+        var bodyRect = null;
+        var elemRect = null;
 
         if (check_watch() && object_handler('player_controls', null)) {
             try {
@@ -644,6 +646,18 @@ function status_updater() {
                 icon_size = '0.5em';
                 icon_shade = '0.12em';
                 icon_space = '0em';
+
+                bodyRect = document.body.getBoundingClientRect();
+                elemRect = controlsBefore_element.getBoundingClientRect();
+                if (bodyRect.right != 0 && elemRect.right != 0) {
+                    bubble_offset_right = bodyRect.right - elemRect.right;
+                    if (bubble_offset_right < 10) {
+                        bubble_offset_right = 10;
+                    }
+                }
+                if (elemRect.top != 0 && elemRect.bottom != 0) {
+                    bubble_offset_bottom = elemRect.bottom - elemRect.top - 3;
+                }
             } catch (e) {control_panel = 'unknown e: ' + e.stack;}
         } else if ((check_browse() || check_latest() || check_title() || check_search()) && object_handler('navigation_menu', null)) {
             try {
@@ -812,6 +826,16 @@ function status_updater() {
                 var width_attr = document.getElementById('extension_status').getAttribute('data-size');
                 var status_text_value_src = document.getElementById('extension_status').getAttribute('data-status');
 
+                // Refresh status bubble position if needed
+                var el_pop = document.getElementById('extension_status_text_content');
+                if (check_watch() && (el_pop.style.right != bubble_offset_right || el_pop.style.bottom != bubble_offset_bottom)) {
+                    var pop_style = {
+                        'right': bubble_offset_right + 'px',
+                        'bottom': bubble_offset_bottom + 'px'
+                    };
+                    addCSS(el_pop, pop_style);
+                }
+
                 // Refresh status content if needed
                 if (status_profile != status_profile_old || border_color != border_color_old || status_color != status_color_old || width_size != width_attr || status_text_value != status_text_value_src) {
                     debug_overflow_entry('status_icon_refresh', 10);
@@ -907,9 +931,9 @@ function reset_temporary_features() {
 
 function create_status_bubble(status_text, control_panel) {
     var content_left = '';
-    var content_right = '22em';
+    var content_right = bubble_offset_right + 'px'; // 22em
     var content_top = '';
-    var content_bottom = '5.8em';
+    var content_bottom = bubble_offset_bottom + 'px'; // 5.8em
     var width_size = '500px';
     var font_size_size = '16px';
     var border_radius_size = '0.5em';

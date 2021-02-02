@@ -801,7 +801,7 @@ function environment_update() {
         debug_variables['assistant']['hideSubtitles_temp'] = hideSubtitles_temp;
         debug_variables['assistant']['reset_features'] = reset_features;
 
-        debug_variables['rating']['enableProactiveTileRatings'] = enableProactiveTileRatings;
+        debug_variables['rating']['enableProactiveRatings'] = enableProactiveRatings;
         debug_variables['rating']['ratings_limit_reached'] = ratings_limit_reached;
         debug_variables['rating']['ratings_version'] = ratings_version;
         debug_variables['rating']['rating_expiration_init'] = rating_expiration_init;

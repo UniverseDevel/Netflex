@@ -332,6 +332,9 @@ function object_handler(object_category, related_object) {
                     if (document.getElementsByClassName('slider-refocus title-card').length != 0) {
                         Array.prototype.push.apply(containers, document.getElementsByClassName('slider-refocus title-card'));
                     }
+                    if (document.getElementsByClassName('titleCard--container').length != 0) {
+                        Array.prototype.push.apply(containers, document.getElementsByClassName('titleCard--container'));
+                    }
                 }
 
                 object = containers;
