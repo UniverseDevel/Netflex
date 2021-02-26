@@ -227,13 +227,13 @@ var rating_expiration_error = 1; // Days
 // Always store as UPPERCASE
 var loc_skip_intro = [
     'LEWATI INTRO', // Bahasa Indonesia
-    // Bahasa Melayu
+    'LANGKAU PENGENALAN', // Bahasa Melayu
     'SPRING INTRO OVER', // Dansk
     'INTRO ÜBERSPRINGEN', // Deutsch
     'SKIP INTRO', // English
     'OMITIR INTRO', // Español
     'IGNORER L\'INTRODUCTION', // Français
-    // Hrvatski
+    'PRESKOČI UVOD', // Hrvatski
     'SALTA L\'INTRO', // Italiano
     'RUKA UTANGULIZI', // Kiswahili
     'BEVEZETÉS KIHAGYÁSA', // Magyar
@@ -248,10 +248,10 @@ var loc_skip_intro = [
     'İNTROYU ATLA', // Türkçe
     'PŘESKOČIT ÚVOD', // Čeština
     'ΠΑΡΆΛΕΙΨΗ ΕΙΣΑΓΩΓΉς', // Ελληνικά
-    // Русский
+    'ПРОПУСТИТЬ ИНТРО', // Русский
     'דלג על התקציר', // עברית
     'تخطي المقدمة', // العربية
-    // हिन्दी
+    'इंट्रो स्किप करें', // हिन्दी
     'ข้ามตอนต้น', // ไทย
     '跳过简介', // 中文
     'イントロをスキップ', // 日本語
@@ -261,13 +261,13 @@ var loc_skip_intro = [
 // Always store as UPPERCASE
 var loc_skip_recap = [
     'LEWATI RINGKASAN', // Bahasa Indonesia
-    // Bahasa Melayu
+    'LANGKAU IKHTISAR', // Bahasa Melayu
     'SPRING RESUMÉ OVER', // Dansk
     'RÜCKBLICK ÜBERSPRINGEN', // Deutsch
     'SKIP RECAP', // English
     'OMITIR RESUMEN', // Español
     'IGNORER LE RÉCAP', // Français
-    // Hrvatski
+    'PRESKOČI SAŽETAK', // Hrvatski
     'SALTA IL RIASSUNTO', // Italiano
     'RUKA MARUDIO', // Kiswahili
     'ÖSSZEFOGLALÓ KIHAGYÁSA', // Magyar
@@ -282,10 +282,10 @@ var loc_skip_recap = [
     'ÖZETI ATLA', // Türkçe
     'PŘESKOČIT REKAPITULACI', // Čeština
     'ΠΑΡΆΛΕΙΨΗ ΠΕΡΊΛΗΨΗς', // Ελληνικά
-    // Русский
+    'ПРОПУСТИТЬ КРАТКОЕ СОДЕРЖАНИЕ', // Русский
     'דלג על ההקדמה', // עברית
     'تخطي الملخص', // العربية
-    // हिन्दी
+    'रीकैप स्किप करें', // हिन्दी
     'ข้ามความเดิม', // ไทย
     '跳过剧情回顾', // 中文
     '本編へスキップ', // 日本語

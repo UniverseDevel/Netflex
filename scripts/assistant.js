@@ -1,8 +1,11 @@
 function extension_options() {
     var feat = document.getElementById('extension_features_integrated');
+    var icon = document.getElementById('extension_features');
     if (feat) {
         if (feat.style.display != 'none') {
             feat.style.display = 'none';
+            try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
+            icon.children[0].classList.add('fa-plus');
         }
     }
 
@@ -29,14 +32,19 @@ function extension_features() {
 
     // Show features part of status bubble element
     var feat = document.getElementById('extension_features_integrated');
+    var icon = document.getElementById('extension_features');
     if (feat) {
         if (feat.style.display === 'none') {
             addDOM(document.getElementById('extension_features_scrollable'), generate_status_features());
             document.getElementById('extension_features_scrollable').scrollTo(0, 0);
             create_features_events();
             feat.style.display = 'table-cell';
+            try {icon.children[0].classList.remove('fa-plus');} catch (e) {}
+            icon.children[0].classList.add('fa-minus');
         } else {
             feat.style.display = 'none';
+            try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
+            icon.children[0].classList.add('fa-plus');
         }
     }
 }
@@ -60,7 +68,7 @@ function generate_status_data(status_text) {
     var status_data = `
 <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;">
     <tr>
-        <td rowspan="3" style="vertical-align: top; max-width: 64px;{SHOW_LOGO}">
+        <td rowspan="3" style="vertical-align: top; max-width: 75px; width: 75px;{SHOW_LOGO}">
             <img id="extension_logo" src="{LOGO}" style="width: 64px; cursor: pointer;" alt="{SHORT_NAME}">
         </td>
         <th>
@@ -79,7 +87,7 @@ function generate_status_data(status_text) {
             <span style="font-size: 12px; display: unset;{SHOW_DONATIONS}">
                 - {DONATE} {DONATION_LINKS}
             </span>
-            <a href="javascript:void(0);" id="extension_features" style="color: #00b642; position: relative; bottom: -0.5em; float: right; cursor: pointer;{SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a>
+            <a href="javascript:void(0);" id="extension_features" style="color: #00b642; position: relative; float: right; cursor: pointer;{SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a>
         </td>
     </tr>
     <tr>
@@ -614,7 +622,7 @@ function reset_feature_value(feature_default) {
 
 function remove_status_icon() {
     var icon = document.getElementById('extension_status_content');
-    var content = document.getElementById('extension_status_text_content');
+    var content = document.getElementById('extension_status_bubble_content');
     removeDOM(icon);
     if (content) {
         removeDOM(content);
@@ -786,7 +794,7 @@ function status_updater() {
                 controls_element.insertBefore(el_last, controls_element.childNodes[Array.from(controlsBefore_element.parentNode.children).indexOf(controlsBefore_element)]);
 
                 // Add status bubble colors
-                var el_pop_style = document.getElementById('extension_status_text_style');
+                var el_pop_style = document.getElementById('extension_status_bubble_style');
                 addCSS(el_pop_style, { 'color': text_color, 'background-color' : background_color });
 
                 if (check_watch()) {
@@ -827,7 +835,7 @@ function status_updater() {
                 var status_text_value_src = document.getElementById('extension_status').getAttribute('data-status');
 
                 // Refresh status bubble position if needed
-                var el_pop = document.getElementById('extension_status_text_content');
+                var el_pop = document.getElementById('extension_status_bubble_content');
                 if (check_watch() && (el_pop.style.right != bubble_offset_right || el_pop.style.bottom != bubble_offset_bottom)) {
                     var pop_style = {
                         'right': bubble_offset_right + 'px',
@@ -853,10 +861,10 @@ function status_updater() {
                     var el_last = document.getElementById('extension_status_content');
                     addCSS(el_last, status_style_content);
 
-                    var el_pop = document.getElementById('extension_status_text');
+                    var el_pop = document.getElementById('extension_status_bubble');
                     addDOM(el_pop, status_data);
 
-                    var el_pop_style = document.getElementById('extension_status_text_style');
+                    var el_pop_style = document.getElementById('extension_status_bubble_style');
                     addCSS(el_pop_style, { 'color': text_color, 'background-color' : background_color });
 
                     // Set elements for status elements
@@ -953,12 +961,12 @@ function create_status_bubble(status_text, control_panel) {
     var el_pop = null;
     try {
         el_pop = document.createElement('span');
-        el_pop.setAttribute('id','extension_status_text');
+        el_pop.setAttribute('id','extension_status_bubble');
         addDOM(el_pop, status_text);
         var el_pop_tmp = el_pop;
 
         el_pop = document.createElement('div');
-        el_pop.setAttribute('id','extension_status_text_style');
+        el_pop.setAttribute('id','extension_status_bubble_style');
         addCSS(el_pop, {
             'font-size': font_size_size,
             'border-radius': border_radius_size,
@@ -971,7 +979,7 @@ function create_status_bubble(status_text, control_panel) {
         el_pop_tmp = el_pop;
 
         el_pop = document.createElement('div');
-        el_pop.setAttribute('id','extension_status_text_content');
+        el_pop.setAttribute('id','extension_status_bubble_content');
         el_pop.setAttribute('class','popup-content-wrapper');
         var pop_style = {
             'position': 'absolute',
@@ -1026,7 +1034,7 @@ function switch_simulation(state, type) {
                 elm = object_handler('button_report_problem', null);
 
                 // Actions perform when event is raised and finished
-                var el_pop_content = document.getElementById('extension_status_text_content');
+                var el_pop_content = document.getElementById('extension_status_bubble_content');
                 var el_status = document.getElementById('extension_status');
                 var progress_bar = object_handler('video_progress_bar', null);
                 var opt = document.getElementById('extension_options_integrated');
@@ -1046,6 +1054,10 @@ function switch_simulation(state, type) {
                     }
                     addCSS(opt, {'display': 'none'});
                     addCSS(feat, {'display': 'none'});
+
+                    var icon = document.getElementById('extension_features');
+                    try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
+                    icon.children[0].classList.add('fa-plus');
                 }
                 break;
         }

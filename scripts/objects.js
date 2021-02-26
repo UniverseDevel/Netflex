@@ -323,8 +323,8 @@ function object_handler(object_category, related_object) {
                     if (document.getElementsByClassName('previewModal--container detail-modal').length != 0) {
                         Array.prototype.push.apply(containers, document.getElementsByClassName('previewModal--container detail-modal'));
                     }
-                    if (document.getElementsByClassName('previewModal--container mini-modal').length != 0) {
-                        Array.prototype.push.apply(containers, document.getElementsByClassName('previewModal--container mini-modal'));
+                    if (document.getElementsByClassName('previewModal--wrapper').length != 0) {
+                        Array.prototype.push.apply(containers, document.getElementsByClassName('previewModal--wrapper'));
                     }
                     if (document.getElementsByClassName('bob-card').length != 0) {
                         Array.prototype.push.apply(containers, document.getElementsByClassName('bob-card'));

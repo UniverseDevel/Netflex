@@ -76,7 +76,7 @@ function ratings_handler(object, object_id) {
                 var meta = 'N/A';
 
                 if (imdb_id == '') {
-                    var sparql = 'SELECT (?item AS ?url) (COALESCE(?title, "") AS ?title) (COALESCE(?idIMDB, "N/A") AS ?idIMDB) (COALESCE(?idRT, "N/A") AS ?idRT) (COALESCE(?idMETA, "N/A") AS ?idMETA) WHERE { ?item wdt:P1874 "' + netflix_id + '". OPTIONAL {?item wdt:P1476 ?title.}  OPTIONAL {?item wdt:P345 ?idIMDB.} OPTIONAL {?item wdt:P1258 ?idRT.} OPTIONAL {?item wdt:P1712 ?idMETA.} } LIMIT 1';
+                    var sparql = 'SELECT (?item AS ?url) (COALESCE(?title, "") AS ?title) (COALESCE(?idIMDB, "N/A") AS ?idIMDB) (COALESCE(?idRT, "N/A") AS ?idRT) (COALESCE(?idMETA, "N/A") AS ?idMETA) WHERE { ?item p:P1874/ps:P1874 "' + netflix_id + '". OPTIONAL {?item p:P1476/ps:P1476 ?title.}  OPTIONAL {?item p:P345/ps:P345 ?idIMDB.} OPTIONAL {?item p:P1258/ps:P1258 ?idRT.} OPTIONAL {?item p:P1712/ps:P1712 ?idMETA.} } LIMIT 1';
 
                     log('debug', 'ratings', 'https://query.wikidata.org/#{0}', url_encode(sparql));
 
@@ -378,9 +378,9 @@ function generate_ratings_object(object, object_id) {
             if (findChildClass(object, 'boxart-tall-panel') && findChildClass(object, 'boxart-image-tall')) {
                 var parent = findChildClass(object, 'boxart-tall-panel');
                 var position_object = findChildClass(object, 'boxart-image-tall');
-            } else if (findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-rounded')) {
+            } else if (findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
                 var parent = findChildClass(object, 'slider-refocus');
-                var position_object = findChildClass(object, 'boxart-rounded');
+                var position_object = findChildClass(object, 'boxart-container');
             } else if (findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')) {
                 var parent = findChildClass(object, 'bob-overview');
                 var position_object = findChildClass(object, 'bob-title');
@@ -397,6 +397,15 @@ function generate_ratings_object(object, object_id) {
                 var is_positionable = false;
                 var position_from_top_spacer = 125;
                 var position_from_left_spacer = -5;
+            } else if (findChildClass(object, 'previewModal--player-titleTreatment-left') && findChildClass(object, 'titleWrapper')) {
+                var parent = findChildClass(object, 'logo-and-text meta-layer');
+                var position_object = findChildClass(object, 'titleWrapper');
+                var is_positionable = false;
+                var position_from_top_spacer = 125;
+                var position_from_left_spacer = -5;
+            } else if (findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'previewModal--player-titleTreatmentWrapper')) {
+                var parent = findChildClass(object, 'previewModal--player_container');
+                var position_object = findChildClass(object, 'previewModal--player-titleTreatmentWrapper');
             }
 
             var position_from_top_base = 5;
@@ -822,14 +831,26 @@ function netflix_ratings() {
                     hasDetails = true;
                 }
                 if (object_id == '' && (
-                       object_class.includes('previewModal--container mini-modal')
-                    || object_class.includes('bob-card')
+                       object_class.includes('bob-card')
                     || object_class.includes('volatile-billboard-animations-container')
                     || object_class.includes('titleCard--container')
+                    || object_class.includes('slider-refocus title-card')
                 )) {
                     try {
                         object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
                     } catch (e) {}
+                }
+                if (object_id == '' && (
+                       object_class.includes('previewModal--wrapper')
+                )) {
+                    try {
+                        var object_assoc = document.getElementById('title-card-'+findChildClass(object, 'primary-button').getAttribute('rownum')+'-'+findChildClass(object, 'primary-button').getAttribute('ranknum'));
+                        object_id = JSON.parse(decodeURIComponent((findChildClass(object_assoc, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
+                    } catch (e) {
+                        try {
+                            object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
+                        } catch (e) {}
+                    }
                 }
                 if (object_id == '' && object_class.includes('slider-refocus title-card')) {
                     object_id = (findChildClass(object, 'slider-refocus').getAttribute('href').replace('/watch/','') + '?').split('?')[0];
@@ -877,9 +898,10 @@ function netflix_ratings() {
                     || findChildClass(object, 'logo-and-text meta-layer') && findChildClass(object, 'titleWrapper')
                     || findChildClass(object, 'previewModal--detailsMetadata-left') && findChildClass(object, 'preview-modal-synopsis')
                     || findChildClass(object, 'previewModal--metadatAndControls-container') && findChildClass(object, 'buttonControls--container mini-modal')
+                    || findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'previewModal--player-titleTreatmentWrapper')
                     || findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')
                     || findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')
-                    || findChildClass(object, 'slider-refocus')) {
+                    || findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
                     // Get ratings only if ratings element is missing or expired
                     if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {
                         log('debug', 'ratings', 'Getting ratings for ID {0}.', object_id);
