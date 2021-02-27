@@ -85,7 +85,7 @@
 6.2.7    - 06.12.2020 - Bugfixes. Major fix for catching upsell elements to prevent Netflix plan changes.
 6.2.8    - 10.01.2021 - Bugfixes. Added key binding to temporarily hide subtitles. Added debug option to simulate production environment in development or test environment. Added Font Awesome library and removed picture icons. Added worker responsible for page reloading so page reload is centralised action that is strictly controlled/limited. Added statistics tab in configurations to view some background information. Styles have been moved into external file and external files with styles are now injected for better handling. Fixed version dependant changes to not apply changes to local storage on Netflix page by moving it from background again, this can be done because we no longer need to maintain configuration at two places, extension management configuration was removed in versions before. Fixed problem with ratings not being removed when expired after loading from local storage.
 6.2.9    - 26.02.2021 - Bugfixes. Added a way how to calculate offset for status bubble to correctly position itself according to status bubble while watching video. Added new objects for ratings to be shown in. Query to Wikidata was made less strict for obtaining data. Added support for new languages. Fixed ratings obtaining after some UI changes by Netflix.
-
+6.2.10   - 28.02.2021 - Fixed skip intro and recap function for Greek language.
 TODO:
 
 - General:

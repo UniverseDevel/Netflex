@@ -1801,14 +1801,15 @@ function netflix_assistant() {
                         try {
                             var is_paused = video.paused;
                             var skip_button = object_handler('button_skip', null);
+                            var button_text = skip_button.innerText.toUpperCase().trim();
 
-                            if (loc_skip_intro.includes(skip_button.innerText.toUpperCase().trim()) && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
+                            if (loc_skip_intro.includes(button_text) && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
                                 skipping = true;
                                 log('output', '', getLang('skipping_intro'));
                                 add_stats_count('stat_skipIntros');
                                 doClick(skip_button.parentNode);
                                 removeDOM(skip_button);
-                            } else if (loc_skip_recap.includes(skip_button.innerText.toUpperCase().trim()) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
+                            } else if (loc_skip_recap.includes(button_text) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
                                 skipping = true;
                                 log('output', '', getLang('skipping_recap'));
                                 add_stats_count('stat_skipRecaps');
