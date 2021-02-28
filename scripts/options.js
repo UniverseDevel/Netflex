@@ -612,8 +612,12 @@ function generate_options_content() {
         generate_options_data(options_tab_selected);
 
         // Fill in About info
-        fill_about();
-        fill_statistics();
+        try {
+            fill_about();
+            fill_statistics();
+        } catch (e) {
+            log('error', '', 'Error generating options tab contents: {0}.', e.message);
+        }
 
         // Fill in fields with text based on locale
         setText('menu_assistant', 'menu_assistant');
@@ -798,9 +802,12 @@ function fill_statistics() {
         actions_stats = fillArgs('<tr><td style="text-align: center;" colspan="2">{0}</td></tr>', getLang('stat_actions_none'));
     }
 
+    var netflex_ratingsDB_size = 0;
+    try {netflex_ratingsDB_size = localStorage['netflex_ratingsDB'].length;} catch (e) {}
+
     var ratings_stats = {
         'total': 0,
-        'size': ((localStorage['netflex_ratingsDB'].length + 'netflex_ratingsDB'.length) * 2),
+        'size': ((netflex_ratingsDB_size + 'netflex_ratingsDB'.length) * 2),
         'expiration_within_24h': 0,
         'expiration_within_1w': 0,
         'state': {
