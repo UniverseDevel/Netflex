@@ -1802,6 +1802,7 @@ function netflix_assistant() {
                             var is_paused = video.paused;
                             var skip_button = object_handler('button_skip', null);
                             var button_text = skip_button.innerText.toUpperCase().trim();
+                            log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
 
                             if (loc_skip_intro.includes(button_text) && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
                                 skipping = true;

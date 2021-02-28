@@ -1219,6 +1219,10 @@
         "message":"Assistant loop",
         "description":""
     },
+    "debug_type_skip_button_text":{
+        "message":"Skip button text",
+        "description":""
+    },
     "debug_type_main_loop":{
         "message":"Main loop",
         "description":""
