@@ -6,10 +6,10 @@ Fork info:
 
 Libraries description:
   
-- jquery.js - Official jQuery library. If updated, change version in description as well.
-- purify.js - Official DOMPurify library. If updated, change version in description as well. Official library contains
-              path to map file which is not part of the project and this line has to be removed from library. If updated, 
-              change version in description as well.
+- jquery.min.js - Official jQuery library. If updated, change version in description as well.
+- purify.min.js - Official DOMPurify library. If updated, change version in description as well. Official library contains
+                  path to map file which is not part of the project and this line has to be removed from library. If updated, 
+                  change version in description as well.
 - fontawesome.js - Official FontAwesome library that provides variety of icons. If updated, change version in description
                    as well.
 - firework.js - Library for Easter Egg. When you start a video title in Netflix and you click on N logo in status bubble,

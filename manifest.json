@@ -24,8 +24,8 @@
                 "*://www.netflix.com/*"
             ],
             "js": [
-                "libs/dompurify/purify.js",
-                "libs/jquery/jquery.js",
+                "libs/dompurify/purify.min.js",
+                "libs/jquery/jquery.min.js",
                 "libs/fontawesome/fontawesome.js",
 
                 "scripts/global.js",
@@ -50,8 +50,8 @@
 
     "background": {
         "scripts": [
-            "libs/dompurify/purify.js",
-            "libs/jquery/jquery.js",
+            "libs/dompurify/purify.min.js",
+            "libs/jquery/jquery.min.js",
 
             "scripts/global.js",
 

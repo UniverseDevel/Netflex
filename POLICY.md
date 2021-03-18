@@ -10,8 +10,8 @@ Privacy:
 
 External libraries:
 
-- jQuery v3.5.1 - https://jquery.com/
-- DOMPurify v2.2.6 - https://github.com/cure53/DOMPurify
+- jQuery v3.6.0 - https://jquery.com/
+- DOMPurify v2.2.7 - https://github.com/cure53/DOMPurify
 - Font Awesome Free v5.15.1 - https://fontawesome.com/
 - dtrooper Fireworks v5 #68 - https://jsfiddle.net/user/dtrooper/fiddles/
 

@@ -87,7 +87,7 @@
 6.2.9    - 26.02.2021 - Bugfixes. Added a way how to calculate offset for status bubble to correctly position itself according to status bubble while watching video. Added new objects for ratings to be shown in. Query to Wikidata was made less strict for obtaining data. Added support for new languages. Fixed ratings obtaining after some UI changes by Netflix.
 6.2.10   - 28.02.2021 - Fixed skip intro and recap function for Greek language.
 6.2.11   - 28.02.2021 - Fixed problem with opening options page due to ratings not being used before.
-6.2.12   - 18.03.2021 - Added new objects for ratings to show in after changes in UI.
+6.2.12   - 18.03.2021 - Added new objects for ratings to show in after changes in UI. Updated jQuery and DOMPurify libraries.
 
 TODO:
 
