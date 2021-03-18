@@ -335,6 +335,9 @@ function object_handler(object_category, related_object) {
                     if (document.getElementsByClassName('titleCard--container').length != 0) {
                         Array.prototype.push.apply(containers, document.getElementsByClassName('titleCard--container'));
                     }
+                    if (document.getElementsByClassName('title-card-container').length != 0) {
+                        Array.prototype.push.apply(containers, document.getElementsByClassName('title-card-container'));
+                    }
                 }
 
                 object = containers;

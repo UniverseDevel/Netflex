@@ -813,7 +813,7 @@ function status_updater() {
                 create_features_events();
 
                 // Set closing events for other buttons
-                var elms = [];
+                /*var elms = [];
                 var elms1 = object_handler('player_controls_elements', null);
                 var elms2 = object_handler('navigation_menu_elements', null);
                 Array.prototype.push.apply(elms, elms1);
@@ -824,7 +824,7 @@ function status_updater() {
                         elms[i].addEventListener('mouseenter', function() { logEvent('status_updater > PlayerControls--control-element/nav-element'); stop_worker('close_status_content'); switch_simulation(false, 'extension_status_content'); });
                         elms[i].setAttribute('netflex_event_set', 'true');
                     }
-                }
+                }*/
 
                 status_profile_old = status_profile;
                 status_color_old = status_color;
@@ -878,7 +878,7 @@ function status_updater() {
                     create_features_events();
 
                     // Set closing events for other buttons
-                    var elms = [];
+                    /*var elms = [];
                     var elms1 = object_handler('player_controls_elements', null);
                     var elms2 = object_handler('navigation_menu_elements', null);
                     Array.prototype.push.apply(elms, elms1);
@@ -889,7 +889,7 @@ function status_updater() {
                             elms[i].addEventListener('mouseenter', function() { logEvent('status_updater > PlayerControls--control-element/nav-element'); stop_worker('close_status_content'); switch_simulation(false, 'extension_status_content'); });
                             elms[i].setAttribute('netflex_event_set', 'true');
                         }
-                    }
+                    }*/
 
                     // If profile changed whole content of status bubble may need to be refreshed
                     if (status_profile != status_profile_old) {

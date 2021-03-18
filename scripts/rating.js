@@ -391,6 +391,10 @@ function generate_ratings_object(object, object_id) {
                 var parent = findChildClass(object, 'titleCard-imageWrapper');
                 var position_object = findChildClass(object, 'ptrack-content');
                 var position_from_top_spacer = 10;
+            } else if (findChildClass(object, 'title-card') && findChildClass(object, 'ptrack-content')) {
+                var parent = findChildClass(object, 'title-card');
+                var position_object = findChildClass(object, 'ptrack-content');
+                var position_from_top_spacer = 10;
             } else if (findChildClass(object, 'logo-and-text meta-layer') && findChildClass(object, 'titleWrapper')) {
                 var parent = findChildClass(object, 'logo-and-text meta-layer');
                 var position_object = findChildClass(object, 'titleWrapper');
@@ -834,6 +838,7 @@ function netflix_ratings() {
                        object_class.includes('bob-card')
                     || object_class.includes('volatile-billboard-animations-container')
                     || object_class.includes('titleCard--container')
+                    || object_class.includes('title-card-container')
                     || object_class.includes('slider-refocus title-card')
                 )) {
                     try {
@@ -866,6 +871,7 @@ function netflix_ratings() {
                 if (object_id != '' && (
                        object_class.includes('slider-refocus title-card')
                     || object_class.includes('titleCard--container')
+                    || object_class.includes('title-card-container')
                 )) {
                     // WARNING: Setting enableProactiveRatings to true will eat trough OMDB API key limit like crazy
                     if (!enableProactiveRatings) {
@@ -901,6 +907,7 @@ function netflix_ratings() {
                     || findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'previewModal--player-titleTreatmentWrapper')
                     || findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')
                     || findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')
+                    || findChildClass(object, 'title-card') && findChildClass(object, 'ptrack-content')
                     || findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
                     // Get ratings only if ratings element is missing or expired
                     if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {
