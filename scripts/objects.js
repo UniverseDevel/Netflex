@@ -76,27 +76,27 @@ function object_handler(object_category, related_object) {
                 if (document.getElementById('player-core-js')) {
                     object = {
                         'tiles': [
-                            [ 'synopsis', 'description' ], // Title details episode list
-                            [ 'episodeSynopsis', 'description' ], // Description on browser page
-                            [ 'preview-modal-synopsis', 'description' ], // Description on browser page
-                            [ 'previewModal-episodeDetails', 'episode_name' ], // Episode name on browser page
-                            [ 'titleCard-synopsis', 'description' ], // Description on browser page
-                            [ 'titleCard-title_text', 'episode_name' ], // Episode name on browser page
-                            [ 'ptrack-content', 'episode_picture' ], // Title details episode thumbnails
+                            [ '', 'synopsis', 'description' ], // Title details episode list
+                            [ '', 'episodeSynopsis', 'description' ], // Description on browser page
+                            [ '', 'preview-modal-synopsis', 'description' ], // Description on browser page
+                            [ '', 'previewModal-episodeDetails', 'episode_name' ], // Episode name on browser page
+                            [ '', 'titleCard-synopsis', 'description' ], // Description on browser page
+                            [ '', 'titleCard-title_text', 'episode_name' ], // Episode name on browser page
+                            [ 'titleCard-imageWrapper', 'ptrack-content', 'episode_picture' ], // Title details episode thumbnails
                         ],
                         'cast': [
-                            [ 'title-name-container', 'episode_name' ], // Title name while casting, will be blurred only for series
+                            [ '', 'title-name-container', 'episode_name' ], // Title name while casting, will be blurred only for series
                         ],
                         'watch': [
-                            [ 'synopsis', 'description' ], // Description on watch page in list of episodes
-                            [ 'PromotedVideo-synopsis', 'description' ], // Description on suggested next title
-                            [ 'nfa-fs-1-6-em nfa-c-gray-80 nfa-m-0 nfa-w-60', 'description' ], // Video player paused screen description
-                            [ 'nfa-fs-2-em nfa-m-0 nfa-pt-1-em nfa-pb-05-em', 'episode_name' ], // Video player paused screen title name
-                            [ 'ellipsize-text', 'episode_name' ], // Video player title name, code will search for last child element if there are more than one
-                            [ 'tp-image', 'runner_thumbnail' ], // Runner thumbnail
-                            [ 'playable-title', 'episode_name' ], // Episode title when loading player
-                            [ 'thumbnail-image', 'episode_picture' ], // Watch episode thumbnails
-                            [ 'title', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
+                            [ '', 'synopsis', 'description' ], // Description on watch page in list of episodes
+                            [ '', 'PromotedVideo-synopsis', 'description' ], // Description on suggested next title
+                            [ '', 'nfa-fs-1-6-em nfa-c-gray-80 nfa-m-0 nfa-w-60', 'description' ], // Video player paused screen description
+                            [ '', 'nfa-fs-2-em nfa-m-0 nfa-pt-1-em nfa-pb-05-em', 'episode_name' ], // Video player paused screen title name
+                            [ '', 'ellipsize-text', 'episode_name' ], // Video player title name, code will search for last child element if there are more than one
+                            [ '', 'tp-image', 'runner_thumbnail' ], // Runner thumbnail
+                            [ '', 'playable-title', 'episode_name' ], // Episode title when loading player
+                            [ '', 'thumbnail-image', 'episode_picture' ], // Watch episode thumbnails
+                            [ '', 'title', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
                         ]
                     };
                 }

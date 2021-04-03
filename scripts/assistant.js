@@ -1254,15 +1254,24 @@ function hide_synopsis() {
 
                 for (var i = 0; i < synopsis_obj[key].length; i++) {
                     try {
-                        var syn_class_name = synopsis_obj[key][i][0];
-                        var syn_class_type = synopsis_obj[key][i][1];
+                        var syn_class_parent = synopsis_obj[key][i][0];
+                        var syn_class_name = synopsis_obj[key][i][1];
+                        var syn_class_type = synopsis_obj[key][i][2];
                         var should_be_blurred_type = true;
 
                         if (!cfg['hideSpoilersObjects']['val'].includes(syn_class_type)) {
                             should_be_blurred_type = false;
                         }
 
-                        var descriptions_list = document.getElementsByClassName(syn_class_name);
+                        var descriptions_list = [];
+                        if (syn_class_parent == '') {
+                            descriptions_list = document.getElementsByClassName(syn_class_name);
+                        } else {
+                            var parent_list = document.getElementsByClassName(syn_class_parent);
+                            for (var j = 0; j < parent_list.length; j++) {
+                                Array.prototype.push.apply(descriptions_list, findChildClassElms(parent_list[j], syn_class_name));
+                            }
+                        }
 
                         if (descriptions_list[0]) {
                             for (var j = 0; j < descriptions_list.length; j++) {
