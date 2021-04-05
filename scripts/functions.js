@@ -220,7 +220,8 @@ function startup() {
 
 function stop_worker(worker) {
     if (workers[worker]) {
-        clearInterval(workers[worker]);
+        try { clearInterval(workers[worker]); } catch (e) {}
+        try { clearTimeout(workers[worker]); } catch (e) {}
         workers[worker] = false;
     }
 }

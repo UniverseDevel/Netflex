@@ -1322,10 +1322,12 @@ function hide_synopsis() {
                                         filter_value = fillArgs('blur({0}px)', cfg['spoilersBlurAmount']['val']);
                                     }
 
-                                    if (elm.getAttribute('netflex_blur') != 'blurred') {
+                                    if (elm.getAttribute('netflex_blur') != 'blurred' && elm.getAttribute('netflex_blur') != 'revealed') {
                                         add_stats_count('stat_hideSpoilers');
+                                        elm.addEventListener('mouseenter', function() { logEvent('hide_synopsis'); reveal_synopsis(this); });
+                                        elm.addEventListener('mouseleave', function() { logEvent('hide_synopsis'); unreveal_synopsis(this); });
                                     }
-                                    if (elm.getAttribute('netflex_blur') != 'blurred' || (filter != '' && filter != filter_value)) {
+                                    if ((elm.getAttribute('netflex_blur') != 'blurred' || (filter != '' && filter != filter_value))  && elm.getAttribute('netflex_blur') != 'revealed') {
                                         elm.style = fillArgs('filter: {0} !important;', filter_value);
                                         elm.setAttribute('netflex_blur', 'blurred');
                                         //log('output', '', getLang('description_hidden'));
@@ -1351,6 +1353,27 @@ function hide_synopsis() {
             elm.setAttribute('netflex_blur', 'shown');
         }
     }
+}
+
+function reveal_synopsis(obj) {
+    if (cfg['revealSpoilers']['access'] && cfg['revealSpoilers']['val'] != cfg['revealSpoilers']['off']) {
+        obj.MouseIsOver = true;
+        workers['synopsis_reveal'] = setTimeout(function() { reveal_synopsis_content(obj); }, cfg['revealSpoilers']['val'] * 1000);
+    }
+}
+
+function reveal_synopsis_content(obj) {
+    if (obj.MouseIsOver) {
+        obj.setAttribute('netflex_blur', 'revealed');
+        obj.style = 'filter: inherit;';
+        add_stats_count('stat_revealSpoilers');
+    }
+}
+
+function unreveal_synopsis(obj) {
+    obj.MouseIsOver = false;
+    stop_worker('synopsis_reveal');
+    obj.setAttribute('netflex_blur', 'shown');
 }
 
 function handle_video_features() {

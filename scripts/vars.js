@@ -26,6 +26,7 @@ workers['ratings'] = false;
 workers['options_style'] = false;
 workers['close_status_content'] = false;
 workers['local_storage_size'] = false;
+workers['synopsis_reveal'] = false;
 
 var reload_requests = {};
 var reload_requested = false;

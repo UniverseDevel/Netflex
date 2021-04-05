@@ -611,6 +611,14 @@
         "message":"Turns on/off blurring of spoilers.",
         "description":""
     },
+    "cfg_revealSpoilers_name":{
+        "message":"Reveal spoilers",
+        "description":""
+    },
+    "cfg_revealSpoilers_description":{
+        "message":"Turns on/off and sets delay for revealing spoilers when mouse hovering over blurred object. This might not work when blurred object is covered by other object (ex. Play button).",
+        "description":""
+    },
     "cfg_spoilersBlurAmount_name":{
         "message":"Spoilers blur amount",
         "description":""
@@ -1425,6 +1433,10 @@
     },
     "stat_hideSpoilers":{
         "message":"Spoilers hidden",
+        "description":""
+    },
+    "stat_revealSpoilers":{
+        "message":"Spoilers revealed",
         "description":""
     },
     "stat_hideDisliked":{

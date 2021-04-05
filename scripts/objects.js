@@ -301,13 +301,13 @@ function object_handler(object_category, related_object) {
                 }
                 break;
             case 'player_focus_trap':
-                if (document.getElementsByClassName('nf-kb-nav-wrapper')[0]) {
-                    object = document.getElementsByClassName('nf-kb-nav-wrapper')[0];
+                if (document.getElementsByClassName('sizing-wrapper')[0]) {
+                    object = document.getElementsByClassName('sizing-wrapper')[0];
                 }
                 break;
             case 'player_focus_trap_element':
-                if (document.getElementsByClassName('sizing-wrapper')[0]) {
-                    object = document.getElementsByClassName('sizing-wrapper')[0];
+                if (document.getElementsByClassName('AkiraPlayer')[0]) {
+                    object = document.getElementsByClassName('AkiraPlayer')[0];
                 }
                 break;
             // Ratings elements

@@ -89,6 +89,7 @@
 6.2.11   - 28.02.2021 - Fixed problem with opening options page due to ratings not being used before.
 6.2.12   - 18.03.2021 - Added new objects for ratings to show in after changes in UI. Updated jQuery and DOMPurify libraries.
 6.2.13   - 03.04.2021 - Fixed problem with blurring too much after some Netflix UI changes.
+6.3.0    - 05.04.2021 - Added option to reveal blurred object if mouse is hovering over it. Fixed issue with extension status bubble not showing up in fullscreen.
 
 TODO:
 
