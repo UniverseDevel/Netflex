@@ -2048,13 +2048,17 @@ function play_random() {
     }
 }
 
-function bind_key_events() {
+function bind_events() {
     document.resize = function(evt) {
         status_updater();
     };
 
     document.onkeyup = function(evt) {
         key_event_handler(evt);
+    };
+
+    window.onwheel = function(evt) {
+        wheel_event_handler(evt);
     };
 
     document.addEventListener("visibilitychange", function() {
@@ -2070,25 +2074,26 @@ function bind_key_events() {
     }
 }
 
-function unbind_key_events() {
+function unbind_events() {
     document.resize = null;
     document.onkeyup = null;
+    window.onwheel = null;
     window.onblur = null;
     window.onfocus = null;
 }
 
 function key_event_handler(evt) {
     // Skip binding actions while reporting a problem or searching for titles
-    if (check_search_bar() || check_problem_report() || check_options()) {
+    if (check_search_bar() || check_problem_report() || check_options() || isOrphan) {
         return;
     }
 
     var valid_key = false;
 
-    log('debug', 'keypress', '[\'{0}\',{1}],', evt.key.toUpperCase(), evt.keyCode);
-
     evt = evt || window.event;
     key_pressed = evt.key.toUpperCase();
+
+    log('debug', 'keypress', '[\'{0}\',{1}],', evt.key.toUpperCase(), evt.keyCode);
 
     // Detect if key event is for valid action
     var isExitPlayer = (key_pressed == cfg['exitPlayerKey']['val'] && cfg['exitPlayerKey']['val'] != cfg['exitPlayerKey']['off'] && cfg['exitPlayerKey']['access']);
@@ -2098,12 +2103,10 @@ function key_event_handler(evt) {
     var isHideSubtitles = (key_pressed == cfg['hideSubtitlesKey']['val'] && cfg['hideSubtitlesKey']['val'] != cfg['hideSubtitlesKey']['off'] && cfg['hideSubtitlesKey']['access']);
     var isToggleAssistant = (key_pressed == cfg['toggleAssistantKey']['val'] && cfg['toggleAssistantKey']['val'] != cfg['toggleAssistantKey']['off'] && cfg['toggleAssistantKey']['access']);
 
-    key_pressed = '';
-
     // Perform activities for valid keys
     // Global
     if (isToggleAssistant) {
-        log('debug', 'keypress', 'initContent>binding_handler>onkeyup>toggle_assistant');
+        log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>toggle_assistant');
 
         toggle_assistant();
         valid_key = true;
@@ -2112,7 +2115,7 @@ function key_event_handler(evt) {
     // Tiles only
     if (check_browse() || check_latest() || check_title() || check_search()) {
         if (isRandomMovie) {
-            log('debug', 'keypress', 'initContent>binding_handler>onkeyup>rand_movie');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>rand_movie');
 
             play_random();
             valid_key = true;
@@ -2122,7 +2125,7 @@ function key_event_handler(evt) {
     // Watch only
     if (check_watch()) {
         if (isExitPlayer) {
-            log('debug', 'keypress', 'initContent>binding_handler>onkeyup>exit_player');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>exit_player');
 
             if (object_handler('button_exit_player', null)) {
                 doClick(object_handler('button_exit_player', null));
@@ -2131,7 +2134,7 @@ function key_event_handler(evt) {
         }
 
         if (isPrevEpisode) {
-            log('debug', 'keypress', 'initContent>binding_handler>onkeyup>prev_episode');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>prev_episode');
 
             if ((watchHistory.length - 2) >= 0) {
                 log('output', '', getLang('prev_episode_manual'));
@@ -2146,7 +2149,7 @@ function key_event_handler(evt) {
         }
 
         if (isNextEpisode) {
-            log('debug', 'keypress', 'initContent>binding_handler>onkeyup>next_episode');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>next_episode');
 
             if (object_handler('button_next_episode', null)) {
                 log('output', '', getLang('next_episode'));
@@ -2158,7 +2161,7 @@ function key_event_handler(evt) {
         }
 
         if (isHideSubtitles) {
-            log('debug', 'keypress', 'initContent>binding_handler>onkeyup>hide_subs');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>hide_subs');
 
             var elm = document.getElementById('feature_tempHideSubtitles');
             if (!hideSubtitles_temp) {
@@ -2175,10 +2178,76 @@ function key_event_handler(evt) {
         }
     }
 
-    // In case activity for valid key was performed, pause all other assistant activities for a while
     if (valid_key) {
         add_stats_count('stat_keyBinding');
         key_disabled = true;
+        // In case activity for valid key was performed, pause all other assistant activities for a while
         setTimeout(function() {key_disabled = false;}, cfg['keyEventProcessingDelay']['val']);
     }
+
+    key_pressed = '';
+}
+
+function wheel_event_handler(evt) {
+    // Skip binding actions while reporting a problem or searching for titles
+    if (check_search_bar() || check_problem_report() || check_options() || isOrphan) {
+        return;
+    }
+
+    var valid_wheel = false;
+
+    evt = evt || window.event;
+
+    if (evt.deltaY < 0) {
+        wheel_direction = 'up';
+    } else if (evt.deltaY > 0) {
+        wheel_direction = 'down';
+    }
+
+    log('debug', 'wheelturn', '[\'{0}\', {1}],', wheel_direction, evt.deltaY);
+
+    // Global
+    // Nothing yet
+
+    // Tiles only
+    if (check_browse() || check_latest() || check_title() || check_search()) {
+        // Nothing yet
+    }
+
+    // Watch only
+    if (check_watch()) {
+        // While in player, mouse up/down should adjust player volume if enabled
+        if (cfg['wheelVolume']['access'] && cfg['wheelVolume']['val'] != cfg['wheelVolume']['off']) {
+            // If episode list is open or extension bubble is active, disable volume control
+            if (!object_handler('player_episode_list') && !simulation_objects['extension_status_content']) {
+                try {var video = object_handler('player_video', null);} catch (e) {}
+                if (video) {
+                    log('debug', 'wheelturn', 'initContent>bind_events>onwheel>wheel_event_handler>change_volume');
+
+                    var amount = cfg['wheelVolume']['val'];
+
+                    if (wheel_direction == 'down') {
+                        amount = amount * -1;
+                    }
+
+                    var new_volume = video.volume + amount;
+
+                    if (new_volume > 1) {
+                        new_volume = 1;
+                    } else if (new_volume < 0) {
+                        new_volume = 0;
+                    }
+
+                    video.volume = new_volume;
+                    valid_wheel = true;
+                }
+            }
+        }
+    }
+
+    if (valid_wheel) {
+        add_stats_count('stat_wheelTurn');
+    }
+
+    wheel_direction = '';
 }

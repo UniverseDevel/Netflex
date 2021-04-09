@@ -310,6 +310,11 @@ function object_handler(object_category, related_object) {
                     object = document.getElementsByClassName('AkiraPlayer')[0];
                 }
                 break;
+            case 'player_episode_list':
+                if (document.getElementsByClassName('episode-list')[0]) {
+                    object = document.getElementsByClassName('episode-list')[0];
+                }
+                break;
             // Ratings elements
             case 'ratings_elements':
                 var containers = [];

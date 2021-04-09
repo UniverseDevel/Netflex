@@ -140,6 +140,7 @@ var nextTitleDelay = 0;
 var forceReloadDifference = 0;
 var pingUpdateDifference = 0;
 var key_pressed = '';
+var wheel_direction = '';
 var lastForceReload = new Date(1970, 0, 1, 0, 0, 0);
 var loadTime = new Date();
 var lastCall = new Date();

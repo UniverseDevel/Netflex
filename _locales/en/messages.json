@@ -643,6 +643,14 @@
         "message":"Turns on/off hiding of disliked titles.",
         "description":""
     },
+    "cfg_wheelVolume_name":{
+        "message":"Adjust volume by mouse wheel",
+        "description":""
+    },
+    "cfg_wheelVolume_description":{
+        "message":"Turns on/off and sets how much a mouse wheel scroll changes playback volume.",
+        "description":""
+    },
     "cfg_autoDisableKids_name":{
         "message":"Disable extension on Kids profile",
         "description":""
@@ -1223,6 +1231,10 @@
         "message":"Key press",
         "description":""
     },
+    "debug_type_wheelturn":{
+        "message":"Mouse wheel turn",
+        "description":""
+    },
     "debug_type_assistant_loop":{
         "message":"Assistant loop",
         "description":""
@@ -1489,6 +1501,10 @@
     },
     "stat_keyBinding":{
         "message":"Key bindings used",
+        "description":""
+    },
+    "stat_wheelTurn":{
+        "message":"Wheel features used",
         "description":""
     },
     "stat_loaded_api":{

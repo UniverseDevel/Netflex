@@ -42,6 +42,7 @@ Video player features:
 
 - When current episode ends, next episode will start as soon as possible (can be changed in the configuration)
 - Extension will delay 10 seconds before starting next episode if previous title and next title are different titles (can be changed in the configuration)
+- Mouse wheel scroll up/down can adjust player volume (can be changed in the configuration)
 - If configured, extension will stop playing if previous title of a series and next title are different titles
 - If configured, extension will stop playing if previous title of a movie and next title are different titles
 - If video is stuck on loading for longer than 5 seconds, it will be reloaded within next 15 seconds if nothing changes (can be changed in the configuration)

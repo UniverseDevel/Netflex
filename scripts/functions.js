@@ -172,7 +172,7 @@ function initContent() {
             stats_counter = JSON.parse(localStorage.getItem('netflex_statistics'));
         }
 
-        bind_key_events();
+        bind_events();
     }
 }
 
@@ -198,7 +198,7 @@ function exitContent(remove_icon) {
 
     stopWorkers();
 
-    unbind_key_events();
+    unbind_events();
 
     removeInjected();
 }
@@ -736,6 +736,7 @@ function environment_update() {
         debug_variables['assistant']['logo_icon'] = logo_icon;
         debug_variables['assistant']['forceReloadDifference'] = forceReloadDifference;
         debug_variables['assistant']['key_pressed'] = key_pressed;
+        debug_variables['assistant']['wheel_direction'] = wheel_direction;
         debug_variables['assistant']['lastForceReload'] = lastForceReload;
         debug_variables['assistant']['oldTimestamp'] = oldTimestamp;
         debug_variables['assistant']['currentTimestamp'] = currentTimestamp;
