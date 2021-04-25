@@ -27,7 +27,7 @@ function ratings_handler(object, object_id) {
         // Initialize if missing
         if (!ratingsDB[ratings_version].hasOwnProperty(title_id)) {
             // Add data to ratings database
-            handle_ratingsDB_entry(title_id, netflix_id, '', '', '', '', title_name, current_time, new Date().addMinutes(rating_expiration_init), '', 'init', 'N/A', 'N/A', 'N/A');
+            handle_ratingsDB_entry(title_id, netflix_id, '', '', '', '', title_name, '', current_time, new Date().addMinutes(rating_expiration_init), '', 'init', 'N/A', 'N/A', 'N/A');
         }
 
         // Allocate WikiData know values
@@ -70,6 +70,7 @@ function ratings_handler(object, object_id) {
                 var timestamp = new Date();
                 var expiration = new Date().addMinutes(rating_expiration_pending);
                 var state = 'pending';
+                var year = '';
                 var details = '';
                 var imdb = 'N/A';
                 var rt = 'N/A';
@@ -99,7 +100,7 @@ function ratings_handler(object, object_id) {
                         beforeSend: function() {
                             // Add data to ratings database
                             add_stats_count('stat_wiki_call');
-                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, timestamp, expiration, details, state, imdb, rt, meta);
+                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, timestamp, expiration, details, state, imdb, rt, meta);
                         },
                         success: function(result, status, xhr) {
                             if (result['results']['bindings'].length != 0) {
@@ -162,7 +163,7 @@ function ratings_handler(object, object_id) {
                             timestamp = new Date();
 
                             // Add data to ratings database
-                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, timestamp, expiration, details, state, imdb, rt, meta);
+                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, timestamp, expiration, details, state, imdb, rt, meta);
 
                             if (state != 'wikidata_finished') {
                                 // Add data to pre-generated elements from ratings database
@@ -197,7 +198,7 @@ function ratings_handler(object, object_id) {
                         beforeSend: function() {
                             // Add data to ratings database
                             add_stats_count('stat_api_call');
-                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, timestamp, expiration, details, state, imdb, rt, meta);
+                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, timestamp, expiration, details, state, imdb, rt, meta);
                         },
                         success: function(result, status, xhr) {
                             ratings_limit_reached = false;
@@ -205,9 +206,19 @@ function ratings_handler(object, object_id) {
 
                             if (resp['Response'] == 'True') {
                                 // Found
+                                var released = resp['Released']; // Not used for now
+                                year = resp['Year'];
+                                var year_num = new Date().getFullYear();
+                                try {year_num = parseInt(year.split('-')[0]);} catch (e) {}
                                 var ratings = resp['Ratings'];
                                 state = 'api_finished';
-                                expiration = new Date().addDays(rating_expiration_found);
+
+                                // Refresh older titles less often
+                                if (year_num < (new Date().getFullYear() - 1)) {
+                                    expiration = new Date().addDays(rating_expiration_found_old);
+                                } else {
+                                    expiration = new Date().addDays(rating_expiration_found_new);
+                                }
 
                                 add_stats_count('stat_api_finished');
                                 for (var i = 0; i < ratings.length; i++) {
@@ -274,7 +285,7 @@ function ratings_handler(object, object_id) {
                             timestamp = new Date();
 
                             // Add data to ratings database
-                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, timestamp, expiration, details, state, imdb, rt, meta);
+                            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, timestamp, expiration, details, state, imdb, rt, meta);
 
                             // Add data to pre-generated elements from ratings database
                             handle_rating_values(object, object_id);
@@ -290,7 +301,7 @@ function ratings_handler(object, object_id) {
     } catch (e) {
         if (title_id) {
             // Add data to ratings database
-            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, new Date(), new Date().addDays(rating_expiration_error), e.message, 'error', 'N/A', 'N/A', 'N/A');
+            handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, new Date(), new Date().addDays(rating_expiration_error), e.message, 'error', 'N/A', 'N/A', 'N/A');
 
             // Add data to pre-generated elements from ratings database
             handle_rating_values(object, object_id);
@@ -300,7 +311,7 @@ function ratings_handler(object, object_id) {
     }
 }
 
-function handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, last_sync, expire, details, state, imdb, rt, meta) {
+function handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_id, meta_id, title_name, year, last_sync, expire, details, state, imdb, rt, meta) {
     var old_entry = null;
     var old_state = null;
     try {
@@ -318,6 +329,7 @@ function handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_
             'meta_id': meta_id
         },
         'title_name': title_name,
+        'year': year,
         'urls': {
             'wikidata': wikidata_url
         },
@@ -802,123 +814,126 @@ function netflix_ratings() {
             var containers = object_handler('ratings_elements', null);
 
             // Loop trough each container to handle ratings
-            for (var i = 0; i < containers.length; i++) {
-                var object = containers[i];
+            if (containers) {
+                for (var i = 0; i < containers.length; i++) {
+                    var object = containers[i];
 
-                // Extract title ID
-                var hasDetails = false;
-                var object_id = '';
-                var object_class = '';
-                if (object.className) {
-                    object_class = object.className;
-                }
-
-                // Old Netflix UI
-                if (object_id == '' && object.id && object_class.includes('jawBoneContainer')) {
-                    object_id = object.id;
-                    hasDetails = true;
-                }
-                // Current Netflix UI
-                if (object_id == '' && object_class.includes('previewModal--container detail-modal')) {
-                    var parameters = ((window.location.search != '') ? (window.location.search + '&').replace('?','').split('&') : '');
-                    for (var j = 0; j < parameters.length; j++) {
-                        var param = parameters[j];
-                        if (param.startsWith('jbv=')) {
-                            object_id = param.replace('jbv=','');
-                            break;
-                        }
+                    // Extract title ID
+                    var hasDetails = false;
+                    var object_id = '';
+                    var object_class = '';
+                    if (object.className) {
+                        object_class = object.className;
                     }
-                    hasDetails = true;
-                }
-                if (object_id == '' && check_title() && object_class.includes('previewModal--container detail-modal')) {
-                    object_id = window.location.pathname.replace('/title/','');
-                    hasDetails = true;
-                }
-                if (object_id == '' && (
-                       object_class.includes('bob-card')
-                    || object_class.includes('volatile-billboard-animations-container')
-                    || object_class.includes('titleCard--container')
-                    || object_class.includes('title-card-container')
-                    || object_class.includes('slider-refocus title-card')
-                )) {
-                    try {
-                        object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
-                    } catch (e) {}
-                }
-                if (object_id == '' && (
-                       object_class.includes('previewModal--wrapper')
-                )) {
-                    try {
-                        var object_assoc = document.getElementById('title-card-'+findChildClass(object, 'primary-button').getAttribute('rownum')+'-'+findChildClass(object, 'primary-button').getAttribute('ranknum'));
-                        object_id = JSON.parse(decodeURIComponent((findChildClass(object_assoc, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
-                    } catch (e) {
+
+                    // Old Netflix UI
+                    if (object_id == '' && object.id && object_class.includes('jawBoneContainer')) {
+                        object_id = object.id;
+                        hasDetails = true;
+                    }
+
+                    // Current Netflix UI
+                    if (object_id == '' && object_class.includes('previewModal--container detail-modal')) {
+                        var parameters = ((window.location.search != '') ? (window.location.search + '&').replace('?','').split('&') : '');
+                        for (var j = 0; j < parameters.length; j++) {
+                            var param = parameters[j];
+                            if (param.startsWith('jbv=')) {
+                                object_id = param.replace('jbv=','');
+                                break;
+                            }
+                        }
+                        hasDetails = true;
+                    }
+                    if (object_id == '' && check_title() && object_class.includes('previewModal--container detail-modal')) {
+                        object_id = window.location.pathname.replace('/title/','');
+                        hasDetails = true;
+                    }
+                    if (object_id == '' && (
+                           object_class.includes('bob-card')
+                        || object_class.includes('volatile-billboard-animations-container')
+                        || object_class.includes('titleCard--container')
+                        || object_class.includes('title-card-container')
+                        || object_class.includes('slider-refocus title-card')
+                    )) {
                         try {
                             object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
                         } catch (e) {}
                     }
-                }
-                if (object_id == '' && object_class.includes('slider-refocus title-card')) {
-                    object_id = (findChildClass(object, 'slider-refocus').getAttribute('href').replace('/watch/','') + '?').split('?')[0];
-                }
-
-                // Object ID that is not a number is invalid
-                if (isNaN(object_id)) {
-                    object_id = '';
-                }
-
-                // Some object may cause too much requests, so unless we already have their data
-                // or proactive ratings collection is allowed, we skip
-                if (object_id != '' && (
-                       object_class.includes('slider-refocus title-card')
-                    || object_class.includes('titleCard--container')
-                    || object_class.includes('title-card-container')
-                )) {
-                    // WARNING: Setting enableProactiveRatings to true will eat trough OMDB API key limit like crazy
-                    if (!enableProactiveRatings) {
-                        if (!ratingsDB[ratings_version].hasOwnProperty('nflx' + object_id)) {
-                            continue;
+                    if (object_id == '' && (
+                           object_class.includes('previewModal--wrapper')
+                    )) {
+                        try {
+                            var object_assoc = document.getElementById('title-card-'+findChildClass(object, 'primary-button').getAttribute('rownum')+'-'+findChildClass(object, 'primary-button').getAttribute('ranknum'));
+                            object_id = JSON.parse(decodeURIComponent((findChildClass(object_assoc, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
+                        } catch (e) {
+                            try {
+                                object_id = JSON.parse(decodeURIComponent((findChildClass(object, 'ptrack-content').getAttribute('data-ui-tracking-context'))), JSON.dateParse)['video_id'];
+                            } catch (e) {}
                         }
                     }
-                }
-
-                // If we cannot get title ID we cannot continue
-                if (object_id == '') {
-                    if (!findChildClass(object, 'extension_rating_unknown') && hasDetails) {
-                        handle_rating_values(object, '');
+                    if (object_id == '' && object_class.includes('slider-refocus title-card')) {
+                        object_id = (findChildClass(object, 'slider-refocus').getAttribute('href').replace('/watch/','') + '?').split('?')[0];
                     }
-                    continue;
-                }
 
-                // Find out if ratings are expired
-                var has_expired = false;
-                try {
-                    if (new Date(ratingsDB[ratings_version]['nflx' + object_id]['expire']) < new Date()) {
+                    // Object ID that is not a number is invalid
+                    if (isNaN(object_id)) {
+                        object_id = '';
+                    }
+
+                    // Some object may cause too much requests, so unless we already have their data
+                    // or proactive ratings collection is allowed, we skip
+                    if (object_id != '' && (
+                           object_class.includes('slider-refocus title-card')
+                        || object_class.includes('titleCard--container')
+                        || object_class.includes('title-card-container')
+                    )) {
+                        // WARNING: Setting enableProactiveRatings to true will eat trough OMDB API key limit like crazy
+                        if (!enableProactiveRatings) {
+                            if (!ratingsDB[ratings_version].hasOwnProperty('nflx' + object_id)) {
+                                continue;
+                            }
+                        }
+                    }
+
+                    // If we cannot get title ID we cannot continue
+                    if (object_id == '') {
+                        if (!findChildClass(object, 'extension_rating_unknown') && hasDetails) {
+                            handle_rating_values(object, '');
+                        }
+                        continue;
+                    }
+
+                    // Find out if ratings are expired
+                    var has_expired = false;
+                    try {
+                        if (new Date(ratingsDB[ratings_version]['nflx' + object_id]['expire']) < new Date()) {
+                            has_expired = true;
+                        }
+                    } catch (e) {
                         has_expired = true;
                     }
-                } catch (e) {
-                    has_expired = true;
-                }
 
-                // Check if objects that show ratings are available
-                if (   findChildClass(object, 'jawbone-overview-info') && findChildClass(object, 'video-meta')
-                    || findChildClass(object, 'logo-and-text meta-layer') && findChildClass(object, 'titleWrapper')
-                    || findChildClass(object, 'previewModal--detailsMetadata-left') && findChildClass(object, 'preview-modal-synopsis')
-                    || findChildClass(object, 'previewModal--metadatAndControls-container') && findChildClass(object, 'buttonControls--container mini-modal')
-                    || findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'previewModal--player-titleTreatmentWrapper')
-                    || findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')
-                    || findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')
-                    || findChildClass(object, 'title-card') && findChildClass(object, 'ptrack-content')
-                    || findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
-                    // Get ratings only if ratings element is missing or expired
-                    if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {
-                        log('debug', 'ratings', 'Getting ratings for ID {0}.', object_id);
-                        ratings_handler(object, object_id);
-                    } else {
-                        // Check for last change and update element if changed
-                        var change_time_db = JSON.stringify(ratingsDB[ratings_version]['nflx' + object_id]['last_sync']).replace(/\"/gi, '');
-                        var change_time_elm = findChildClass(object, 'extension_rating_' + object_id).getAttribute('netflex_change');
-                        if (change_time_db != change_time_elm && change_time_elm) {
-                            handle_rating_values(object, object_id);
+                    // Check if objects that show ratings are available
+                    if (   findChildClass(object, 'jawbone-overview-info') && findChildClass(object, 'video-meta')
+                        || findChildClass(object, 'logo-and-text meta-layer') && findChildClass(object, 'titleWrapper')
+                        || findChildClass(object, 'previewModal--detailsMetadata-left') && findChildClass(object, 'preview-modal-synopsis')
+                        || findChildClass(object, 'previewModal--metadatAndControls-container') && findChildClass(object, 'buttonControls--container mini-modal')
+                        || findChildClass(object, 'previewModal--player_container') && findChildClass(object, 'previewModal--player-titleTreatmentWrapper')
+                        || findChildClass(object, 'bob-overview') && findChildClass(object, 'bob-title')
+                        || findChildClass(object, 'titleCard-imageWrapper') && findChildClass(object, 'ptrack-content')
+                        || findChildClass(object, 'title-card') && findChildClass(object, 'ptrack-content')
+                        || findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
+                        // Get ratings only if ratings element is missing or expired
+                        if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {
+                            log('debug', 'ratings', 'Getting ratings for ID {0}.', object_id);
+                            ratings_handler(object, object_id);
+                        } else {
+                            // Check for last change and update element if changed
+                            var change_time_db = JSON.stringify(ratingsDB[ratings_version]['nflx' + object_id]['last_sync']).replace(/\"/gi, '');
+                            var change_time_elm = findChildClass(object, 'extension_rating_' + object_id).getAttribute('netflex_change');
+                            if (change_time_db != change_time_elm && change_time_elm) {
+                                handle_rating_values(object, object_id);
+                            }
                         }
                     }
                 }

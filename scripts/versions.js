@@ -349,14 +349,26 @@ function version_consistency_changes() {
             apply_version('6.2.8');
         }
 
-        // Before 999999.999.999 - Template, add new changes to the end and uncomment log entry
+        // Before 6.4.0
+        if (applied_version_normalized < normalize_version('6.4.0', 4)) {
+            log('info', '', getLang('version_changes'), '6.4.0');
+
+            // Perform necessary changes
+            cfg_remove('showCategories');
+
+            apply_version('6.4.0');
+        }
+
+        /* - Template, add new changes to the 'Perform necessary changes' part and adjust version number
+        // Before 999999.999.999
         if (applied_version_normalized < normalize_version('999999.999.999', 4)) {
-            //log('info', '', getLang('version_changes'), '999999.999.999');
+            log('info', '', getLang('version_changes'), '999999.999.999');
 
             // Perform necessary changes
 
-            //apply_version('999999.999.999');
+            apply_version('999999.999.999');
         }
+        */
 
         // Mark version as up to date when changes are loaded
         load_configuration(function() {

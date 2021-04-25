@@ -91,6 +91,7 @@
 6.2.13   - 03.04.2021 - Fixed problem with blurring too much after some Netflix UI changes.
 6.3.0    - 05.04.2021 - Added option to reveal blurred object if mouse is hovering over it. Fixed issue with extension status bubble not showing up in fullscreen.
 6.3.1    - 09.04.2021 - Added option to adjust Netflix player volume by mouse scroll wheel.
+6.4.0    - 25.04.2021 - Bugfixes. Changed for older titles to store ratings longer as they are less likely to be updated. Fixed problem where extension would try to continually apply version changes on pages where it is not initialised, this would not cause any issues its just unnecessary action when extension knows it won't be loaded and such changes need to be executed only once per extension load. Reworked objects.js.
 
 TODO:
 
@@ -104,12 +105,14 @@ TODO:
     - https://developer.apple.com/documentation/safariservices/safari_web_extensions/converting_a_web_extension_for_safari
 
 - Ideas:
+    - Add section in options for contributors?
     - Add more customization options for subtitles (fonts, colors, sizes).
-    - Audio and video sync controls.
+    - Audio and video sync controls?
     - Replace checkboxes, radios and range inputs in options with font awesome icons and https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
 
 Known issues:
 
-- None.
 - Possible new Netflix video player UI.
 - Incoming manifest v3
+- Video features work on all browsers except Edge, in fact Edge will get completely destroyed if video features are used/enabled
+  and by completely destroyed I mean whole Edge turns black and starts flashing based on mouse location.

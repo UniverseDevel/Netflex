@@ -285,6 +285,11 @@ function generate_options_data(load_tab) {
             }
         }
 
+        /*switch (key) {
+            case 'debug':
+                break;
+        }*/
+
         fields = fields.join('');
 
         var cat_content = '<div id="tab_{CAT_NAME}" class="tab hidden">{CAT_FIELDS}</div>';

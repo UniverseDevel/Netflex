@@ -205,10 +205,6 @@ function generate_status_features() {
         <div style="text-align: center;{SHOW_NO_FEATURES_MSG}">
             {NO_FEATURES_MSG}
         </div>
-        <hr style="{SHOW_BROWSE_CATEGORIES}">
-        <div style="text-align: center;{SHOW_BROWSE_CATEGORIES}">
-            {BROWSE_CATEGORIES}
-        </div>
         <hr style="{SHOW_TEMP_HIDE_SUBTITLES}">
         <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;{SHOW_TEMP_HIDE_SUBTITLES}">
             <tr>
@@ -394,8 +390,6 @@ function generate_status_features() {
 
     var shown_features_count = 0;
 
-    var show_browse_categories = 'display: none;';
-
     var show_tempHideSubtitles = 'display: none;';
 
     var show_videoSpeedRate = 'display: none;';
@@ -433,19 +427,12 @@ function generate_status_features() {
             }
         }
     } else {
-        if (cfg['showCategories']['val'] && cfg['showCategories']['access']) {
-            show_browse_categories = '';
-
-            shown_features_count++;
-        }
+        // Nothing yet
     }
 
     var keys = {
         'SHOW_NO_FEATURES_MSG': ((shown_features_count == 0) ? '' : 'display: none;'),
         'NO_FEATURES_MSG': getLang('no_features_available'),
-
-        'SHOW_BROWSE_CATEGORIES': show_browse_categories,
-        'BROWSE_CATEGORIES': generate_categories(),
 
         'FEATURE_RESET_CFG': getLang('extension_feature_reset_cfg'),
         'FEATURE_RESET_DEFAULT': getLang('extension_feature_reset_default'),
@@ -521,30 +508,6 @@ function generate_status_features() {
     status_features = fillKeys(status_features, keys);
 
     return status_features;
-}
-
-function generate_categories() {
-    var cat_links = [];
-    var column = 0;
-    var columns = 3;
-
-    for (var key in browse_categories_list) {
-        if (!cat_links[column]) {
-            cat_links[column] = '';
-        }
-        cat_links[column] += '<div style="padding: 2px; margin: 1px; text-align: center; display: block;"><a style="border-radius: 3px; background-color: rgba(38,38,38,1);" href="https://www.netflix.com/browse/genre/' + browse_categories_list[key] + '">' + getLang(key) + '</a></div>';
-        column++;
-        if (column > (columns - 1)) {
-            column = 0;
-        }
-    }
-
-    for (var i = 0; i < columns; i++) {
-        cat_links[i] = fillArgs('<div style="width: 160px; float: left;">{0}</div>', cat_links[i]);
-    }
-    cat_links = cat_links.join('');
-    cat_links = '<div>' + cat_links + '<div style="clear: both;"></div></div>';
-    return cat_links;
 }
 
 function create_features_events() {
@@ -1279,14 +1242,14 @@ function hide_synopsis() {
                                 var elm = descriptions_list[j];
 
                                 // Special cases
-                                if (elm.className == 'ellipsize-text') {
+                                if (elm.classList.contains('ellipsize-text')) {
                                     if (elm.children.length > 1) {
                                         elm = elm.children[elm.children.length - 1];
                                     } else {
                                         should_be_blurred = false;
                                     }
                                 }
-                                if (elm.className == 'title-name-container') {
+                                if (elm.classList.contains('title-name-container')) {
                                     if (is_series) {
                                         if (elm.children.length > 1) {
                                             elm = elm.children[elm.children.length - 1];
@@ -1297,8 +1260,13 @@ function hide_synopsis() {
                                         should_be_blurred = false;
                                     }
                                 }
-                                if (elm.className == 'title') {
+                                if (elm.classList.contains('title')) {
                                     if (elm.parentNode.classList.contains('player-title-evidence') || elm.parentNode.classList.contains('nfp-season-preview')) {
+                                        should_be_blurred = false;
+                                    }
+                                }
+                                if (elm.parentNode.classList.contains('titleCard-imageWrapper')) {
+                                    if (elm.parentNode.parentNode.classList.contains('more-like-this-item')) {
                                         should_be_blurred = false;
                                     }
                                 }
@@ -1377,11 +1345,11 @@ function unreveal_synopsis(obj) {
 }
 
 function handle_video_features() {
-    if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
+    if (cfg['enableVideoFeatures']['access']) {
         try {var video = object_handler('player_video', null);} catch (e) {}
 
         if (video) {
-            if (enableAssistant) {
+            if (enableAssistant && cfg['enableVideoFeatures']['val']) {
                 if (check_watch()) {
                     videoSpeedRate = video.playbackRate;
 
@@ -1512,6 +1480,7 @@ function handle_video_features() {
                     addCSS(video, {
                         'filter': fillKeys('brightness({VIDEO_BRIGHTNESS}%) contrast({VIDEO_CONTRAST}%) grayscale({VIDEO_GRAYSCALE}%) hue-rotate({VIDEO_HUE}deg) invert({VIDEO_INVERT}%) saturate({VIDEO_SATURATION}%) sepia({VIDEO_SEPIA}%);',keys)
                     });
+
                     videoBrightness = cfg['videoBrightness']['def'];
                     videoContrast = cfg['videoContrast']['def'];
                     videoGrayscale = cfg['videoGrayscale']['def'];
@@ -1565,11 +1534,13 @@ function netflix_assistant() {
 
             // Show hidden disliked titles
             var disliked_obj = object_handler('disliked_title', null);
-            for (var i = 0; i < disliked_obj.length; i++) {
-                var disliked_parent = disliked_obj[i].parentNode.parentNode;
-                if (disliked_parent.classList.contains('slider-item')) {
-                    if (disliked_parent.classList.contains('netflex_hide')) {
-                        disliked_parent.classList.remove('netflex_hide');
+            if (disliked_obj) {
+                for (var i = 0; i < disliked_obj.length; i++) {
+                    var disliked_parent = disliked_obj[i].parentNode.parentNode;
+                    if (disliked_parent.classList.contains('slider-item')) {
+                        if (disliked_parent.classList.contains('netflex_hide')) {
+                            disliked_parent.classList.remove('netflex_hide');
+                        }
                     }
                 }
             }
@@ -1594,18 +1565,20 @@ function netflix_assistant() {
                 // Hide disliked titles
                 if (cfg['hideDisliked']['access']) {
                     var disliked_obj = object_handler('disliked_title', null);
-                    for (var i = 0; i < disliked_obj.length; i++) {
-                        var disliked_parent = disliked_obj[i].parentNode.parentNode;
-                        if (disliked_parent.classList.contains('slider-item')) {
-                            if (cfg['hideDisliked']['val']) {
-                                if (!disliked_parent.classList.contains('netflex_hide')) {
-                                    add_stats_count('stat_hideDisliked');
-                                    disliked_parent.classList.add('netflex_hide');
-                                    log('output', '', getLang('disliked_hidden'));
-                                }
-                            } else {
-                                if (disliked_parent.classList.contains('netflex_hide')) {
-                                    disliked_parent.classList.remove('netflex_hide');
+                    if (disliked_obj) {
+                        for (var i = 0; i < disliked_obj.length; i++) {
+                            var disliked_parent = disliked_obj[i].parentNode.parentNode;
+                            if (disliked_parent.classList.contains('slider-item')) {
+                                if (cfg['hideDisliked']['val']) {
+                                    if (!disliked_parent.classList.contains('netflex_hide')) {
+                                        add_stats_count('stat_hideDisliked');
+                                        disliked_parent.classList.add('netflex_hide');
+                                        log('output', '', getLang('disliked_hidden'));
+                                    }
+                                } else {
+                                    if (disliked_parent.classList.contains('netflex_hide')) {
+                                        disliked_parent.classList.remove('netflex_hide');
+                                    }
                                 }
                             }
                         }
@@ -1618,12 +1591,14 @@ function netflix_assistant() {
                 // Stop trailers video
                 if (cfg['trailerVideoStop']['val'] && cfg['trailerVideoStop']['access']) {
                     var trailer_list = object_handler('trailer_list', null);
-                    for (var i = 0; i < trailer_list.length; i++) {
-                        if (!trailer_list[i].paused) {
-                            add_stats_count('stat_trailerVideoStop');
-                            trailer_list[i].pause();
-                            trailer_list[i].currentTime = trailer_list[i].duration;
-                            log('output', '', getLang('trailer_stopped'));
+                    if (trailer_list) {
+                        for (var i = 0; i < trailer_list.length; i++) {
+                            if (!trailer_list[i].paused) {
+                                add_stats_count('stat_trailerVideoStop');
+                                trailer_list[i].pause();
+                                trailer_list[i].currentTime = trailer_list[i].duration;
+                                log('output', '', getLang('trailer_stopped'));
+                            }
                         }
                     }
                 }
@@ -1636,7 +1611,8 @@ function netflix_assistant() {
 
                 // Play next episode
                 var is_next_available = false;
-                if (object_handler('next_episode', null)) {
+                var next_episode_obj = object_handler('next_episode', null);
+                if (next_episode_obj) {
                     // Next video is available
                     is_next_available = true;
                     // Check configuration if we want to start next episodes
@@ -1644,7 +1620,7 @@ function netflix_assistant() {
                         // Play next video
                         log('output', '', getLang('next_episode'));
                         add_stats_count('stat_nextEpisode');
-                        try {doClick(object_handler('next_episode', null));} catch (e) {}
+                        try {doClick(next_episode_obj);} catch (e) {}
                     }
                 } else {
                     // Mark end of loading period
@@ -1698,8 +1674,9 @@ function netflix_assistant() {
                                 } else {
                                     add_stats_count('stat_nextEpisodeStopMovies');
                                 }
-                                if (object_handler('button_exit_player', null)) {
-                                    doClick(object_handler('button_exit_player', null));
+                                var button_exit_player_obj = object_handler('button_exit_player', null)
+                                if (button_exit_player_obj) {
+                                    doClick(button_exit_player_obj);
                                 } else {
                                     window.location = window.location.origin + '/browse';
                                 }
@@ -1787,7 +1764,6 @@ function netflix_assistant() {
                         if (!subtitles_block.classList.contains('visually-hidden')) {
                             add_stats_count('stat_highlightSubtitles');
                             subtitles_block.classList.add('visually-hidden');
-                            subtitles_items[j].setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
                         }
                     } else {
                         // Show subtitles
@@ -1829,10 +1805,10 @@ function netflix_assistant() {
 
                 // Skip all intros & recaps
                 if (!skipping) {
-                    if (object_handler('button_skip', null) && video) {
+                    var skip_button = object_handler('button_skip', null);
+                    if (skip_button && video) {
                         try {
                             var is_paused = video.paused;
-                            var skip_button = object_handler('button_skip', null);
                             var button_text = skip_button.innerText.toUpperCase().trim();
                             log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
 
@@ -1883,13 +1859,14 @@ function netflix_assistant() {
 
                 // Skip interruption if nothing is clicked after X videos played
                 var is_interrupted = false;
-                if (object_handler('video_interrupter', null) && cfg['skipInterrupter']['access']) {
+                var video_interrupter_obj = object_handler('video_interrupter', null);
+                if (video_interrupter_obj && cfg['skipInterrupter']['access']) {
                     is_interrupted = true;
                     // Check configuration if we want to skip interruptions
                     if (cfg['skipInterrupter']['val']) {
                         log('output', '', getLang('skipping_interrupter'));
                         add_stats_count('stat_skipInterrupter');
-                        doClick(object_handler('video_interrupter', null).children[0]);
+                        doClick(video_interrupter_obj.children[0]);
                     }
                 }
 
@@ -1905,11 +1882,12 @@ function netflix_assistant() {
                     // interruption.
                     if (!check_error() && timeFromLoad > cfg['timeFromLoadLimit']['val'] && visibleAPI && !is_next_available && !is_interrupted) {
                         // If video object does not exist or video is stopped and spinning loader is present or if video is stopped and also it is not paused
-                        if (!video || (currentTimestamp == oldTimestamp && object_handler('video_loading_spinner', null)) || (currentTimestamp == oldTimestamp && !video.paused)) {
+                        var video_spinner_obj = object_handler('video_loading_spinner', null);
+                        if (!video || (currentTimestamp == oldTimestamp && video_spinner_obj) || (currentTimestamp == oldTimestamp && !video.paused)) {
                             var timerValid = false;
 
                             // If spinning loader is present give it a time to load video (data load time)
-                            if (object_handler('video_loading_spinner', null) && cfg['loadingTimeLimit']['access']) {
+                            if (video_spinner_obj && cfg['loadingTimeLimit']['access']) {
                                 loadingTime = addTimeFraction(loadingTime, cfg['netflixAssistantTimer']['val']);
                                 // Too long loading, might be stuck, lets start countdown
                                 if (loadingTime >= cfg['loadingTimeLimit']['val']) {
@@ -1980,12 +1958,17 @@ function play_random() {
 
     // Find all open tiles and close them
     var openTiles = object_handler('buttons_tile_close', null);
-    for (i = openTiles.length - 1; i >= 0; i--) {
-        doClick(openTiles[i]);
+    if (openTiles) {
+        for (i = openTiles.length - 1; i >= 0; i--) {
+            doClick(openTiles[i]);
+        }
     }
 
     // Find all existing tiles
     var tiles = object_handler('buttons_tile_list', null);
+    if (!tiles) {
+        return;
+    }
 
     // Pick only tiles that have unique titles and are not large tiles or disliked tiles of correct node type
     var unique_tiles = {};
@@ -2127,8 +2110,9 @@ function key_event_handler(evt) {
         if (isExitPlayer) {
             log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>exit_player');
 
-            if (object_handler('button_exit_player', null)) {
-                doClick(object_handler('button_exit_player', null));
+            var button_exit_player_obj = object_handler('button_exit_player', null);
+            if (button_exit_player_obj) {
+                doClick(button_exit_player_obj);
                 valid_key = true;
             }
         }
@@ -2151,9 +2135,10 @@ function key_event_handler(evt) {
         if (isNextEpisode) {
             log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>next_episode');
 
-            if (object_handler('button_next_episode', null)) {
+            var button_next_episode_obj = object_handler('button_next_episode', null);
+            if (button_next_episode_obj) {
                 log('output', '', getLang('next_episode'));
-                doClick(object_handler('button_next_episode', null));
+                doClick(button_next_episode_obj);
                 valid_key = true;
             } else {
                 forceNextEpisode = true;

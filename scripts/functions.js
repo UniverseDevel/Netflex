@@ -151,6 +151,9 @@ function initContent() {
         // Initialize all events
         log('debug', 'init', 'initContent {0}', run_id);
 
+        // Apply version specific changes
+        version_consistency_changes();
+
         setInjected();
 
         workers['injector'] = setInterval(events_injector, cfg['injectorTimer']['val']);
@@ -210,9 +213,6 @@ function startup() {
     log('debug', 'startup', 'startup {0} exists {1}', run_id, exists);
 
     if (!exists) {
-        // Apply version specific changes
-        version_consistency_changes();
-
         //workers['local_storage_size'] = setTimeout(local_storage_total_size, 1);
         initContent();
     }
@@ -810,7 +810,8 @@ function environment_update() {
         debug_variables['rating']['rating_expiration_pending'] = rating_expiration_pending;
         debug_variables['rating']['rating_expiration_invalid_key'] = rating_expiration_invalid_key;
         debug_variables['rating']['rating_expiration_timeout_wiki'] = rating_expiration_timeout_wiki;
-        debug_variables['rating']['rating_expiration_found'] = rating_expiration_found;
+        debug_variables['rating']['rating_expiration_found_new'] = rating_expiration_found_new;
+        debug_variables['rating']['rating_expiration_found_old'] = rating_expiration_found_old;
         debug_variables['rating']['rating_expiration_not_found'] = rating_expiration_not_found;
         debug_variables['rating']['rating_expiration_timeout'] = rating_expiration_timeout;
         debug_variables['rating']['rating_expiration_limit'] = rating_expiration_limit;
