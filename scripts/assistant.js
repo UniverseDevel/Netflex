@@ -1345,6 +1345,8 @@ function unreveal_synopsis(obj) {
 }
 
 function handle_video_features() {
+    // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
+    // when other extension might be changing them as well
     if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
         try {var video = object_handler('player_video', null);} catch (e) {}
 

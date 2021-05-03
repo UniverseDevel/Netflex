@@ -93,6 +93,7 @@
 6.3.1    - 2021.04.09 - Added option to adjust Netflix player volume by mouse scroll wheel.
 6.4.0    - 2021.04.25 - Bugfixes. Changed for older titles to store ratings longer as they are less likely to be updated. Fixed problem where extension would try to continually apply version changes on pages where it is not initialised, this would not cause any issues its just unnecessary action when extension knows it won't be loaded and such changes need to be executed only once per extension load. Reworked objects.js.
 6.4.1    - 2021.05.03 - Skip intro and recap button detection made a bit more exact to avoid grabbing any button with same style. Fixed problem where disliked titles were not hidden. Fixed problem with video features default setting being applied when video features are turned off.
+6.4.2    - 2021.05.03 - Updated DOMPurify library.
 
 TODO:
 
