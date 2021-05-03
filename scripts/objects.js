@@ -2,6 +2,7 @@ function object_handler(object_category, related_object) {
     // Provide objects by their call name. Extension objects are not included.
     // In case of UI changes, new versions can be added by new else if. This should ensure
     // backwards compatibility.
+
     var obj;
 
     switch (object_category) {
@@ -106,7 +107,7 @@ function object_handler(object_category, related_object) {
             if (obj[0]) { return obj; }
             break;
         case 'title_tile_anchor':
-            obj = related_object.parentNode.parentNode.querySelector('.title-card-play playLink');
+            obj = related_object.parentNode.parentNode.querySelector('.title-card-play.playLink');
             if (obj) { return obj; }
             break;
         case 'video_progress_bar':
@@ -138,7 +139,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_skip':
-            obj = document.querySelector('.nf-flat-button-text');
+            obj = document.querySelector('.skip-credits a .nf-flat-button-text');
             if (obj) { return obj; }
             break;
         case 'player_subtitles':
@@ -170,12 +171,12 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'next_episode':
-            obj = document.querySelector('.MdxControls__button MdxControls__button--primary');
+            obj = document.querySelector('.MdxControls__button.MdxControls__button--primary');
             if (obj) { return obj; }
             break;
         case 'disliked_title':
-            obj = document.querySelector('.is-disliked');
-            if (obj) { return obj; }
+            obj = document.querySelectorAll('.is-disliked');
+            if (obj[0]) { return obj; }
             break;
         case 'button_episodes_list':
             obj = document.querySelector('.button-nfplayerEpisodes');
@@ -243,7 +244,7 @@ function object_handler(object_category, related_object) {
             break;
         // Ratings elements
         case 'ratings_elements':
-            obj = document.querySelectorAll('.jawBoneContainer, .volatile-billboard-animations-container, .previewModal--container detail-modal, .previewModal--wrapper, .bob-card, .slider-refocus title-card, .titleCard--container, .title-card-container');
+            obj = document.querySelectorAll('.jawBoneContainer, .volatile-billboard-animations-container, .previewModal--container.detail-modal, .previewModal--wrapper, .bob-card, .slider-refocus.title-card, .titleCard--container, .title-card-container');
             if (obj[0]) { return obj; }
             break;
         // Unknown category is a problem

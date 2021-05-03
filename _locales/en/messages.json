@@ -736,7 +736,7 @@
         "description":""
     },
     "cfg_enableVideoFeatures_description":{
-        "message":"Turns on/off all video features. Netflix™ playback speed will be ignored while this option is enabled. Other extensions with similar video functions might stop working as expected.",
+        "message":"Turns on/off all video features. Netflix™ playback speed will be ignored while this option is enabled. Other extensions with similar video functions might stop working as expected.<br><br>Disabling this feature might require a page refresh to reset video values to default.",
         "description":""
     },
     "cfg_videoSpeedRate_name":{

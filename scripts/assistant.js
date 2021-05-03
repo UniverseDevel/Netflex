@@ -1345,11 +1345,11 @@ function unreveal_synopsis(obj) {
 }
 
 function handle_video_features() {
-    if (cfg['enableVideoFeatures']['access']) {
+    if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
         try {var video = object_handler('player_video', null);} catch (e) {}
 
         if (video) {
-            if (enableAssistant && cfg['enableVideoFeatures']['val']) {
+            if (enableAssistant) {
                 if (check_watch()) {
                     videoSpeedRate = video.playbackRate;
 
