@@ -94,6 +94,7 @@
 6.4.0    - 2021.04.25 - Bugfixes. Changed for older titles to store ratings longer as they are less likely to be updated. Fixed problem where extension would try to continually apply version changes on pages where it is not initialised, this would not cause any issues its just unnecessary action when extension knows it won't be loaded and such changes need to be executed only once per extension load. Reworked objects.js.
 6.4.1    - 2021.05.03 - Skip intro and recap button detection made a bit more exact to avoid grabbing any button with same style. Fixed problem where disliked titles were not hidden. Fixed problem with video features default setting being applied when video features are turned off.
 6.4.2    - 2021.05.03 - Updated DOMPurify library.
+6.4.3    - 2021.05.26 - Returned option to hide status icon but limited this option only to video player. Fixed blinking and style apply delay for subtitles.
 
 TODO:
 
@@ -101,16 +102,10 @@ TODO:
     - Move as much styles as possible into CSS file and use classes instead.
 - Firefox:
     - https://bugzilla.mozilla.org/show_bug.cgi?id=1413872
-- Safari support:
-    - Safari is no longer supported on Windows... Need to find some virtual macOS platform for Hyper-V, this might not be easy...
-    - https://developer.apple.com/forums/thread/94567
-    - https://developer.apple.com/documentation/safariservices/safari_web_extensions/converting_a_web_extension_for_safari
 
 - Ideas:
-    - Add section in options for contributors?
-    - Add more customization options for subtitles (fonts, colors, sizes).
-    - Audio and video sync controls?
-    - Replace checkboxes, radios and range inputs in options with font awesome icons and https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+    - There should be some way how to deliver news (OMDB outages, known problems, incoming new UI and so on) without updating extension everytime, like polling google disk or github for XML/JSON that contains messages that would be shown in pop-up bubble when new message is detected, similar to RSS feed.
+    - Replace checkboxes, radios and range inputs in options with font awesome icons and https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/.
 
 Known issues:
 

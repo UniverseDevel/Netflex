@@ -290,14 +290,16 @@ function version_consistency_changes() {
         }
 
         // Before 6.2.4
-        if (applied_version_normalized < normalize_version('6.2.4', 4)) {
+        // NOTE: hideStatusIcon returns in version 6.4.3, it should work the same way from configuration perspective
+        //       so we don't need to remove it from old version in case someone is using the old version still
+        /*if (applied_version_normalized < normalize_version('6.2.4', 4)) {
             log('info', '', getLang('version_changes'), '6.2.4');
 
             // Configuration variable hideStatusIcon removed
             cfg_remove('hideStatusIcon');
 
             apply_version('6.2.4');
-        }
+        }*/
 
         // Before 6.2.8
         if (applied_version_normalized < normalize_version('6.2.8', 4)) {

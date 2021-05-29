@@ -1,0 +1,11 @@
+.netflex_hide {
+	display: none !important;
+}
+
+.player-timedtext[netflex_highlighted="shadow"] .player-timedtext-text-container span {
+    text-shadow: #000000 -2px 0px, #000000 0px 2px, #000000 2px 0px, #000000 0px -2px !important;
+}
+
+.player-timedtext[netflex_highlighted="background"] .player-timedtext-text-container span {
+    background: rgba(0,0,0,0.5) !important;
+}

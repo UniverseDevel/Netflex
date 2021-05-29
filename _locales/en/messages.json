@@ -675,6 +675,14 @@
         "message":"Turns on/off automated start of video, if it was paused by 'Pause video if not focused' when video windows is in focus again.",
         "description":""
     },
+    "cfg_hideStatusIcon_name":{
+        "message":"Hide status icon in video player",
+        "description":""
+    },
+    "cfg_hideStatusIcon_description":{
+        "message":"Turns on/off hiding of status icon while playing title. If enabled, this would hide extension status icon and pop-up bubble from video player, but will remain available on browse pages to have an ability to disable this setting.",
+        "description":""
+    },
     "cfg_highlightSubtitles_name":{
         "message":"Highlight subtitles",
         "description":""

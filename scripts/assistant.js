@@ -607,44 +607,50 @@ function status_updater() {
         var bodyRect = null;
         var elemRect = null;
 
-        if (check_watch() && object_handler('player_controls', null)) {
-            try {
-                control_panel = 'watch';
-                controls_element = object_handler('player_controls', null);
-                controlsBefore_element = object_handler('player_controls_report_problem', null);
-                content_element = object_handler('player_focus_trap', null);
-                contentBefore_element = object_handler('player_focus_trap_element', null);
-                icon_size = '0.5em';
-                icon_shade = '0.12em';
-                icon_space = '0em';
-
-                bodyRect = document.body.getBoundingClientRect();
-                elemRect = controlsBefore_element.getBoundingClientRect();
-                if (bodyRect.right != 0 && elemRect.right != 0) {
-                    bubble_offset_right = bodyRect.right - elemRect.right;
-                    if (bubble_offset_right < 10) {
-                        bubble_offset_right = 10;
-                    }
-                }
-                if (elemRect.top != 0 && elemRect.bottom != 0) {
-                    bubble_offset_bottom = elemRect.bottom - elemRect.top - 3;
-                }
-            } catch (e) {control_panel = 'unknown e: ' + e.stack;}
-        } else if ((check_browse() || check_latest() || check_title() || check_search()) && object_handler('navigation_menu', null)) {
-            try {
-                control_panel = 'browse';
-                controls_element = object_handler('navigation_menu', null);
-                controlsBefore_element = object_handler('navigation_menu_search', null);
-                content_element = null;
-                contentBefore_element = null;
-                icon_size = '0.6em';
-                icon_shade = '0.20em';
-                icon_space = '1em';
-            } catch (e) {control_panel = 'unknown e: ' + e.stack;}
-        } else {
-            // Controls not found or are from unknown source
+        if (check_watch() && cfg['hideStatusIcon']['val'] && cfg['hideStatusIcon']['access']) {
+            // Status icon should be hidden
             remove_status_icon();
             control_panel = 'unknown';
+        } else {
+            if (check_watch() && object_handler('player_controls', null)) {
+                try {
+                    control_panel = 'watch';
+                    controls_element = object_handler('player_controls', null);
+                    controlsBefore_element = object_handler('player_controls_report_problem', null);
+                    content_element = object_handler('player_focus_trap', null);
+                    contentBefore_element = object_handler('player_focus_trap_element', null);
+                    icon_size = '0.5em';
+                    icon_shade = '0.12em';
+                    icon_space = '0em';
+
+                    bodyRect = document.body.getBoundingClientRect();
+                    elemRect = controlsBefore_element.getBoundingClientRect();
+                    if (bodyRect.right != 0 && elemRect.right != 0) {
+                        bubble_offset_right = bodyRect.right - elemRect.right;
+                        if (bubble_offset_right < 10) {
+                            bubble_offset_right = 10;
+                        }
+                    }
+                    if (elemRect.top != 0 && elemRect.bottom != 0) {
+                        bubble_offset_bottom = elemRect.bottom - elemRect.top - 3;
+                    }
+                } catch (e) {control_panel = 'unknown e: ' + e.stack;}
+            } else if ((check_browse() || check_latest() || check_title() || check_search()) && object_handler('navigation_menu', null)) {
+                try {
+                    control_panel = 'browse';
+                    controls_element = object_handler('navigation_menu', null);
+                    controlsBefore_element = object_handler('navigation_menu_search', null);
+                    content_element = null;
+                    contentBefore_element = null;
+                    icon_size = '0.6em';
+                    icon_shade = '0.20em';
+                    icon_space = '1em';
+                } catch (e) {control_panel = 'unknown e: ' + e.stack;}
+            } else {
+                // Controls not found or are from unknown source
+                remove_status_icon();
+                control_panel = 'unknown';
+            }
         }
 
         if (!control_panel.startsWith('unknown')) {
@@ -1553,6 +1559,7 @@ function netflix_assistant() {
                 if (subtitles_block.classList.contains('visually-hidden')) {
                     subtitles_block.classList.remove('visually-hidden');
                 }
+                subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
             }
         } else {
             // Check if title is series or not
@@ -1774,27 +1781,7 @@ function netflix_assistant() {
                         }
 
                         // Handle subtitles style
-                        var subtitles_lines = subtitles_block.children;
-                        for (var i = 0; i < subtitles_lines.length; i++) {
-                            var subtitles_items = subtitles_lines[i].children;
-                            for (var j = 0; j < subtitles_items.length; j++) {
-                                // Highlight subtitles that are not yet highlighted
-                                if (subtitles_items[j].getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
-                                    add_stats_count('stat_highlightSubtitles');
-
-                                    // Highlight subtitles shadow
-                                    if (cfg['highlightSubtitles']['val'] == 'shadow') {
-                                        subtitles_items[j].style.textShadow = '#000000 -2px 0px, #000000 0px 2px, #000000 2px 0px, #000000 0px -2px';
-                                        subtitles_items[j].setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
-                                    }
-                                    // Highlight subtitles background
-                                    if (cfg['highlightSubtitles']['val'] == 'background') {
-                                        subtitles_items[j].style.background = 'rgba(0,0,0,0.5)';
-                                        subtitles_items[j].setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
-                                    }
-                                }
-                            }
-                        }
+                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
                     }
                 } else {
                     if (subtitles_block && !hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
@@ -1802,6 +1789,7 @@ function netflix_assistant() {
                         if (subtitles_block.classList.contains('visually-hidden')) {
                             subtitles_block.classList.remove('visually-hidden');
                         }
+                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
                     }
                 }
 

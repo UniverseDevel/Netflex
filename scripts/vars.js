@@ -37,8 +37,12 @@ var netflix_head = object_handler('head', null);
 var netflix_body = object_handler('body', null);
 
 var styles_list = {
-    'extension': {
-        'src': extension_extension.getURL('styles/extension.css'),
+    'netflex-ui': {
+        'src': extension_extension.getURL('styles/netflex-ui.css'),
+        'cache': false
+    },
+    'netflex-features': {
+        'src': extension_extension.getURL('styles/netflex-features.css'),
         'cache': false
     }
 };

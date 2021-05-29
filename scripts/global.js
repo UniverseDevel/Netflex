@@ -213,6 +213,8 @@ var lang_keys = [
     'cfg_pauseOnBlur_name',
     'cfg_playOnFocus_description',
     'cfg_playOnFocus_name',
+    'cfg_hideStatusIcon_description',
+    'cfg_hideStatusIcon_name',
     'cfg_playPauseButtonDelay_description',
     'cfg_playPauseButtonDelay_name',
     'cfg_prevEpisodeKey_description',
@@ -1040,6 +1042,21 @@ function init_configuration() {
             'list': [],
             'name' : getLang('cfg_playOnFocus_name'),
             'desc' : getLang('cfg_playOnFocus_description')
+        },
+        'hideStatusIcon' : {
+            'type' : 'bool',
+            'category' : 'assistant',
+            'access' : true,
+            'order' : cfg_order['assistant']++,
+            'val' : false,
+            'def' : false,
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [],
+            'name' : getLang('cfg_hideStatusIcon_name'),
+            'desc' : getLang('cfg_hideStatusIcon_description')
         },
         'nextTitleDelayLimit' : {
             'type' : 'range',

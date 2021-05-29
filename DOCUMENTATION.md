@@ -75,3 +75,6 @@ General notes:
   You should keep this as a credit. To change name on web store page you should change file 'messages.json' array item 'provider'
   and 'developer'.
 - There are some TODOs and Known issues at the end of the change log.
+- In case OMDB API has an outage, developer provided a link for their database service provider to monitor their outage:
+  https://www.databasemart.com/serverstatus, if the outage is caused by other problem it might be needed to contact the
+  developer again.

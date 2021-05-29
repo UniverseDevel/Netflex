@@ -143,6 +143,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'player_subtitles':
+            // Note: relates to CSS
             obj = document.querySelector('.player-timedtext');
             if (obj) { return obj; }
             break;
