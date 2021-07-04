@@ -1561,6 +1561,11 @@ function netflix_assistant() {
                 }
                 subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
             }
+
+            // Remove elapsed time objects
+            if (document.querySelector('#netflex_elapsed_time')) {
+                removeDOM(document.querySelector('#netflex_elapsed_time'));
+            }
         } else {
             // Check if title is series or not
             if (object_handler('button_episodes_list', null)) {
@@ -1765,6 +1770,14 @@ function netflix_assistant() {
                     }
                 }
 
+                // Set video aspect ratio
+                var player_video_container = object_handler('player_video_container', null);
+                if (player_video_container && cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off'] && cfg['videoAspectRatio']['access'] && cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
+                    player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                } else {
+                    player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
+                }
+
                 // Apply subtitles configuration
                 var subtitles_block = object_handler('player_subtitles', null);
                 if (subtitles_block && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off'] && cfg['highlightSubtitles']['access']) || (hideSubtitles_temp && cfg['hideSubtitlesKey']['access']))) {
@@ -1790,6 +1803,33 @@ function netflix_assistant() {
                             subtitles_block.classList.remove('visually-hidden');
                         }
                         subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                    }
+                }
+
+                // Add elapsed video time
+                if (cfg['elapsedTime']['val'] && cfg['elapsedTime']['access']) {
+                    var progress_bar = object_handler('progress_bar', null);
+                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar) {
+                        var elm = document.createElement('div');
+                        elm.setAttribute('id','netflex_elapsed_time');
+                        elm.setAttribute('class','PlayerControls--control-element text-control time-remaining--modern');
+                        addCSS(elm, { 'margin': '0 2.5em 0 0;' });
+
+                        var el2 = document.createElement('time');
+                        el2.setAttribute('id','netflex_elapsed_time_value');
+                        el2.setAttribute('class','time-remaining__time');
+                        elm.appendChild(el2);
+
+                        try {progress_bar.insertBefore(elm, progress_bar.children[0]);} catch (e) {}
+                    }
+
+                    // Refresh value or add event that will
+                    if (document.querySelector('#netflex_elapsed_time_value')) {
+                        addDOM(document.querySelector('#netflex_elapsed_time_value'), convertToInterval(video.currentTime));
+                    }
+                } else {
+                    if (document.querySelector('#netflex_elapsed_time')) {
+                        removeDOM(document.querySelector('#netflex_elapsed_time'));
                     }
                 }
 

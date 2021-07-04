@@ -9,3 +9,20 @@
 .player-timedtext[netflex_highlighted="background"] .player-timedtext-text-container span {
     background: rgba(0,0,0,0.5) !important;
 }
+
+.VideoContainer video {
+    transform: translate(-50%, -50%);
+    position: relative;
+    left: 50%;
+    top: 50%;
+}
+
+.VideoContainer[netflex_aspect_ratio="original"] video {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.VideoContainer[netflex_aspect_ratio="21_9"] video {
+    width: 134% !important;
+    height: 134% !important;
+}

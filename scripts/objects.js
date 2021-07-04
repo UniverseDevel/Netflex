@@ -82,6 +82,10 @@ function object_handler(object_category, related_object) {
             };
             return obj;
             break;
+        case 'progress_bar':
+            obj = document.querySelector('.PlayerControlsNeo__progress-container');
+            if (obj) { return obj; }
+            break;
         case 'button_next_episode':
             obj = document.querySelector('.button-nfplayerNextEpisode');
             if (obj) { return obj; }

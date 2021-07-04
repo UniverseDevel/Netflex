@@ -547,6 +547,14 @@
         "message":"Turns on/off debug simulation of production environment.",
         "description":""
     },
+    "cfg_elapsedTime_name":{
+        "message":"Show elapsed video time",
+        "description":""
+    },
+    "cfg_elapsedTime_description":{
+        "message":"Turns on/off display of elapsed video time.",
+        "description":""
+    },
     "cfg_skipIntros_name":{
         "message":"Skip intros",
         "description":""
@@ -753,6 +761,14 @@
     },
     "cfg_videoSpeedRate_description":{
         "message":"Sets video speed rate at which will every title play. This can be temporarily overwritten by status bubble controls. Too sudden changes can de-synchronize audio and video, page refresh can fix that.",
+        "description":""
+    },
+    "cfg_videoAspectRatio_name":{
+        "message":"Video aspect ratio",
+        "description":""
+    },
+    "cfg_videoAspectRatio_description":{
+        "message":"Sets video aspect ratio at which will every title play.",
         "description":""
     },
     "cfg_videoBrightness_name":{
@@ -1081,6 +1097,14 @@
     },
     "option_unknown":{
         "message":"Unknown",
+        "description":""
+    },
+    "videoAspectRatio_type_original":{
+        "message":"Original",
+        "description":""
+    },
+    "videoAspectRatio_type_21_9":{
+        "message":"21:9",
         "description":""
     },
     "logLevel_type_unknown":{

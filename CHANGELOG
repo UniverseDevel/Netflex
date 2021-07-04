@@ -95,6 +95,7 @@
 6.4.1    - 2021.05.03 - Skip intro and recap button detection made a bit more exact to avoid grabbing any button with same style. Fixed problem where disliked titles were not hidden. Fixed problem with video features default setting being applied when video features are turned off.
 6.4.2    - 2021.05.03 - Updated DOMPurify library.
 6.4.3    - 2021.05.26 - Returned option to hide status icon but limited this option only to video player. Fixed blinking and style apply delay for subtitles.
+6.4.4    - 2021.07.04 - Added new version of DOMPurify library. Added option to show elapsed time in video player. Added option to stretch video for wide-screen aspect ratio (21:9).
 
 TODO:
 

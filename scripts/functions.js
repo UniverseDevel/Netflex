@@ -1075,6 +1075,35 @@ function checkProfile() {
     }
 }
 
+function addLeadingZero(number) {
+    var ret_num = '' + number;
+    if (number < 10) {
+        ret_num = '0' + number;
+    }
+    return ret_num;
+}
+
+function convertToInterval(seconds) {
+    var interval = '';
+    var sec = Math.floor(seconds);
+    var int_days = Math.floor(sec / 86400);
+    var int_hours = Math.floor(((sec % 31536000) % 86400) / 3600);
+    var int_mins = Math.floor((((sec % 31536000) % 86400) % 3600) / 60);
+    var int_secs = (((sec % 31536000) % 86400) % 3600) % 60;
+
+    if (int_days != 0) {
+        interval += int_days + ' ';
+    }
+
+    if (int_hours != 0) {
+        interval += int_hours + ':';
+    }
+
+    interval += addLeadingZero(int_mins) + ':' + addLeadingZero(int_secs);
+
+    return interval;
+}
+
 function addTimeFraction(counter, millies) {
     // Calculate fraction with more precession to avoid Floating-Point problem
     // https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html

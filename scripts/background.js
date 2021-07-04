@@ -1,21 +1,3 @@
-if (isDev) { // DEV: Any local installation
-    extension_browserAction.setIcon({
-        path: extension_extension.getURL('images/netflex_dev.png')
-    });
-    extension_browserAction.setTitle({
-        title: getLang('name') + ' DEV'
-    });
-} else if (isTest) { // TEST
-    extension_browserAction.setIcon({
-        path: extension_extension.getURL('images/netflex_test.png')
-    });
-    extension_browserAction.setTitle({
-        title: getLang('name') + ' TEST'
-    });
-} else { // PROD: Anything that is not TEST or DEV
-    // Keep product settings
-}
-
 extension_browserAction.onClicked.addListener(function (activeTab) {
     var newURL = 'https://www.netflix.com/';
     extension_tabs.create({ url: newURL });
@@ -36,6 +18,24 @@ extension_management.onDisabled.addListener(function (details) {
 });
 */
 extension_runtime.onInstalled.addListener(function (details) {
+    if (isDev) { // DEV: Any local installation
+        extension_browserAction.setIcon({
+            path: extension_extension.getURL('images/netflex_dev.png')
+        });
+        extension_browserAction.setTitle({
+            title: getLang('name') + ' DEV'
+        });
+    } else if (isTest) { // TEST
+        extension_browserAction.setIcon({
+            path: extension_extension.getURL('images/netflex_test.png')
+        });
+        extension_browserAction.setTitle({
+            title: getLang('name') + ' TEST'
+        });
+    } else { // PROD: Anything that is not TEST or DEV
+        // Keep production settings
+    }
+
     if (details.reason == 'install') {
         log('info', '', getLang('extension_install'));
 

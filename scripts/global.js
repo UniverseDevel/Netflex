@@ -242,6 +242,8 @@ var lang_keys = [
     'cfg_skipInterrupter_description',
     'cfg_skipInterrupter_name',
     'cfg_skipIntros_description',
+    'cfg_elapsedTime_name',
+    'cfg_elapsedTime_description',
     'cfg_skipIntros_name',
     'cfg_skipRecaps_description',
     'cfg_skipRecaps_name',
@@ -275,6 +277,8 @@ var lang_keys = [
     'cfg_videoSepia_name',
     'cfg_videoSpeedRate_description',
     'cfg_videoSpeedRate_name',
+    'cfg_videoAspectRatio_description',
+    'cfg_videoAspectRatio_name',
     'cfg_wheelVolume_description',
     'cfg_wheelVolume_name',
     'changelog',
@@ -360,6 +364,8 @@ var lang_keys = [
     'info_message',
     'lang_key_missing',
     'last_version',
+    'videoAspectRatio_type_original',
+    'videoAspectRatio_type_21_9',
     'logLevel_type_debug',
     'logLevel_type_error',
     'logLevel_type_info',
@@ -814,9 +820,26 @@ function init_configuration() {
     cfg_order['api'] = 0;
     cfg_order['debug'] = 0;
 
+    // Global configuration switches (if any)
+    var disableVideoFeatures = true;
+
     // Order of items here will be reflected on options page
     var conf = {
-        'skipIntros' : {
+        'elapsedTime' : {
+            'type' : 'bool',
+            'category' : 'assistant',
+            'access' : true,
+            'order' : cfg_order['assistant']++,
+            'val' : true,
+            'def' : true,
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [],
+            'name' : getLang('cfg_elapsedTime_name'),
+            'desc' : getLang('cfg_elapsedTime_description')
+        },'skipIntros' : {
             'type' : 'bool',
             'category' : 'assistant',
             'access' : true,
@@ -1253,10 +1276,28 @@ function init_configuration() {
             'name' : getLang('cfg_videoSpeedRate_name'),
             'desc' : getLang('cfg_videoSpeedRate_description')
         },
+        'videoAspectRatio' : {
+            'type' : 'option',
+            'category' : 'video',
+            'access' : true,
+            'order' : cfg_order['video']++,
+            'val' : 'original',
+            'def' : 'original',
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : 'original',
+            'list': [
+                'original',
+                '21_9'
+            ],
+            'name' : getLang('cfg_videoAspectRatio_name'),
+            'desc' : getLang('cfg_videoAspectRatio_description')
+        },
         'videoBrightness' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 100,
             'def' : 100,
@@ -1271,7 +1312,7 @@ function init_configuration() {
         'videoContrast' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 100,
             'def' : 100,
@@ -1286,7 +1327,7 @@ function init_configuration() {
         'videoGrayscale' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1301,7 +1342,7 @@ function init_configuration() {
         'videoHue' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1316,7 +1357,7 @@ function init_configuration() {
         'videoInvert' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1331,7 +1372,7 @@ function init_configuration() {
         'videoSaturation' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 100,
             'def' : 100,
@@ -1346,7 +1387,7 @@ function init_configuration() {
         'videoSepia' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (false && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
