@@ -1370,7 +1370,6 @@ function handle_video_features() {
                         videoSpeedRate_change = cfg['videoSpeedRate']['val'];
                     }
                     // Set video aspect ratio
-                    var player_video_container = object_handler('player_video_container', null);
                     if (player_video_container) {
                         if (
                                cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
