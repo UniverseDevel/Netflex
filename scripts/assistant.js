@@ -1389,6 +1389,7 @@ function handle_video_features() {
                             }
                         }
                     }
+                    // Other video features
                     if (videoBrightness_change != cfg['videoBrightness']['val']) {
                         addDOM(document.getElementById('feature_videoBrightness_display'), cfg['videoBrightness']['val'].toString());
                         document.getElementById('feature_videoBrightness').value = cfg['videoBrightness']['val'];
