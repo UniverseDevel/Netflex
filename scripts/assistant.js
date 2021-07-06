@@ -1519,6 +1519,14 @@ function netflix_assistant() {
         return;
     }
 
+    // Remove video features if found on different pages
+    if (!check_watch()) {
+        var player_video_container = object_handler('player_video_container', null);
+        if (player_video_container) {
+            player_video_container.removeAttribute('netflex_aspect_ratio');
+        }
+    }
+
     // Adjust video display settings
     handle_video_features();
 
@@ -1772,10 +1780,23 @@ function netflix_assistant() {
 
                 // Set video aspect ratio
                 var player_video_container = object_handler('player_video_container', null);
-                if (player_video_container && cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off'] && cfg['videoAspectRatio']['access'] && cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
-                    player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
-                } else {
-                    player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
+                if (player_video_container && video) {
+                    if (
+                           cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
+                        && cfg['videoAspectRatio']['access']
+                        && cfg['enableVideoFeatures']['val']
+                        && cfg['enableVideoFeatures']['access']
+                    ) {
+                        player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                        if (cfg['videoZoom']['access']) {
+                            video.style.setProperty('--netflex_zoom', cfg['videoZoom']['val'] + '%', '');
+                        }
+                    } else {
+                        player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
+                        if (cfg['videoZoom']['access']) {
+                            video.style.setProperty('--netflex_zoom', cfg['videoZoom']['def'] + '%', '');
+                        }
+                    }
                 }
 
                 // Apply subtitles configuration

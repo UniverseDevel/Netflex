@@ -771,6 +771,14 @@
         "message":"Sets video aspect ratio at which will every title play.",
         "description":""
     },
+    "cfg_videoZoom_name":{
+        "message":"Video zoom",
+        "description":""
+    },
+    "cfg_videoZoom_description":{
+        "message":"Sets video zoom at which will every title play. Video aspect ratio must be set to manual for this option to take effect.",
+        "description":""
+    },
     "cfg_videoBrightness_name":{
         "message":"Video brightness",
         "description":""
@@ -1105,6 +1113,10 @@
     },
     "videoAspectRatio_type_21_9":{
         "message":"21:9",
+        "description":""
+    },
+    "videoAspectRatio_type_manual":{
+        "message":"Manual (see Video zoom settings)",
         "description":""
     },
     "logLevel_type_unknown":{

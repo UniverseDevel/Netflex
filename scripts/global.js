@@ -279,6 +279,8 @@ var lang_keys = [
     'cfg_videoSpeedRate_name',
     'cfg_videoAspectRatio_description',
     'cfg_videoAspectRatio_name',
+    'cfg_videoZoom_description',
+    'cfg_videoZoom_name',
     'cfg_wheelVolume_description',
     'cfg_wheelVolume_name',
     'changelog',
@@ -366,6 +368,7 @@ var lang_keys = [
     'last_version',
     'videoAspectRatio_type_original',
     'videoAspectRatio_type_21_9',
+    'videoAspectRatio_type_manual',
     'logLevel_type_debug',
     'logLevel_type_error',
     'logLevel_type_info',
@@ -1289,10 +1292,26 @@ function init_configuration() {
             'off' : 'original',
             'list': [
                 'original',
-                '21_9'
+                '21_9',
+                'manual'
             ],
             'name' : getLang('cfg_videoAspectRatio_name'),
             'desc' : getLang('cfg_videoAspectRatio_description')
+        },
+        'videoZoom' : {
+            'type' : 'range',
+            'category' : 'video',
+            'access' : true,
+            'order' : cfg_order['video']++,
+            'val' : 100,
+            'def' : 100,
+            'min' : 20,
+            'max' : 200,
+            'step' : 1,
+            'off' : null,
+            'list': [],
+            'name' : getLang('cfg_videoZoom_name'),
+            'desc' : getLang('cfg_videoZoom_description')
         },
         'videoBrightness' : {
             'type' : 'range',

@@ -10,7 +10,7 @@
     background: rgba(0,0,0,0.5) !important;
 }
 
-.VideoContainer video {
+.VideoContainer:not(:not([netflex_aspect_ratio])) video {
     transform: translate(-50%, -50%);
     position: relative;
     left: 50%;
@@ -26,3 +26,20 @@
     width: 134% !important;
     height: 134% !important;
 }
+
+.VideoContainer[netflex_aspect_ratio="manual"] video {
+    width: var(--netflex_zoom, 100%);
+    height: var(--netflex_zoom, 100%);
+}
+
+/*.VideoContainer video {
+    filter:
+        brightness(var(--netflex_brightness, 100%))
+        contrast(var(--netflex_contrast, 100%))
+        grayscale(var(--netflex_grayscale, 0%))
+        hue-rotate(var(--netflex_hue, 0deg))
+        invert(var(--netflex_invert, 0%))
+        saturate(var(--netflex_saturate, 100%))
+        sepia(var(--netflex_sepia, 0%))
+    ;
+}*/
