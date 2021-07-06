@@ -1354,8 +1354,8 @@ function handle_video_features() {
     // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
     // when other extension might be changing them as well
     if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
+        try {var video_container = object_handler('player_video_container', null);} catch (e) {}
         try {var video = object_handler('player_video', null);} catch (e) {}
-        try {var player_video_container = object_handler('player_video_container', null);} catch (e) {}
 
         if (video) {
             if (enableAssistant) {
@@ -1370,19 +1370,19 @@ function handle_video_features() {
                         videoSpeedRate_change = cfg['videoSpeedRate']['val'];
                     }
                     // Set video aspect ratio
-                    if (player_video_container) {
+                    if (video_container) {
                         if (
                                cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
                             && cfg['videoAspectRatio']['access']
                             && cfg['enableVideoFeatures']['val']
                             && cfg['enableVideoFeatures']['access']
                         ) {
-                            player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                            video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
                             if (cfg['videoZoom']['access']) {
                                 video.style.setProperty('--netflex_zoom', cfg['videoZoom']['val'] + '%', '');
                             }
                         } else {
-                            player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
+                            video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
                             if (cfg['videoZoom']['access']) {
                                 video.style.setProperty('--netflex_zoom', cfg['videoZoom']['def'] + '%', '');
                             }
@@ -1491,8 +1491,8 @@ function handle_video_features() {
                         videoSepia_temp = cfg['videoSepia']['val'];
                     }
 
-                    if (player_video_container) {
-                        player_video_container.removeAttribute('netflex_aspect_ratio');
+                    if (video_container) {
+                        video_container.removeAttribute('netflex_aspect_ratio');
                     }
                 }
             } else {

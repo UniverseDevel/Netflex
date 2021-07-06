@@ -66,10 +66,12 @@ function fireworks_init() {
     log('output', '', getLang('fireworks_start'));
     running = true;
 
-    video = object_handler('player_video_container', null);
-    //video = object_handler('player_video', null);
+    video_container = object_handler('player_video_container', null);
+    SCREEN_WIDTH = video_container.offsetWidth;
+    SCREEN_HEIGHT = video_container.offsetHeight;
+    /*video = object_handler('player_video', null);
     SCREEN_WIDTH = video.offsetWidth;
-    SCREEN_HEIGHT = video.offsetHeight;
+    SCREEN_HEIGHT = video.offsetHeight;*/
 
     canvas = document.createElement('canvas');
     context = canvas.getContext('2d');
@@ -143,14 +145,20 @@ function launchFrom(x) {
 function loop() {
     try {
         // update screen size
-        video = object_handler('player_video_container', null);
-        //video = object_handler('player_video', null);
+        video_container = object_handler('player_video_container', null);
+        if (SCREEN_WIDTH != video_container.offsetWidth) {
+            canvas.width = SCREEN_WIDTH = video_container.offsetWidth;
+        }
+        if (SCREEN_HEIGHT != video_container.offsetHeight) {
+            canvas.height = SCREEN_HEIGHT = video_container.offsetHeight;
+        }
+        /*video = object_handler('player_video', null);
         if (SCREEN_WIDTH != video.offsetWidth) {
             canvas.width = SCREEN_WIDTH = video.offsetWidth;
         }
         if (SCREEN_HEIGHT != video.offsetHeight) {
             canvas.height = SCREEN_HEIGHT = video.offsetHeight;
-        }
+        }*/
 
         // clear canvas
         context.fillStyle = "rgba(0, 0, 0, 0.00)";
