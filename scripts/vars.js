@@ -172,6 +172,9 @@ var nextVideo_3 = '';
 var videoSpeedRate = cfg['videoSpeedRate']['def'];
 var videoSpeedRate_change = cfg['videoSpeedRate']['def'];
 var videoSpeedRate_temp = cfg['videoSpeedRate']['def'];
+var videoZoom = cfg['videoZoom']['def'];
+var videoZoom_change = cfg['videoZoom']['def'];
+var videoZoom_temp = cfg['videoZoom']['def'];
 var videoBrightness = cfg['videoBrightness']['def'];
 var videoBrightness_change = cfg['videoBrightness']['def'];
 var videoBrightness_temp = cfg['videoBrightness']['def'];
@@ -193,8 +196,6 @@ var videoSaturation_temp = cfg['videoSaturation']['def'];
 var videoSepia = cfg['videoSepia']['def'];
 var videoSepia_change = cfg['videoSepia']['def'];
 var videoSepia_temp = cfg['videoSepia']['def'];
-
-var video_filter_access = false;
 
 var hideSubtitles_temp = false;
 

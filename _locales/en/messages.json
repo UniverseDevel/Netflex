@@ -199,6 +199,10 @@
         "message":"Temporary video speed rate (lasts until next video):",
         "description":""
     },
+    "feature_videoZoom":{
+        "message":"Temporary video zoom (lasts until next video, manual aspect radio option required):",
+        "description":""
+    },
     "feature_videoBrightness":{
         "message":"Temporary video brightness (lasts until next video):",
         "description":""

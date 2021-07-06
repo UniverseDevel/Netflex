@@ -1,17 +1,4 @@
 function main() {
-    // Generate video features access
-    if (
-           cfg['videoBrightness']['access']
-        && cfg['videoContrast']['access']
-        && cfg['videoGrayscale']['access']
-        && cfg['videoHue']['access']
-        && cfg['videoInvert']['access']
-        && cfg['videoSaturation']['access']
-        && cfg['videoSepia']['access']
-    ) {
-        video_filter_access = true;
-    }
-
     // Init content for startup
     if (check_domain()) {
         if (document.getElementById(injected_flag)) {

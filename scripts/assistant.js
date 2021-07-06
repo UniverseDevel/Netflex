@@ -239,6 +239,27 @@ function generate_status_features() {
                 </td>
             </tr>
         </table>
+        <hr style="{SHOW_VIDEO_ZOOM}">
+        <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;{SHOW_VIDEO_ZOOM}">
+            <tr>
+                <td colspan="2">
+                    {VIDEO_ZOOM_TEXT}
+                </td>
+            </tr>
+            <tr style="padding-top: 5px;">
+                <td style="width: 100%; padding-right: 5px;">
+                    <input type="range" id="feature_videoZoom" value="{VIDEO_ZOOM_VALUE}" min="{VIDEO_ZOOM_MIN}" max="{VIDEO_ZOOM_MAX}" step="{VIDEO_ZOOM_STEP}" style="width: 100%;">
+                </td>
+                <td style="min-width: 50px;">
+                    <span id="feature_videoZoom_display">{VIDEO_ZOOM_VALUE_DISPLAY}</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="extension_feature_reset" value="feature_videoZoom:cfg:videoZoom" style="border: 0; color: #ffffff !important; background-color: #000000 !important;">{FEATURE_RESET_CFG}</button>
+                </td>
+            </tr>
+        </table>
         <hr style="{SHOW_VIDEO_BRIGHTNESS}">
         <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;{SHOW_VIDEO_BRIGHTNESS}">
             <tr>
@@ -393,6 +414,7 @@ function generate_status_features() {
     var show_tempHideSubtitles = 'display: none;';
 
     var show_videoSpeedRate = 'display: none;';
+    var show_videoZoom = 'display: none;';
     var show_videoBrightness = 'display: none;';
     var show_videoContrast = 'display: none;';
     var show_videoGrayscale = 'display: none;';
@@ -414,13 +436,42 @@ function generate_status_features() {
 
                 shown_features_count++;
             }
-            if (video_filter_access) {
+            if (cfg['videoAspectRatio']['access'] && cfg['videoAspectRatio']['val'] == 'manual' && cfg['videoZoom']['access']) {
+                show_videoZoom = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoBrightness']['access']) {
                 show_videoBrightness = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoContrast']['access']) {
                 show_videoContrast = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoGrayscale']['access']) {
                 show_videoGrayscale = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoHue']['access']) {
                 show_videoHue = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoInvert']['access']) {
                 show_videoInvert = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoSaturation']['access']) {
                 show_videoSaturation = '';
+
+                shown_features_count++;
+            }
+            if (cfg['videoSepia']['access']) {
                 show_videoSepia = '';
 
                 shown_features_count++;
@@ -448,6 +499,14 @@ function generate_status_features() {
         'VIDEO_SPEED_RATE_MIN': cfg['videoSpeedRate']['min'],
         'VIDEO_SPEED_RATE_MAX': cfg['videoSpeedRate']['max'],
         'VIDEO_SPEED_RATE_STEP': cfg['videoSpeedRate']['step'],
+
+        'SHOW_VIDEO_ZOOM': show_videoZoom,
+        'VIDEO_ZOOM_TEXT': getLang('feature_videoZoom'),
+        'VIDEO_ZOOM_VALUE_DISPLAY': videoZoom_temp,
+        'VIDEO_ZOOM_VALUE': videoZoom_temp,
+        'VIDEO_ZOOM_MIN': cfg['videoZoom']['min'],
+        'VIDEO_ZOOM_MAX': cfg['videoZoom']['max'],
+        'VIDEO_ZOOM_STEP': cfg['videoZoom']['step'],
 
         'SHOW_VIDEO_BRIGHTNESS': show_videoBrightness,
         'VIDEO_BRIGHTNESS_TEXT': getLang('feature_videoBrightness'),
@@ -513,6 +572,7 @@ function generate_status_features() {
 function create_features_events() {
     try {document.getElementById('feature_tempHideSubtitles').addEventListener('change', function() { logEvent('status_updater > feature_tempHideSubtitles'); adjust_hide_subtitles_features_values(this); });} catch (e) {}
     try {document.getElementById('feature_videoSpeedRate').addEventListener('input', function() { logEvent('status_updater > feature_videoSpeedRate'); adjust_video_features_values(this); });} catch (e) {}
+    try {document.getElementById('feature_videoZoom').addEventListener('input', function() { logEvent('status_updater > feature_videoZoom'); adjust_video_features_values(this); });} catch (e) {}
     try {document.getElementById('feature_videoBrightness').addEventListener('input', function() { logEvent('status_updater > feature_videoBrightness'); adjust_video_features_values(this); });} catch (e) {}
     try {document.getElementById('feature_videoContrast').addEventListener('input', function() { logEvent('status_updater > feature_videoContrast'); adjust_video_features_values(this); });} catch (e) {}
     try {document.getElementById('feature_videoGrayscale').addEventListener('input', function() { logEvent('status_updater > feature_videoGrayscale'); adjust_video_features_values(this); });} catch (e) {}
@@ -536,6 +596,9 @@ function adjust_video_features_values(object) {
     switch (object.id) {
         case 'feature_videoSpeedRate':
             videoSpeedRate_temp = Number(value);
+            break;
+        case 'feature_videoZoom':
+            videoZoom_temp = Number(value);
             break;
         case 'feature_videoBrightness':
             videoBrightness_temp = Number(value);
@@ -1353,176 +1416,158 @@ function unreveal_synopsis(obj) {
 function handle_video_features() {
     // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
     // when other extension might be changing them as well
-    if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
-        try {var video_container = object_handler('player_video_container', null);} catch (e) {}
-        try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var video = object_handler('player_video', null);} catch (e) {}
 
-        if (video) {
-            if (enableAssistant) {
-                if (check_watch()) {
+    if (video) {
+        if (check_watch()) {
+            if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
+                if (enableAssistant) {
+                    video.setAttribute('netflex_video_features', 'on');
                     videoSpeedRate = video.playbackRate;
 
-                    // Update feature controls
-                    if (videoSpeedRate_change != cfg['videoSpeedRate']['val']) {
-                        addDOM(document.getElementById('feature_videoSpeedRate_display'), cfg['videoSpeedRate']['val'].toString());
-                        document.getElementById('feature_videoSpeedRate').value = cfg['videoSpeedRate']['val'];
-                        videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
-                        videoSpeedRate_change = cfg['videoSpeedRate']['val'];
-                    }
-                    // Set video aspect ratio
-                    if (video_container) {
-                        if (
-                               cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
-                            && cfg['videoAspectRatio']['access']
-                            && cfg['enableVideoFeatures']['val']
-                            && cfg['enableVideoFeatures']['access']
-                        ) {
-                            video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
-                            if (cfg['videoZoom']['access']) {
-                                video.style.setProperty('--netflex_zoom', cfg['videoZoom']['val'] + '%', '');
-                            }
-                        } else {
-                            video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
-                            if (cfg['videoZoom']['access']) {
-                                video.style.setProperty('--netflex_zoom', cfg['videoZoom']['def'] + '%', '');
-                            }
+                    // Video speed rate feature
+                    if (cfg['videoSpeedRate']['access']) {
+                        if (videoSpeedRate_change != cfg['videoSpeedRate']['val']) {
+                            addDOM(document.getElementById('feature_videoSpeedRate_display'), cfg['videoSpeedRate']['val'].toString());
+                            document.getElementById('feature_videoSpeedRate').value = cfg['videoSpeedRate']['val'];
+                            videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
+                            videoSpeedRate_change = cfg['videoSpeedRate']['val'];
+                        }
+                        if (videoSpeedRate != videoSpeedRate_temp) {
+                            video.playbackRate = videoSpeedRate_temp;
+                            videoSpeedRate = videoSpeedRate_temp;
                         }
                     }
-                    // Other video features
-                    if (videoBrightness_change != cfg['videoBrightness']['val']) {
-                        addDOM(document.getElementById('feature_videoBrightness_display'), cfg['videoBrightness']['val'].toString());
-                        document.getElementById('feature_videoBrightness').value = cfg['videoBrightness']['val'];
-                        videoBrightness_temp = cfg['videoBrightness']['val'];
-                        videoBrightness_change = cfg['videoBrightness']['val'];
-                    }
-                    if (videoContrast_change != cfg['videoContrast']['val']) {
-                        addDOM(document.getElementById('feature_videoContrast_display'), cfg['videoContrast']['val'].toString());
-                        document.getElementById('feature_videoContrast').value = cfg['videoContrast']['val'];
-                        videoContrast_temp = cfg['videoContrast']['val'];
-                        videoContrast_change = cfg['videoContrast']['val'];
-                    }
-                    if (videoGrayscale_change != cfg['videoGrayscale']['val']) {
-                        addDOM(document.getElementById('feature_videoGrayscale_display'), cfg['videoGrayscale']['val'].toString());
-                        document.getElementById('feature_videoGrayscale').value = cfg['videoGrayscale']['val'];
-                        videoGrayscale_temp = cfg['videoGrayscale']['val'];
-                        videoGrayscale_change = cfg['videoGrayscale']['val'];
-                    }
-                    if (videoGrayscale_change != cfg['videoGrayscale']['val']) {
-                        addDOM(document.getElementById('feature_videoGrayscale_display'), cfg['videoGrayscale']['val'].toString());
-                        document.getElementById('feature_videoGrayscale').value = cfg['videoGrayscale']['val'];
-                        videoGrayscale_temp = cfg['videoGrayscale']['val'];
-                        videoGrayscale_change = cfg['videoGrayscale']['val'];
-                    }
-                    if (videoHue_change != cfg['videoHue']['val']) {
-                        addDOM(document.getElementById('feature_videoHue_display'), cfg['videoHue']['val'].toString());
-                        document.getElementById('feature_videoHue').value = cfg['videoHue']['val'];
-                        videoHue_temp = cfg['videoHue']['val'];
-                        videoHue_change = cfg['videoHue']['val'];
-                    }
-                    if (videoInvert_change != cfg['videoInvert']['val']) {
-                        addDOM(document.getElementById('feature_videoInvert_display'), cfg['videoInvert']['val'].toString());
-                        document.getElementById('feature_videoInvert').value = cfg['videoInvert']['val'];
-                        videoInvert_temp = cfg['videoInvert']['val'];
-                        videoInvert_change = cfg['videoInvert']['val'];
-                    }
-                    if (videoSaturation_change != cfg['videoSaturation']['val']) {
-                        addDOM(document.getElementById('feature_videoSaturation_display'), cfg['videoSaturation']['val'].toString());
-                        document.getElementById('feature_videoSaturation').value = cfg['videoSaturation']['val'];
-                        videoSaturation_temp = cfg['videoSaturation']['val'];
-                        videoSaturation_change = cfg['videoSaturation']['val'];
-                    }
-                    if (videoSepia_change != cfg['videoSepia']['val']) {
-                        addDOM(document.getElementById('feature_videoSepia_display'), cfg['videoSepia']['val'].toString());
-                        document.getElementById('feature_videoSepia').value = cfg['videoSepia']['val'];
-                        videoSepia_temp = cfg['videoSepia']['val'];
-                        videoSepia_change = cfg['videoSepia']['val'];
+
+                    // Video aspect ratio and zoom
+                    if (cfg['videoAspectRatio']['access']) {
+                        video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+
+                        if (cfg['videoZoom']['access']) {
+                            if (videoZoom_change != cfg['videoZoom']['val']) {
+                                addDOM(document.getElementById('feature_videoZoom_display'), cfg['videoZoom']['val'].toString());
+                                document.getElementById('feature_videoZoom').value = cfg['videoZoom']['val'];
+                                videoZoom_temp = cfg['videoZoom']['val'];
+                                videoZoom_change = cfg['videoZoom']['val'];
+                            }
+                            video.style.setProperty('--netflex_zoom', videoZoom_temp + '%', '');
+                        }
                     }
 
-                    // Change video rate
-                    if (videoSpeedRate != videoSpeedRate_temp) {
-                        video.playbackRate = videoSpeedRate_temp;
-                        videoSpeedRate = videoSpeedRate_temp;
+                    // Filter video features
+                    var filter_values = [];
+
+                    if (cfg['videoBrightness']['access']) {
+                        if (videoBrightness_change != cfg['videoBrightness']['val']) {
+                            addDOM(document.getElementById('feature_videoBrightness_display'), cfg['videoBrightness']['val'].toString());
+                            document.getElementById('feature_videoBrightness').value = cfg['videoBrightness']['val'];
+                            videoBrightness_temp = cfg['videoBrightness']['val'];
+                            videoBrightness_change = cfg['videoBrightness']['val'];
+                        }
+                        if (videoBrightness_temp != cfg['videoBrightness']['def']) {
+                            filter_values.push('brightness(' + videoBrightness_temp + '%)');
+                        }
+                    }
+
+                    if (cfg['videoContrast']['access']) {
+                        if (videoContrast_change != cfg['videoContrast']['val']) {
+                            addDOM(document.getElementById('feature_videoContrast_display'), cfg['videoContrast']['val'].toString());
+                            document.getElementById('feature_videoContrast').value = cfg['videoContrast']['val'];
+                            videoContrast_temp = cfg['videoContrast']['val'];
+                            videoContrast_change = cfg['videoContrast']['val'];
+                        }
+                        if (videoContrast_temp != cfg['videoContrast']['def']) {
+                            filter_values.push('contrast(' + videoContrast_temp + '%)');
+                        }
+                    }
+
+                    if (cfg['videoGrayscale']['access']) {
+                        if (videoGrayscale_change != cfg['videoGrayscale']['val']) {
+                            addDOM(document.getElementById('feature_videoGrayscale_display'), cfg['videoGrayscale']['val'].toString());
+                            document.getElementById('feature_videoGrayscale').value = cfg['videoGrayscale']['val'];
+                            videoGrayscale_temp = cfg['videoGrayscale']['val'];
+                            videoGrayscale_change = cfg['videoGrayscale']['val'];
+                        }
+                        if (videoGrayscale_temp != cfg['videoGrayscale']['def']) {
+                            filter_values.push('grayscale(' + videoGrayscale_temp + '%)');
+                        }
+                    }
+
+                    if (cfg['videoHue']['access']) {
+                        if (videoHue_change != cfg['videoHue']['val']) {
+                            addDOM(document.getElementById('feature_videoHue_display'), cfg['videoHue']['val'].toString());
+                            document.getElementById('feature_videoHue').value = cfg['videoHue']['val'];
+                            videoHue_temp = cfg['videoHue']['val'];
+                            videoHue_change = cfg['videoHue']['val'];
+                        }
+                        if (videoHue_temp != cfg['videoHue']['def']) {
+                            filter_values.push('hue-rotate(' + videoHue_temp + 'deg)');
+                        }
+                    }
+
+                    if (cfg['videoInvert']['access']) {
+                        if (videoInvert_change != cfg['videoInvert']['val']) {
+                            addDOM(document.getElementById('feature_videoInvert_display'), cfg['videoInvert']['val'].toString());
+                            document.getElementById('feature_videoInvert').value = cfg['videoInvert']['val'];
+                            videoInvert_temp = cfg['videoInvert']['val'];
+                            videoInvert_change = cfg['videoInvert']['val'];
+                        }
+                        if (videoInvert_temp != cfg['videoInvert']['def']) {
+                            filter_values.push('invert(' + videoInvert_temp + '%)');
+                        }
+                    }
+
+                    if (cfg['videoSaturation']['access']) {
+                        if (videoSaturation_change != cfg['videoSaturation']['val']) {
+                            addDOM(document.getElementById('feature_videoSaturation_display'), cfg['videoSaturation']['val'].toString());
+                            document.getElementById('feature_videoSaturation').value = cfg['videoSaturation']['val'];
+                            videoSaturation_temp = cfg['videoSaturation']['val'];
+                            videoSaturation_change = cfg['videoSaturation']['val'];
+                        }
+                        if (videoSaturation_temp != cfg['videoSaturation']['def']) {
+                            filter_values.push('saturate(' + videoSaturation_temp + '%)');
+                        }
+                    }
+
+                    if (cfg['videoSepia']['access']) {
+                        if (videoSepia_change != cfg['videoSepia']['val']) {
+                            addDOM(document.getElementById('feature_videoSepia_display'), cfg['videoSepia']['val'].toString());
+                            document.getElementById('feature_videoSepia').value = cfg['videoSepia']['val'];
+                            videoSepia_temp = cfg['videoSepia']['val'];
+                            videoSepia_change = cfg['videoSepia']['val'];
+                        }
+                        if (videoSepia_temp != cfg['videoSepia']['def']) {
+                            filter_values.push('sepia(' + videoSepia_temp + '%)');
+                        }
                     }
 
                     // Change filter
-                    if (video_filter_access) {
-                        if (
-                               video.style.cssText == ''
-                            || videoBrightness != videoBrightness_temp
-                            || videoContrast != videoContrast_temp
-                            || videoGrayscale != videoGrayscale_temp
-                            || videoHue != videoHue_temp
-                            || videoInvert != videoInvert_temp
-                            || videoSaturation != videoSaturation_temp
-                            || videoSepia != videoSepia_temp
-                        ) {
-                            var keys = {
-                                'VIDEO_BRIGHTNESS': videoBrightness_temp,
-                                'VIDEO_CONTRAST': videoContrast_temp,
-                                'VIDEO_GRAYSCALE': videoGrayscale_temp,
-                                'VIDEO_HUE': videoHue_temp,
-                                'VIDEO_INVERT': videoInvert_temp,
-                                'VIDEO_SATURATION': videoSaturation_temp,
-                                'VIDEO_SEPIA': videoSepia_temp
-                            };
-                            addCSS(video, {
-                                'filter': fillKeys('brightness({VIDEO_BRIGHTNESS}%) contrast({VIDEO_CONTRAST}%) grayscale({VIDEO_GRAYSCALE}%) hue-rotate({VIDEO_HUE}deg) invert({VIDEO_INVERT}%) saturate({VIDEO_SATURATION}%) sepia({VIDEO_SEPIA}%);',keys)
-                            });
-                            videoBrightness = videoBrightness_temp;
-                            videoContrast = videoContrast_temp;
-                            videoGrayscale = videoGrayscale_temp;
-                            videoHue = videoHue_temp;
-                            videoInvert = videoInvert_temp;
-                            videoSaturation = videoSaturation_temp;
-                            videoSepia = videoSepia_temp;
-                        }
+                    var filter = filter_values.join(' ');
+                    if (filter == '') {
+                        filter = 'none';
                     }
+                    video.style.setProperty('--netflex_filter', filter, '');
                 } else {
-                    if (cfg['videoSpeedRate']['access']) {
-                        videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
-                    }
-                    if (video_filter_access) {
-                        videoBrightness_temp = cfg['videoBrightness']['val'];
-                        videoContrast_temp = cfg['videoContrast']['val'];
-                        videoGrayscale_temp = cfg['videoGrayscale']['val'];
-                        videoHue_temp = cfg['videoHue']['val'];
-                        videoInvert_temp = cfg['videoInvert']['val'];
-                        videoSaturation_temp = cfg['videoSaturation']['val'];
-                        videoSepia_temp = cfg['videoSepia']['val'];
-                    }
-
-                    if (video_container) {
-                        video_container.removeAttribute('netflex_aspect_ratio');
-                    }
+                    reset_videoSpeedRate();
+                    video.removeAttribute('netflex_video_features');
                 }
             } else {
-                if (cfg['videoSpeedRate']['access']) {
-                    video.playbackRate = 1;
-                    videoSpeedRate = 1;
-                }
-                if (video_filter_access) {
-                    var keys = {
-                        'VIDEO_BRIGHTNESS': cfg['videoBrightness']['def'],
-                        'VIDEO_CONTRAST': cfg['videoContrast']['def'],
-                        'VIDEO_GRAYSCALE': cfg['videoGrayscale']['def'],
-                        'VIDEO_HUE': cfg['videoHue']['def'],
-                        'VIDEO_INVERT': cfg['videoInvert']['def'],
-                        'VIDEO_SATURATION': cfg['videoSaturation']['def'],
-                        'VIDEO_SEPIA': cfg['videoSepia']['def']
-                    };
-                    addCSS(video, {
-                        'filter': fillKeys('brightness({VIDEO_BRIGHTNESS}%) contrast({VIDEO_CONTRAST}%) grayscale({VIDEO_GRAYSCALE}%) hue-rotate({VIDEO_HUE}deg) invert({VIDEO_INVERT}%) saturate({VIDEO_SATURATION}%) sepia({VIDEO_SEPIA}%);',keys)
-                    });
-
-                    videoBrightness = cfg['videoBrightness']['def'];
-                    videoContrast = cfg['videoContrast']['def'];
-                    videoGrayscale = cfg['videoGrayscale']['def'];
-                    videoHue = cfg['videoHue']['def'];
-                    videoInvert = cfg['videoInvert']['def'];
-                    videoSaturation = cfg['videoSaturation']['def'];
-                    videoSepia = cfg['videoSepia']['def'];
-                }
+                video.removeAttribute('netflex_video_features');
             }
+        } else {
+            video.removeAttribute('netflex_video_features');
+        }
+    }
+}
+
+function reset_videoSpeedRate() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+    if (video) {
+        if (cfg['videoSpeedRate']['access']) {
+            videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
+            video.playbackRate = 1;
+            videoSpeedRate = 1;
+            log('debug', 'assistant_loop', 'RESET');
         }
     }
 }

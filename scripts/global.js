@@ -348,6 +348,7 @@ var lang_keys = [
     'feature_videoSaturation',
     'feature_videoSepia',
     'feature_videoSpeedRate',
+    'feature_videoZoom',
     'features',
     'fireworks_start',
     'founded_by',
@@ -558,7 +559,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function load_configuration(callback) {
+function load_configuration(callback, special_callback) {
     var conf_def = {};
 
     for (var key in cfg) {
@@ -621,6 +622,10 @@ function load_configuration(callback) {
             if (typeof callback === 'function') {
                 callback();
             }
+
+            if (typeof special_callback === 'function') {
+                special_callback();
+            }
         });
     } catch (e) {
         error_detected = true;
@@ -630,9 +635,11 @@ function load_configuration(callback) {
 
 function save_configuration(callback) {
     var conf = {};
+    var enableVideoFeatures_key = false;
 
     for (var key in cfg) {
         var type = cfg[key]['type'];
+        var value_old = cfg[key]['val'];
         var value = cfg[key]['val'];
 
         switch (type) {
@@ -722,6 +729,17 @@ function save_configuration(callback) {
 
         // Add to list of cfg values that will be stored
         conf[key] = value.toString();
+
+        // Special case when video features are disabled, reset video speed
+        if (key == 'enableVideoFeatures' && !value && value_old) {
+            enableVideoFeatures_key = true;
+        }
+    }
+
+    var special_callback = null;
+    // Special case when video features are disabled, reset video speed
+    if (enableVideoFeatures_key) {
+        special_callback = function() { reset_videoSpeedRate(); };
     }
 
     // Store values into storage
@@ -732,7 +750,7 @@ function save_configuration(callback) {
             log('debug', 'configuration', conf);
 
             try {setStatus(getLang('cfg_saved'),'green',1500);} catch (e) {}
-            load_configuration(callback);
+            load_configuration(callback, special_callback);
             cfg_changed = true;
         });
 

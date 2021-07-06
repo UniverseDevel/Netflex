@@ -277,6 +277,11 @@ function reset_configuration_cat(type) {
             if (cfg.hasOwnProperty(key)) {
                 if (cfg[key]['category'] == type) {
                     extension_storage.local.remove(key, function() {});
+
+                    // Special case when video speed rate is reset
+                    if (key == 'videoSpeedRate') {
+                        reset_videoSpeedRate();
+                    }
                 }
             }
         }
@@ -726,7 +731,6 @@ function environment_update() {
         debug_variables['variables']['error_detected'] = error_detected;
         debug_variables['variables']['error_message'] = error_message;
         debug_variables['variables']['error_count'] = error_count;
-        debug_variables['variables']['video_filter_access'] = video_filter_access;
         debug_variables['variables']['netflix_profile'] = netflix_profile;
         debug_variables['variables']['reload_requests'] = reload_requests;
         debug_variables['variables']['reload_requested'] = reload_requested;
@@ -779,6 +783,9 @@ function environment_update() {
         debug_variables['assistant']['videoSpeedRate'] = videoSpeedRate;
         debug_variables['assistant']['videoSpeedRate_change'] = videoSpeedRate_change;
         debug_variables['assistant']['videoSpeedRate_temp'] = videoSpeedRate_temp;
+        debug_variables['assistant']['videoZoom'] = videoZoom;
+        debug_variables['assistant']['videoZoom_change'] = videoZoom_change;
+        debug_variables['assistant']['videoZoom_temp'] = videoZoom_temp;
         debug_variables['assistant']['videoBrightness'] = videoBrightness;
         debug_variables['assistant']['videoBrightness_change'] = videoBrightness_change;
         debug_variables['assistant']['videoBrightness_temp'] = videoBrightness_temp;
