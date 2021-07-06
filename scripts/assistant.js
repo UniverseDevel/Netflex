@@ -1355,6 +1355,7 @@ function handle_video_features() {
     // when other extension might be changing them as well
     if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
         try {var video = object_handler('player_video', null);} catch (e) {}
+        try {var player_video_container = object_handler('player_video_container', null);} catch (e) {}
 
         if (video) {
             if (enableAssistant) {
@@ -1367,6 +1368,26 @@ function handle_video_features() {
                         document.getElementById('feature_videoSpeedRate').value = cfg['videoSpeedRate']['val'];
                         videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
                         videoSpeedRate_change = cfg['videoSpeedRate']['val'];
+                    }
+                    // Set video aspect ratio
+                    var player_video_container = object_handler('player_video_container', null);
+                    if (player_video_container) {
+                        if (
+                               cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
+                            && cfg['videoAspectRatio']['access']
+                            && cfg['enableVideoFeatures']['val']
+                            && cfg['enableVideoFeatures']['access']
+                        ) {
+                            player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                            if (cfg['videoZoom']['access']) {
+                                video.style.setProperty('--netflex_zoom', cfg['videoZoom']['val'] + '%', '');
+                            }
+                        } else {
+                            player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
+                            if (cfg['videoZoom']['access']) {
+                                video.style.setProperty('--netflex_zoom', cfg['videoZoom']['def'] + '%', '');
+                            }
+                        }
                     }
                     if (videoBrightness_change != cfg['videoBrightness']['val']) {
                         addDOM(document.getElementById('feature_videoBrightness_display'), cfg['videoBrightness']['val'].toString());
@@ -1469,6 +1490,10 @@ function handle_video_features() {
                         videoSaturation_temp = cfg['videoSaturation']['val'];
                         videoSepia_temp = cfg['videoSepia']['val'];
                     }
+
+                    if (player_video_container) {
+                        player_video_container.removeAttribute('netflex_aspect_ratio');
+                    }
                 }
             } else {
                 if (cfg['videoSpeedRate']['access']) {
@@ -1517,14 +1542,6 @@ function netflix_assistant() {
     // Prevent all actions when upsell information is shown to avoid unwanted Netflix plan changes
     if (check_upsell()) {
         return;
-    }
-
-    // Remove video features if found on different pages
-    if (!check_watch()) {
-        var player_video_container = object_handler('player_video_container', null);
-        if (player_video_container) {
-            player_video_container.removeAttribute('netflex_aspect_ratio');
-        }
     }
 
     // Adjust video display settings
@@ -1774,27 +1791,6 @@ function netflix_assistant() {
                         // Video is running it is not paused by extension
                         if (!video.paused) {
                             pausedByExtension = false;
-                        }
-                    }
-                }
-
-                // Set video aspect ratio
-                var player_video_container = object_handler('player_video_container', null);
-                if (player_video_container && video) {
-                    if (
-                           cfg['videoAspectRatio']['val'] != cfg['videoAspectRatio']['off']
-                        && cfg['videoAspectRatio']['access']
-                        && cfg['enableVideoFeatures']['val']
-                        && cfg['enableVideoFeatures']['access']
-                    ) {
-                        player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
-                        if (cfg['videoZoom']['access']) {
-                            video.style.setProperty('--netflex_zoom', cfg['videoZoom']['val'] + '%', '');
-                        }
-                    } else {
-                        player_video_container.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['off']);
-                        if (cfg['videoZoom']['access']) {
-                            video.style.setProperty('--netflex_zoom', cfg['videoZoom']['def'] + '%', '');
                         }
                     }
                 }
