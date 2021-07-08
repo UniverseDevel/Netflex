@@ -101,6 +101,7 @@ TODO:
 
 - General:
     - Move as much styles as possible into CSS file and use classes instead.
+        - Rework status icon via CSS val()
 - Firefox:
     - https://bugzilla.mozilla.org/show_bug.cgi?id=1413872
 

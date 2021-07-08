@@ -52,9 +52,7 @@ Video player features:
 - If configured, video will automatically pause, if not in focus and can also automatically start, if focus is regained
 - If configured, highlight shadow around subtitles to stand out more with possibility to remove subtitles as well
 - If configured, video features like playback speed can be enabled and changed permanently or temporarily while extension is running
-  - Video playback speed
-  - Video aspect ratio (21:9)
-  - Video zoom
+  (Video playback speed, Video aspect ratio (21:9), Video zoom)
 
 Chromecast player key bindings:
 
