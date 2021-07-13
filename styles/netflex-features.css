@@ -17,11 +17,6 @@
     top: 50%;
 }
 
-.VideoContainer video[netflex_video_features="on"][netflex_aspect_ratio="original"] {
-    width: 100% !important;
-    height: 100% !important;
-}
-
 .VideoContainer video[netflex_video_features="on"][netflex_aspect_ratio="21_9"] {
     width: 134% !important;
     height: 134% !important;

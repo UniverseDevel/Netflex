@@ -35,22 +35,22 @@ function tab_select(tab_id) {
 
 function logLevel_type(val) {
     switch(val) {
-        case 0:
+        case '0':
             type = 'debug';
             break;
-        case 1:
+        case '1':
             type = 'info';
             break;
-        case 2:
+        case '2':
             type = 'output';
             break;
-        case 3:
+        case '3':
             type = 'warn';
             break;
-        case 4:
+        case '4':
             type = 'error';
             break;
-        case 99:
+        case '99':
             type = 'none';
             break;
         default:
@@ -164,7 +164,7 @@ function generate_options_data(load_tab) {
                     }
 
                     if (min_value === null || max_value === null || step_value === null) {
-                        log('error', '', 'Range configuration of key "{0}" is missing some of the following values: min, max, step.', cfgkey);
+                        log('error', '', getLang('error_range_config'), cfgkey);
                     }
 
                     cfg_form_element = fillArgs('<input type="{0}" id="{1}" min="{2}" max="{3}" step="{4}" style="width: 80%;" {5}><span id="{1}_current_val" class="cfg_current_value">{6}</span>', cfg_input_type, cfgkey, min_value, max_value, step_value, cfg_input_value, cfg[cfgkey]['val']);
@@ -621,7 +621,7 @@ function generate_options_content() {
             fill_about();
             fill_statistics();
         } catch (e) {
-            log('error', '', 'Error generating options tab contents: {0}.', e.message);
+            log('error', '', getLang('error_gen_tab_content'), e.message);
         }
 
         // Fill in fields with text based on locale

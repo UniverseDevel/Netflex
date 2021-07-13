@@ -5,7 +5,6 @@ Privacy:
 - No data are sent over the internet by this extension, only exception is when ratings are turned on (they are turned off by default)
 - In case ratings are turned on, extension will send a query containing Netflix™ title ID to Wikidata API, to obtain IMDb ID and later it will send obtained IMDb ID to OMDB API to obtain ratings
 - Call to OMDB API contains API key which is provided by extension in default, but can be changed for your own in configuration
-- This product is free of charge and without ads
 - Your configuration is stored in separate browser local storage dedicated to extensions, no other extensions should have access to this configuration
 
 External libraries:

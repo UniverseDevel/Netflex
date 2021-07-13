@@ -159,6 +159,10 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
             if (obj) { return obj; }
             break;
+        case 'next_episode_buttons':
+            obj = document.querySelectorAll('.WatchNext-still-hover-container, .Recommendation-boxshot-active, .nf-flat-button, .nf-flat-button-primary, .nf-flat-button-icon-play');
+            if (obj[0]) { return obj; }
+            break;
         case 'player_video':
             obj = document.querySelector('video');
             if (obj) { return obj; }
@@ -177,6 +181,10 @@ function object_handler(object_category, related_object) {
             break;
         case 'next_episode':
             obj = document.querySelector('.MdxControls__button.MdxControls__button--primary');
+            if (obj) { return obj; }
+            break;
+        case 'watch_credits':
+            obj = document.querySelector('[data-uia="watch-credits-seamless-button"], .nfp-aspect-wrapper');
             if (obj) { return obj; }
             break;
         case 'disliked_title':

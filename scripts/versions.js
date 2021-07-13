@@ -16,7 +16,7 @@ function cfg_rename(cfg_key_from, cfg_key_to) {
     try {
         log('info', '', getLang('versions_rename_variable'), cfg_key_from, cfg_key_to);
         extension_storage.local.get(cfg_key_from, function(result) {
-            if (result[cfg_key_from]) {
+            if (result[cfg_key_from] !== undefined) {
                 var new_cfg = {};
                 new_cfg[cfg_key_to] = result[cfg_key_from].toString();
                 extension_storage.local.set(new_cfg, function() {});
@@ -31,6 +31,37 @@ function cfg_remove(cfg_key) {
     try {
         log('info', '', getLang('versions_remove_variable'), cfg_key);
         extension_storage.local.remove(cfg_key, function() {});
+        log('info', '', getLang('success'));
+    } catch (e) {log('error', '', getLang('failed'));}
+}
+
+function stat_rename(stat_key_from, stat_key_to) {
+    try {
+        log('info', '', getLang('versions_rename_stats'), stat_key_from, stat_key_to);
+        var stats_data = {};
+        if (localStorage.getItem('netflex_statistics') !== null) {
+            stats_data = JSON.parse(localStorage.getItem('netflex_statistics'));
+            if (stats_data.hasOwnProperty(stat_key_from)) {
+                stats_data[stat_key_to] = stats_data[stat_key_from];
+                delete stats_data[stat_key_from];
+                localStorage.setItem('netflex_statistics', JSON.stringify(stats_data));
+            }
+        }
+        log('info', '', getLang('success'));
+    } catch (e) {log('error', '', getLang('failed'));}
+}
+
+function stat_remove(stat_key) {
+    try {
+        log('info', '', getLang('versions_remove_stats'), stat_key);
+        var stats_data = {};
+        if (localStorage.getItem('netflex_statistics') !== null) {
+            stats_data = JSON.parse(localStorage.getItem('netflex_statistics'));
+            if (stats_data.hasOwnProperty(stat_key)) {
+                delete stats_data[stat_key];
+                localStorage.setItem('netflex_statistics', JSON.stringify(stats_data));
+            }
+        }
         log('info', '', getLang('success'));
     } catch (e) {log('error', '', getLang('failed'));}
 }
@@ -72,7 +103,7 @@ function version_consistency_changes() {
 
             // Configuration variable highlightSubtitles converted from boolean to number
             try {
-                log('info', '', getLang('versions_reset_value'), 'highlightSubtitles');
+                log('info', '', getLang('versions_reset_data'), 'highlightSubtitles');
                 extension_storage.local.set({ 'highlightSubtitles': 0 }, function() {});
                 log('info', '', getLang('success'));
             } catch (e) {log('error', '', getLang('failed'));}
@@ -153,7 +184,7 @@ function version_consistency_changes() {
 
             // Configuration variable exitPlayerKey converted from code to key
             try {
-                log('info', '', getLang('versions_reset_value'), 'exitPlayerKey');
+                log('info', '', getLang('versions_reset_data'), 'exitPlayerKey');
                 extension_storage.local.get(['exitPlayerKey'], function(result) {
                     if (result['exitPlayerKey'] !== undefined && !isNaN(result['exitPlayerKey'])) {
                         extension_storage.local.set({ 'exitPlayerKey': code_to_key(result['exitPlayerKey']) }, function() {});
@@ -164,7 +195,7 @@ function version_consistency_changes() {
 
             // Configuration variable prevEpisodeKey converted from code to key
             try {
-                log('info', '', getLang('versions_reset_value'), 'prevEpisodeKey');
+                log('info', '', getLang('versions_reset_data'), 'prevEpisodeKey');
                 extension_storage.local.get(['prevEpisodeKey'], function(result) {
                     if (result['prevEpisodeKey'] !== undefined && !isNaN(result['prevEpisodeKey'])) {
                         extension_storage.local.set({ 'prevEpisodeKey': code_to_key(result['prevEpisodeKey']) }, function() {});
@@ -175,7 +206,7 @@ function version_consistency_changes() {
 
             // Configuration variable nextEpisodeKey converted from code to key
             try {
-                log('info', '', getLang('versions_reset_value'), 'nextEpisodeKey');
+                log('info', '', getLang('versions_reset_data'), 'nextEpisodeKey');
                 extension_storage.local.get(['nextEpisodeKey'], function(result) {
                     if (result['nextEpisodeKey'] !== undefined && !isNaN(result['nextEpisodeKey'])) {
                         extension_storage.local.set({ 'nextEpisodeKey': code_to_key(result['nextEpisodeKey']) }, function() {});
@@ -186,7 +217,7 @@ function version_consistency_changes() {
 
             // Configuration variable randomMovieKey converted from code to key
             try {
-                log('info', '', getLang('versions_reset_value'), 'randomMovieKey');
+                log('info', '', getLang('versions_reset_data'), 'randomMovieKey');
                 extension_storage.local.get(['randomMovieKey'], function(result) {
                     if (result['randomMovieKey'] !== undefined && !isNaN(result['randomMovieKey'])) {
                         extension_storage.local.set({ 'randomMovieKey': code_to_key(result['randomMovieKey']) }, function() {});
@@ -197,7 +228,7 @@ function version_consistency_changes() {
 
             // Configuration variable highlightSubtitles converted from number to string
             try {
-                log('info', '', getLang('versions_reset_value'), 'highlightSubtitles');
+                log('info', '', getLang('versions_reset_data'), 'highlightSubtitles');
                 extension_storage.local.get(['highlightSubtitles'], function(result) {
                     if (result['highlightSubtitles'] !== undefined && !isNaN(result['highlightSubtitles'])) {
                         var new_value = 'disabled';
@@ -223,7 +254,7 @@ function version_consistency_changes() {
 
             // Configuration variable pauseOnBlur converted from number to string
             try {
-                log('info', '', getLang('versions_reset_value'), 'pauseOnBlur');
+                log('info', '', getLang('versions_reset_data'), 'pauseOnBlur');
                 extension_storage.local.get(['pauseOnBlur'], function(result) {
                     if (result['pauseOnBlur'] !== undefined && !isNaN(result['pauseOnBlur'])) {
                         var new_value = 'disabled';
@@ -355,10 +386,53 @@ function version_consistency_changes() {
         if (applied_version_normalized < normalize_version('6.4.0', 4)) {
             log('info', '', getLang('version_changes'), '6.4.0');
 
-            // Perform necessary changes
+            // Configuration variable showCategories removed
             cfg_remove('showCategories');
 
             apply_version('6.4.0');
+        }
+
+        // Before 6.5.0
+        if (applied_version_normalized < normalize_version('6.5.0', 4)) {
+            log('info', '', getLang('version_changes'), '6.5.0');
+
+            // Configuration variable elapsedTime renamed to showElapsedTime
+            cfg_rename('elapsedTime', 'showElapsedTime');
+
+            // Statistic variable stat_nextEpisode renamed to stat_titleEndActionSkip
+            stat_rename('stat_nextEpisode', 'stat_titleEndActionSkip');
+
+            // Configuration variable nextEpisode converted from bool to option
+            try {
+                log('info', '', getLang('versions_reset_data'), 'nextEpisode');
+                extension_storage.local.get(['nextEpisode'], function(result) {
+                    if (result['nextEpisode'] !== undefined) {
+                        extension_storage.local.set({ 'titleEndAction': 'skip' }, function() {
+                            // Configuration variable nextEpisode removed
+                            cfg_remove('nextEpisode');
+                        });
+                    } else {
+                        extension_storage.local.set({ 'titleEndAction': 'none' }, function() {
+                            // Configuration variable nextEpisode removed
+                            cfg_remove('nextEpisode');
+                        });
+                    }
+                });
+                log('info', '', getLang('success'));
+            } catch (e) {log('error', '', getLang('failed'));}
+
+            // Configuration variable logLevel converted from option number to option text
+            try {
+                log('info', '', getLang('versions_reset_data'), 'logLevel');
+                extension_storage.local.get(['logLevel'], function(result) {
+                    if (result['logLevel'] !== undefined) {
+                        extension_storage.local.set({ 'logLevel': result['logLevel'].toString() }, function() {});
+                    }
+                });
+                log('info', '', getLang('success'));
+            } catch (e) {log('error', '', getLang('failed'));}
+
+            apply_version('6.5.0');
         }
 
         /* - Template, add new changes to the 'Perform necessary changes' part and adjust version number

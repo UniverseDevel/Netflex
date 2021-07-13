@@ -307,7 +307,7 @@ function ratings_handler(object, object_id) {
             handle_rating_values(object, object_id);
         }
 
-        log('error', 'ratings', 'There was an error obtaining ratings. Error: {0}', e.message);
+        log('error', 'ratings', getLang('error_obtaining_ratings'), e.message);
     }
 }
 
@@ -691,12 +691,12 @@ function handle_rating_values(object, object_id) {
             }
         }
     } catch (e) {
-        log('error', 'ratings', 'Error showing ratings: {0}', e.message);
+        log('error', 'ratings', getLang('error_showing_ratings'), e.message);
 
         try {
             addDOM(findChildClass(object, 'extension_rating_imdb'), getLang('rating_display_error'));
         } catch (e) {
-            log('error', 'ratings', 'Error showing ratings error: {0}', e.message);
+            log('error', 'ratings', getLang('error_obtaining_ratings_error'), e.message);
         }
     }
 

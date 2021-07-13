@@ -264,7 +264,16 @@ function removeInjected() {
 
 function reset_configuration() {
     try {
+        var cfg_changes = [];
+        for (var key in cfg) {
+            if (cfg.hasOwnProperty(key)) {
+                if (cfg[key]['def'] != cfg[key]['val']) {
+                    cfg_changes.push({'key': key, 'value_new': cfg[key]['def'], 'value_old': cfg[key]['val']});
+                }
+            }
+        }
         extension_storage.local.clear();
+        load_configuration(null, cfg_changes);
     } catch (e) {
         error_detected = true;
         error_message = 'reset_configuration: ' + e.message;
@@ -273,18 +282,18 @@ function reset_configuration() {
 
 function reset_configuration_cat(type) {
     try {
+        var cfg_changes = [];
         for (var key in cfg) {
             if (cfg.hasOwnProperty(key)) {
                 if (cfg[key]['category'] == type) {
-                    extension_storage.local.remove(key, function() {});
-
-                    // Special case when video speed rate is reset
-                    if (key == 'videoSpeedRate') {
-                        reset_videoSpeedRate();
+                    if (cfg[key]['def'] != cfg[key]['val']) {
+                        cfg_changes.push({'key': key, 'value_new': cfg[key]['def'], 'value_old': cfg[key]['val']});
                     }
+                    extension_storage.local.remove(key, function() {});
                 }
             }
         }
+        load_configuration(null, cfg_changes);
     } catch (e) {
         error_detected = true;
         error_message = 'reset_configuration_cat: ' + e.message;
@@ -727,7 +736,6 @@ function environment_update() {
         debug_variables['variables']['title'] = title;
         debug_variables['variables']['injected'] = injected;
         debug_variables['variables']['movement_offset'] = movement_offset;
-        debug_variables['variables']['cfg_changed'] = cfg_changed;
         debug_variables['variables']['error_detected'] = error_detected;
         debug_variables['variables']['error_message'] = error_message;
         debug_variables['variables']['error_count'] = error_count;

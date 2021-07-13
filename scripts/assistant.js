@@ -1700,10 +1700,10 @@ function netflix_assistant() {
                     // Next video is available
                     is_next_available = true;
                     // Check configuration if we want to start next episodes
-                    if (cfg['nextEpisode']['val'] && cfg['nextEpisode']['access']) {
+                    if (cfg['titleEndAction']['val'] == 'skip' && cfg['titleEndAction']['access']) {
                         // Play next video
                         log('output', '', getLang('next_episode'));
-                        add_stats_count('stat_nextEpisode');
+                        add_stats_count('stat_titleEndActionSkip');
                         try {doClick(next_episode_obj);} catch (e) {}
                     }
                 } else {
@@ -1738,58 +1738,72 @@ function netflix_assistant() {
 
                 // Play next episode
                 var is_next_available = false;
-                if ((next_is_offered && !loading) && cfg['nextEpisode']['access']) {
-                    // Next video is available or we didn't find next video, but next episode button is available
-                    is_next_available = true;
-                    // Check configuration if we want to start next episodes
-                    if (cfg['nextEpisode']['val'] || forceNextEpisode) {
-                        if (nextVideo != '' || (nextVideo == '' && next_no_wait)) {
-                            // If we didn't find next video but next episode button is available we consider next video the same as current one
-                            if (nextVideo == '' && next_no_wait) {
-                                nextVideo = currentVideo;
-                            }
+                if ((next_is_offered && !loading) || forceNextEpisode) {
+                    if (cfg['titleEndAction']['val'] != cfg['titleEndAction']['off'] && cfg['titleEndAction']['access']) {
+                        // Next video is available or we didn't find next video, but next episode button is available
+                        is_next_available = true;
+                        // Check configuration if we want to start next episodes
+                        if (cfg['titleEndAction']['val'] == 'skip' || forceNextEpisode) {
+                            if (nextVideo != '' || (nextVideo == '' && next_no_wait)) {
+                                // If we didn't find next video but next episode button is available we consider next video the same as current one
+                                if (nextVideo == '' && next_no_wait) {
+                                    nextVideo = currentVideo;
+                                }
 
-                            // Check if next video is from different title and we want to stop playing
-                            if (((!is_series && cfg['nextEpisodeStopMovies']['val']) || (is_series && cfg['nextEpisodeStopSeries']['val'])) && currentVideo != nextVideo) {
-                                loading = true;
-                                log('output', '', getLang('next_video_stop'));
-                                if (!is_series) {
-                                    add_stats_count('stat_nextEpisodeStopSeries');
-                                } else {
-                                    add_stats_count('stat_nextEpisodeStopMovies');
+                                // Check if next video is from different title and we want to stop playing
+                                if (((!is_series && cfg['nextEpisodeStopMovies']['val']) || (is_series && cfg['nextEpisodeStopSeries']['val'])) && currentVideo != nextVideo) {
+                                    loading = true;
+                                    log('output', '', getLang('next_video_stop'));
+                                    if (!is_series) {
+                                        add_stats_count('stat_nextEpisodeStopSeries');
+                                    } else {
+                                        add_stats_count('stat_nextEpisodeStopMovies');
+                                    }
+                                    var button_exit_player_obj = object_handler('button_exit_player', null)
+                                    if (button_exit_player_obj) {
+                                        doClick(button_exit_player_obj);
+                                    } else {
+                                        window.location = window.location.origin + '/browse';
+                                    }
                                 }
-                                var button_exit_player_obj = object_handler('button_exit_player', null)
-                                if (button_exit_player_obj) {
-                                    doClick(button_exit_player_obj);
+
+                                // Play next video, if it is from same show as current or we waited long enough
+                                if (forceNextEpisode || (currentVideo == nextVideo || nextTitleDelay >= cfg['nextTitleDelayLimit']['val'] || cfg['nextTitleDelayLimit']['val'] == cfg['nextTitleDelayLimit']['off'])) {
+                                    next_is_offered = false;
+                                    next_no_wait = false;
+                                    forceNextEpisode = false;
+                                    nextTitleDelay = 0;
+                                    loading = true;
+                                    log('output', '', getLang('next_episode'));
+                                    add_stats_count('stat_titleEndActionSkip');
+                                    // Click to start next episode
+                                    var next_episode_buttons = object_handler('next_episode_buttons', null);
+                                    if (next_episode_buttons) {
+                                        for (var i = 0; i < next_episode_buttons.length; i++) {
+                                            try {doClick(next_episode_buttons[i]);} catch (e) {}
+                                        }
+                                    }
+                                    // Last attempt if others fail to click next episode button in video controls
+                                    try {doClick(object_handler('button_next_episode', null));} catch (e) {}
                                 } else {
-                                    window.location = window.location.origin + '/browse';
+                                    nextTitleDelay = addTimeFraction(nextTitleDelay, cfg['netflixAssistantTimer']['val']);
+                                    if (nextTitleDelay % 1 == 0) {
+                                        log('output', '', getLang('next_video_delay'), nextTitleDelay, ((nextTitleDelay == 1) ? getLang('second') : ((nextTitleDelay < 5) ? getLang('second_less5') : getLang('seconds'))), cfg['nextTitleDelayLimit']['val']);
+                                    }
                                 }
                             }
-
-                            // Play next video, if it is from same show as current or we waited long enough
-                            if (forceNextEpisode || (currentVideo == nextVideo || nextTitleDelay >= cfg['nextTitleDelayLimit']['val'] || cfg['nextTitleDelayLimit']['val'] == cfg['nextTitleDelayLimit']['off'])) {
-                                next_is_offered = false;
-                                next_no_wait = false;
-                                forceNextEpisode = false;
-                                nextTitleDelay = 0;
-                                loading = true;
-                                log('output', '', getLang('next_episode'));
-                                add_stats_count('stat_nextEpisode');
-                                // Click to start next episode. These commands are not included in object_handler as they are
-                                // not necessarily UI version based and try catch will attempt to click all of the buttons
-                                // if they are available.
-                                try {doClick(document.getElementsByClassName('WatchNext-still-hover-container')[0]);} catch (e) {}
-                                try {doClick(document.getElementsByClassName('Recommendation-boxshot-active')[0]);} catch (e) {}
-                                try {doClick(document.getElementsByClassName('nf-flat-button')[0]);} catch (e) {}
-                                try {doClick(document.getElementsByClassName('nf-flat-button-primary')[0]);} catch (e) {}
-                                try {doClick(document.getElementsByClassName('nf-flat-button-icon-play')[0]);} catch (e) {}
-                                // Last attempt if others fail to click next episode button in video controls
-                                try {doClick(object_handler('button_next_episode', null));} catch (e) {}
-                            } else {
-                                nextTitleDelay = addTimeFraction(nextTitleDelay, cfg['netflixAssistantTimer']['val']);
-                                if (nextTitleDelay % 1 == 0) {
-                                    log('output', '', getLang('next_video_delay'), nextTitleDelay, ((nextTitleDelay == 1) ? getLang('second') : ((nextTitleDelay < 5) ? getLang('second_less5') : getLang('seconds'))), cfg['nextTitleDelayLimit']['val']);
-                                }
+                        } else if (cfg['titleEndAction']['val'] == 'roll' && object_handler('watch_credits', null)) {
+                            next_is_offered = false;
+                            next_no_wait = false;
+                            forceNextEpisode = false;
+                            nextTitleDelay = 0;
+                            loading = true;
+                            log('output', '', getLang('roll_credits'));
+                            add_stats_count('stat_titleEndActionRoll');
+                            try {doClick(object_handler('watch_credits', null));} catch (e) {}
+                            if (video.getAttribute('netflex_video_end_event') != 'on') {
+                                video.addEventListener('ended', function () { if (cfg['titleEndAction']['val'] == 'roll' && cfg['titleEndAction']['access']) { forceNextEpisode = true; } }, false);
+                                video.getAttribute('netflex_video_end_event', 'on');
                             }
                         }
                     }
@@ -1869,7 +1883,7 @@ function netflix_assistant() {
                 }
 
                 // Add elapsed video time
-                if (cfg['elapsedTime']['val'] && cfg['elapsedTime']['access']) {
+                if (cfg['showElapsedTime']['val'] && cfg['showElapsedTime']['access']) {
                     var progress_bar = object_handler('progress_bar', null);
                     if (!document.querySelector('#netflex_elapsed_time') && progress_bar) {
                         var elm = document.createElement('div');
@@ -1886,7 +1900,7 @@ function netflix_assistant() {
                     }
 
                     // Refresh value or add event that will
-                    if (document.querySelector('#netflex_elapsed_time_value')) {
+                    if (document.querySelector('#netflex_elapsed_time_value') && video) {
                         addDOM(document.querySelector('#netflex_elapsed_time_value'), convertToInterval(video.currentTime));
                     }
                 } else {

@@ -151,8 +151,8 @@
         "message":"Failed.",
         "description":""
     },
-    "versions_reset_value":{
-        "message":"Resetting configuration value of variable '{0}'.",
+    "versions_reset_data":{
+        "message":"Resetting configuration data of variable '{0}'.",
         "description":""
     },
     "versions_remove_variable":{
@@ -163,8 +163,16 @@
         "message":"Renaming configuration variable from '{0}' to '{1}'.",
         "description":""
     },
+    "versions_remove_stats":{
+        "message":"Removing statistic variable '{0}'.",
+        "description":""
+    },
+    "versions_rename_stats":{
+        "message":"Renaming statistic variable from '{0}' to '{1}'.",
+        "description":""
+    },
     "versions_rename_localStorage":{
-        "message":"Renaming local storage item from '{0}' to '{1}'.",
+        "message":"Renaming local storage variable from '{0}' to '{1}'.",
         "description":""
     },
     "options":{
@@ -245,6 +253,10 @@
     },
     "next_episode":{
         "message":"Playing next episode...",
+        "description":""
+    },
+    "roll_credits":{
+        "message":"Rolling credits...",
         "description":""
     },
     "skipping_intro":{
@@ -524,7 +536,7 @@
         "description":""
     },
     "cfg_changed":{
-        "message":"Configuration has changed.",
+        "message":"Configuration has changed. (Affected variables: {0})",
         "description":""
     },
     "cfg_logLevel_name":{
@@ -551,11 +563,11 @@
         "message":"Turns on/off debug simulation of production environment.",
         "description":""
     },
-    "cfg_elapsedTime_name":{
+    "cfg_showElapsedTime_name":{
         "message":"Show elapsed video time",
         "description":""
     },
-    "cfg_elapsedTime_description":{
+    "cfg_showElapsedTime_description":{
         "message":"Turns on/off display of elapsed video time.",
         "description":""
     },
@@ -591,12 +603,12 @@
         "message":"Turns on/off stopping of all trailer video previews.",
         "description":""
     },
-    "cfg_nextEpisode_name":{
-        "message":"Start next episode",
+    "cfg_titleEndAction_name":{
+        "message":"Title end action",
         "description":""
     },
-    "cfg_nextEpisode_description":{
-        "message":"Turns on/off automated start of next episode.",
+    "cfg_titleEndAction_description":{
+        "message":"Sets what action should be done when title ends.",
         "description":""
     },
     "cfg_nextEpisodeStopMovies_name":{
@@ -1163,6 +1175,18 @@
         "message":"High",
         "description":""
     },
+    "titleEndAction_type_none":{
+        "message":"None",
+        "description":""
+    },
+    "titleEndAction_type_skip":{
+        "message":"Skip to next episode",
+        "description":""
+    },
+    "titleEndAction_type_roll":{
+        "message":"Roll credits and skip after",
+        "description":""
+    },
     "highlightSubtitles_type_hidden":{
         "message":"Hide subtitles",
         "description":""
@@ -1343,6 +1367,34 @@
         "message":"CORE ERROR DETECTED: Assistant call is too old, restarting assistant loop ({0} - {1} = {2} > {3}).",
         "description":""
     },
+    "error_invalid_value":{
+        "message":"Stored configuration value for variable {0} is not valid, default value was used instead.",
+        "description":""
+    },
+    "error_loading_value":{
+        "message":"Error loading stored configuration value for variable {0}, default value was used instead. Error: {1}",
+        "description":""
+    },
+    "error_range_config":{
+        "message":"Range configuration of variable '{0}' is missing some of the following values: min, max, step.",
+        "description":""
+    },
+    "error_gen_tab_content":{
+        "message":"Error generating options tab contents. Error: {0}",
+        "description":""
+    },
+    "error_obtaining_ratings":{
+        "message":"Error obtaining ratings. Error: {0}",
+        "description":""
+    },
+    "error_showing_ratings":{
+        "message":"Error showing ratings: {0}",
+        "description":""
+    },
+    "error_obtaining_ratings_error":{
+        "message":"Error showing ratings error: {0}",
+        "description":""
+    },
     "fireworks_start":{
         "message":"Yay! Fireworks!",
         "description":""
@@ -1499,8 +1551,12 @@
         "message":"Trailers stopped",
         "description":""
     },
-    "stat_nextEpisode":{
-        "message":"Next episodes started",
+    "stat_titleEndActionSkip":{
+        "message":"Title end skipped",
+        "description":""
+    },
+    "stat_titleEndActionRoll":{
+        "message":"Title end credits rolled",
         "description":""
     },
     "stat_nextEpisodeStopSeries":{
