@@ -152,15 +152,11 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'next_episode_offer_wait':
-            obj = document.querySelector('.WatchNext-still-hover-container, .EpisodicTeaser-action-buttons, .Recommendation-boxshot-active, .nf-flat-button-icon-play');
-            if (obj) { return obj; }
+            obj = document.querySelectorAll('.WatchNext-still-hover-container, .EpisodicTeaser-action-buttons, .Recommendation-boxshot-active, .nf-flat-button-icon-play');
+            if (obj[0]) { return obj; }
             break;
         case 'next_episode_offer_nowait':
-            obj = document.querySelector('.nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
-            if (obj) { return obj; }
-            break;
-        case 'next_episode_buttons':
-            obj = document.querySelectorAll('.WatchNext-still-hover-container, .Recommendation-boxshot-active, .nf-flat-button, .nf-flat-button-primary, .nf-flat-button-icon-play');
+            obj = document.querySelectorAll('.nf-flat-button, .nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
             if (obj[0]) { return obj; }
             break;
         case 'player_video':
@@ -168,6 +164,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'player_video_container':
+            // Note: relates to CSS
             obj = document.querySelector('.VideoContainer');
             if (obj) { return obj; }
             break;

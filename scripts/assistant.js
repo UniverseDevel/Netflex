@@ -136,7 +136,7 @@ function generate_options() {
     // HTML template for extension options status pop-up bubble injected into status icon in Netflix
     var options_data = `
         <div id="options_loading" style="text-align: center;">
-            <i class="fas fa-spinner fa-pulse" title="{LOADING_TEXT}" style="font-size: 30px; font-weight: bold;"></i>
+            <i class="fas fa-spinner fa-pulse" title="{LOADING_TEXT}" style="font-size: 30px; font-weight: bold; margin-top: 150px;"></i>
         </div>
         <div id="extension_options_content" style="display: none;">
             <div id="window_status" style="display: none;"></div>
@@ -1759,7 +1759,7 @@ function netflix_assistant() {
                                     } else {
                                         add_stats_count('stat_nextEpisodeStopMovies');
                                     }
-                                    var button_exit_player_obj = object_handler('button_exit_player', null)
+                                    var button_exit_player_obj = object_handler('button_exit_player', null);
                                     if (button_exit_player_obj) {
                                         doClick(button_exit_player_obj);
                                     } else {
@@ -1777,8 +1777,10 @@ function netflix_assistant() {
                                     log('output', '', getLang('next_episode'));
                                     add_stats_count('stat_titleEndActionSkip');
                                     // Click to start next episode
-                                    var next_episode_buttons = object_handler('next_episode_buttons', null);
-                                    if (next_episode_buttons) {
+                                    var next_episode_buttons = [];
+                                    next_episode_buttons.push(object_handler('next_episode_offer_wait', null));
+                                    next_episode_buttons.push(object_handler('next_episode_offer_nowait', null));
+                                    if (next_episode_buttons[0]) {
                                         for (var i = 0; i < next_episode_buttons.length; i++) {
                                             try {doClick(next_episode_buttons[i]);} catch (e) {}
                                         }

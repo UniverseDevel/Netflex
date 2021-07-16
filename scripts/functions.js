@@ -314,23 +314,26 @@ function reload_extension() {
             extension_runtime.sendMessage({
                     action: 'reloadExtension'
                 }, function(response) {
-                    if (extension_runtime.lastError) {
-                        log('error', 'core_errors', extension_runtime.lastError);
-                    }
-                    if (response.status = 'OK') {
-                        isOrphan = true;
-                        try {
-                            remove_status_icon();
-                        } catch (e) {}
-                    } else if (response.status = 'ERROR') {
-                        if (response.message != '') {
-                            log('error', '', response.message);
+                    try {
+                        if (extension_runtime.lastError) {
+                            log('error', 'core_errors', extension_runtime.lastError);
                         }
-                    } else {
-                        log('debug', 'background', 'reload_extension()');
-                        log('debug', 'background', 'request={0}', JSON.stringify(response.request));
-                        log('debug', 'background', 'response={0}', JSON.stringify(response));
-                    }
+                        if (response.status = 'OK') {
+                            isOrphan = true;
+                            try {
+                                stop_worker('elements');
+                                remove_status_icon();
+                            } catch (e) {}
+                        } else if (response.status = 'ERROR') {
+                            if (response.message != '') {
+                                log('error', '', response.message);
+                            }
+                        } else {
+                            log('debug', 'background', 'reload_extension()');
+                            log('debug', 'background', 'request={0}', JSON.stringify(response.request));
+                            log('debug', 'background', 'response={0}', JSON.stringify(response));
+                        }
+                    } catch (e) {}
             });
         } catch (e) {}
     }

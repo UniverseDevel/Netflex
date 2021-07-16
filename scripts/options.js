@@ -25,12 +25,27 @@ function tab_select(tab_id) {
     }
     document.getElementById(tab_id).style.display = 'block';
     document.getElementById('button_' + tab_id).classList.add('active');
+    if (tab_id == 'tab_bindings') {
+        focus_bindings();
+    }
 
     if (options_tab_selected != tab_id) {
         document.getElementsByClassName('content')[0].scrollTo(0, 0);
     }
 
     options_tab_selected = tab_id;
+}
+
+function focus_bindings() {
+    for (var key in cfg) {
+        if (cfg[key]['access']) {
+            switch (cfg[key]['type']) {
+                case 'binding':
+                    document.getElementById(key).value = document.getElementById(key).value;
+                    break;
+            }
+        }
+    }
 }
 
 function logLevel_type(val) {
@@ -167,13 +182,13 @@ function generate_options_data(load_tab) {
                         log('error', '', getLang('error_range_config'), cfgkey);
                     }
 
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" min="{2}" max="{3}" step="{4}" style="width: 80%;" {5}><span id="{1}_current_val" class="cfg_current_value">{6}</span>', cfg_input_type, cfgkey, min_value, max_value, step_value, cfg_input_value, cfg[cfgkey]['val']);
+                    cfg_form_element = fillArgs('<table class="cfg_range_tab"><tr><td><input type="{0}" id="{1}" min="{2}" max="{3}" step="{4}" style="width: 95%;" {5}></td><td style="width: 15%;"><span id="{1}_current_val" class="cfg_current_value">{6}</span></td></tr></table>', cfg_input_type, cfgkey, min_value, max_value, step_value, cfg_input_value, cfg[cfgkey]['val']);
                     break;
                 case 'bool':
                     cfg_input_type = 'checkbox';
                     cfg_input_value = fillArgs('{0}', ((cfg[cfgkey]['val']) ? ' checked' : ''));
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>', cfg_input_type, cfgkey, cfg_input_value);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>', cfg_input_type, cfgkey, cfg_input_value) + '<i class="fas fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
                     break;
                 case 'array':
                     cfg_input_type = 'checkbox';
@@ -186,7 +201,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['val'].includes(cfg[cfgkey]['list'][l])) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
+                        list_items.push(fillArgs('<label><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}><i class="fas fa-square unchecked"></i><i class="fas fa-check-square checked"></i> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -202,7 +217,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['list'][l] == cfg[cfgkey]['val']) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
+                        list_items.push(fillArgs('<label><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}><i class="fas fa-circle unchecked"></i><i class="fas fa-check-circle checked"></i> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -212,9 +227,9 @@ function generate_options_data(load_tab) {
                     cfg_input_value = '';
                     cfg_hidden_input = '';
                     var size_arg = '';
-                    if (isFirefox) {
-                        size_arg = ' size="3"';
-                    }
+                    //if (isFirefox) {
+                        size_arg = ' size="5"';
+                    //}
                     cfg_form_element = fillArgs('<select id="{0}"{1}>{2}</select>', cfgkey, size_arg, generate_bindings(cfgkey));
                     break;
                 case 'api':
@@ -315,9 +330,9 @@ function generate_options_data(load_tab) {
                 case 'number':
                 case 'bool':
                 case 'select':
-                case 'binding':
                 case 'api':
-                    document.getElementById(cfgkey).addEventListener('change', function() { logEvent('generate_options_data > api'); save_data(); });
+                case 'binding':
+                    document.getElementById(cfgkey).addEventListener('change', function() { logEvent('generate_options_data > number/bool/select/api/binding'); save_data(); });
                     break;
                 case 'range':
                     document.getElementById(cfgkey).addEventListener('change', function() { logEvent('generate_options_data > range'); save_data(); });

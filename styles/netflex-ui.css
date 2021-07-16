@@ -136,18 +136,12 @@
 	font-size: 13px;
 }
 
-#extension_options_scrollable .cfg_current_value {
-	font-size: 14px;
-	position: relative;
-	top: -5px;
-}
-
 #extension_options_scrollable .green {
 	color: #00b642;
 }
 
 #extension_options_scrollable .orange {
-	color: #E77400;
+	color: #e77400;
 }
 
 #extension_options_scrollable .right {
@@ -173,8 +167,9 @@
 
 #extension_options_scrollable .about_changelog_text {
 	font-weight: bold;
-	text-decoration: underline;
-	font-size: 12px;
+	font-size: 14px;
+	display: inline-block;
+	margin-bottom: 5px;
 }
 
 #extension_options_scrollable a {
@@ -189,9 +184,115 @@
 #extension_options_scrollable select {
 	background: transparent;
 	color: #ffffff;
+}
+
+#extension_options_scrollable input[type="text"],
+#extension_options_scrollable select {
 	border: 1px solid #ffffff;
 }
 
 #extension_options_scrollable select option {
-	background-color: #000000;
+	background-color: transparent;
 }
+
+#extension_options_scrollable input[type="checkbox"], #extension_options_scrollable input[type="radio"], #extension_options_scrollable .checked {
+    display: none;
+    color: #00b642;
+}
+
+#extension_options_scrollable input[type="checkbox"]:checked ~ .checked {
+    display: inline-block;
+}
+
+#extension_options_scrollable input[type="checkbox"]:checked ~ .unchecked {
+    display: none;
+}
+
+#extension_options_scrollable input[type="checkbox"]:not(:checked) ~ .checked {
+    display: none;
+}
+
+#extension_options_scrollable input[type="checkbox"]:not(:checked) ~ .unchecked {
+    display: inline-block;
+}
+
+#extension_options_scrollable input[type="radio"]:checked ~ .checked {
+    display: inline-block;
+}
+
+#extension_options_scrollable input[type="radio"]:checked ~ .unchecked {
+    display: none;
+}
+
+#extension_options_scrollable input[type="radio"]:not(:checked) ~ .checked {
+    display: none;
+}
+
+#extension_options_scrollable input[type="radio"]:not(:checked) ~ .unchecked {
+    display: inline-block;
+}
+
+#extension_options_scrollable .cfg_range_tab {
+	width: 100%;
+	margin: 0px;
+	border: 0px;
+}
+
+#extension_options_scrollable .cfg_range_tab td {
+	vertical-align: middle;
+}
+
+#extension_options_scrollable .cfg_current_value {
+	font-size: 15px;
+}
+
+#extension_options_scrollable input[type=range] {
+    -webkit-appearance: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#extension_options_scrollable input[type=range]:focus {
+    outline: none;
+    border: none;
+}
+
+#extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 5px;
+    background: #ffffff;
+    border: none;
+    border-radius: 3px;
+}
+
+#extension_options_scrollable input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: #00b642;
+    margin-top: -5px;
+}
+
+#extension_options_scrollable input[type=range]::-moz-range-track {
+    height: 5px;
+    background: #ffffff;
+    border: none;
+    border-radius: 3px;
+}
+
+#extension_options_scrollable input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    background: #00b642;
+    /*margin-top: -5px;*/
+}
+
+/* // No solution like this for Chrome
+
+#extension_options_scrollable input[type=range]::-moz-range-progress {
+    background: #00b642;
+}*/
