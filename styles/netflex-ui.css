@@ -56,7 +56,7 @@
 
 #extension_options_scrollable .marginTopContent {
 	background-color: transparent;
-	margin-top: 30px;
+	margin-top: 35px;
 }
 
 #extension_options_scrollable .marginTopControls {
@@ -196,9 +196,16 @@
 }
 
 #extension_options_scrollable input[type="checkbox"],
-#extension_options_scrollable input[type="radio"],
-#extension_options_scrollable .checked {
+#extension_options_scrollable input[type="radio"] {
     display: none;
+}
+
+#extension_options_scrollable .checked {
+    color: #00b642;
+    background-color: transparent;
+}
+
+#extension_options_scrollable .unchecked {
     color: #00b642;
     background-color: transparent;
 }
@@ -239,6 +246,12 @@
 	width: 100%;
 	margin: 0px;
 	border: 0px;
+	display: inline-table;
+}
+
+#extension_options_scrollable .button_default {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 #extension_options_scrollable .cfg_range_tab td {

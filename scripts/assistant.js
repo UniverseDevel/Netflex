@@ -1778,9 +1778,15 @@ function netflix_assistant() {
                                     add_stats_count('stat_titleEndActionSkip');
                                     // Click to start next episode
                                     var next_episode_buttons = [];
-                                    next_episode_buttons.push(object_handler('next_episode_offer_wait', null));
-                                    next_episode_buttons.push(object_handler('next_episode_offer_nowait', null));
-                                    next_episode_buttons = next_episode_buttons.filter(item => item !== undefined);
+                                    var next_episode_buttons_list1 = object_handler('next_episode_offer_wait', null);
+                                    var next_episode_buttons_list2 = object_handler('next_episode_offer_nowait', null);
+                                    if (next_episode_buttons_list1) {
+                                        next_episode_buttons_list1 = Array.prototype.slice.call(next_episode_buttons_list1);
+                                    }
+                                    if (next_episode_buttons_list2) {
+                                        next_episode_buttons_list2 = Array.prototype.slice.call(next_episode_buttons_list2);
+                                    }
+                                    next_episode_buttons = next_episode_buttons.concat(next_episode_buttons_list1, next_episode_buttons_list2).filter(item => item !== undefined);
                                     if (next_episode_buttons[0]) {
                                         for (var i = 0; i < next_episode_buttons.length; i++) {
                                             try {doClick(next_episode_buttons[i]);} catch (e) {}

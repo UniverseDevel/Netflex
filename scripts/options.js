@@ -187,12 +187,14 @@ function generate_options_data(load_tab) {
                 case 'bool':
                     cfg_input_type = 'checkbox';
                     cfg_input_value = fillArgs('{0}', ((cfg[cfgkey]['val']) ? ' checked' : ''));
+                    cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>', cfg_input_type, cfgkey, cfg_input_value) + '<i class="fas fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>{3}', cfg_input_type, cfgkey, cfg_input_value, cfg_input_face);
                     break;
                 case 'array':
                     cfg_input_type = 'checkbox';
                     cfg_input_value = JSON.stringify(cfg[cfgkey]['val']);
+                    cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
                     cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value=\'{1}\'>', cfgkey, cfg_input_value);
                     var list_items = [];
                     var index = 0;
@@ -201,7 +203,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['val'].includes(cfg[cfgkey]['list'][l])) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}><i class="fas fa-square unchecked"></i><i class="fas fa-check-square checked"></i> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
+                        list_items.push(fillArgs('<label><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -209,6 +211,7 @@ function generate_options_data(load_tab) {
                 case 'option':
                     cfg_input_type = 'radio';
                     cfg_input_value = '';
+                    cfg_input_face = '<i class="far fa-circle unchecked"></i><i class="fas fa-check-circle checked"></i>';
                     cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value="{1}">', cfgkey, cfg[cfgkey]['val']);
                     var list_items = [];
                     var index = 0;
@@ -217,7 +220,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['list'][l] == cfg[cfgkey]['val']) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}><i class="fas fa-circle unchecked"></i><i class="fas fa-check-circle checked"></i> {4}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
+                        list_items.push(fillArgs('<label><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -265,7 +268,7 @@ function generate_options_data(load_tab) {
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_off'), value));
             }
             if (cfg_presets.length > 0) {
-                cfg_presets = '(' + cfg_presets.join(' | ') + ')';
+                cfg_presets = '[ ' + cfg_presets.join(' | ') + ' ]';
             }
 
             var cfg_warning = '';
@@ -388,7 +391,7 @@ function update_current_value(option) {
 function process_preset(key, value) {
     value = transform_value(key, value);
     if (cfg[key]['type'] == 'array') {
-        value = JSON.stringify(translate_array_default(key + '_type', value));
+        value = JSON.stringify(translate_array_default(key + '_type', value)).replaceAll(/(^\[|\]$)/gi, '');
     }
     if (cfg[key]['type'] == 'option') {
         value = getLang(key + '_type_' + value);

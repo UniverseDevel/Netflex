@@ -152,7 +152,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'next_episode_offer_wait':
-            obj = document.querySelectorAll('.WatchNext-still-hover-container, .EpisodicTeaser-action-buttons, .Recommendation-boxshot-active, .nf-flat-button-icon-play');
+            obj = document.querySelectorAll('.WatchNext-still-hover-container, .EpisodicTeaser-action-buttons, .Recommendation-boxshot-active, .nf-flat-button-icon-play, [data-uia="postplay-background-play"]');
             if (obj[0]) { return obj; }
             break;
         case 'next_episode_offer_nowait':
