@@ -130,6 +130,9 @@
 #extension_options_scrollable .cfg_name, .stats_name {
 	font-size: 14px;
 	font-weight: bold;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	display: inline-block;
 }
 
 #extension_options_scrollable .cfg_notice {
