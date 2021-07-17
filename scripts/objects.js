@@ -156,7 +156,7 @@ function object_handler(object_category, related_object) {
             if (obj[0]) { return obj; }
             break;
         case 'next_episode_offer_nowait':
-            obj = document.querySelectorAll('.nf-flat-button, .nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
+            obj = document.querySelectorAll('.nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
             if (obj[0]) { return obj; }
             break;
         case 'player_video':

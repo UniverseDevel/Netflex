@@ -195,9 +195,12 @@
 	background-color: transparent;
 }
 
-#extension_options_scrollable input[type="checkbox"], #extension_options_scrollable input[type="radio"], #extension_options_scrollable .checked {
+#extension_options_scrollable input[type="checkbox"],
+#extension_options_scrollable input[type="radio"],
+#extension_options_scrollable .checked {
     display: none;
     color: #00b642;
+    background-color: transparent;
 }
 
 #extension_options_scrollable input[type="checkbox"]:checked ~ .checked {

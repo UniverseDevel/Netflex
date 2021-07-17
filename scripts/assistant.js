@@ -1780,6 +1780,7 @@ function netflix_assistant() {
                                     var next_episode_buttons = [];
                                     next_episode_buttons.push(object_handler('next_episode_offer_wait', null));
                                     next_episode_buttons.push(object_handler('next_episode_offer_nowait', null));
+                                    next_episode_buttons = next_episode_buttons.filter(item => item !== undefined);
                                     if (next_episode_buttons[0]) {
                                         for (var i = 0; i < next_episode_buttons.length; i++) {
                                             try {doClick(next_episode_buttons[i]);} catch (e) {}
