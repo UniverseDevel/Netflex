@@ -135,6 +135,31 @@
 	display: inline-block;
 }
 
+#extension_options_scrollable .cfg_form:not([data-type="bool"]) {
+	margin-bottom: 5px;
+	display: inline-block;
+	width: 100%;
+}
+
+#extension_options_scrollable .button_default {
+	margin-bottom: 5px;
+}
+
+#extension_options_scrollable .cfg_range_tab {
+	width: 100%;
+	margin: 0px;
+	border: 0px;
+	display: inline-table;
+}
+
+#extension_options_scrollable .cfg_range_tab td {
+	vertical-align: middle;
+}
+
+#extension_options_scrollable .cfg_current_value {
+	font-size: 15px;
+}
+
 #extension_options_scrollable .cfg_notice {
 	font-size: 13px;
 }
@@ -243,26 +268,6 @@
 
 #extension_options_scrollable input[type="radio"]:not(:checked) ~ .unchecked {
     display: inline-block;
-}
-
-#extension_options_scrollable .cfg_range_tab {
-	width: 100%;
-	margin: 0px;
-	border: 0px;
-	display: inline-table;
-}
-
-#extension_options_scrollable .button_default {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-#extension_options_scrollable .cfg_range_tab td {
-	vertical-align: middle;
-}
-
-#extension_options_scrollable .cfg_current_value {
-	font-size: 15px;
 }
 
 #extension_options_scrollable input[type=range] {

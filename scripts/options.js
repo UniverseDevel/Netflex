@@ -243,7 +243,7 @@ function generate_options_data(load_tab) {
                     break;
             }
 
-            var cfg_form = cfg_hidden_input + cfg_form_element;
+            var cfg_form = fillArgs('<span class="cfg_form" data-type="{0}">{1}{2}</span>', cfg[cfgkey]['type'], cfg_hidden_input, cfg_form_element);
 
             var cfg_reset = '';
             if (cfg[cfgkey]['type'] != 'binding') {

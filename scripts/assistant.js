@@ -1776,6 +1776,7 @@ function netflix_assistant() {
                                     loading = true;
                                     log('output', '', getLang('next_episode'));
                                     add_stats_count('stat_titleEndActionSkip');
+
                                     // Click to start next episode
                                     var next_episode_buttons = [];
                                     var next_episode_buttons_list1 = object_handler('next_episode_offer_wait', null);
