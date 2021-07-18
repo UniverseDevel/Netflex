@@ -96,13 +96,13 @@
 6.4.2    - 2021.05.03 - Updated DOMPurify library.
 6.4.3    - 2021.05.26 - Returned option to hide status icon but limited this option only to video player. Fixed blinking and style apply delay for subtitles.
 6.4.4    - 2021.07.07 - Added new version of DOMPurify library. Added option to show elapsed time in video player. Added option to stretch video for wide-screen aspect ratio (21:9) or manually defined zoom. Refactored most of the code for video features.
-6.5.0    - 2021.07.13 - Bugfixes. Added way how to call an action when configuration changes per configuration item. Added option to roll credits before skipping to next episode. Style fixes at configuration UI to make it consistent with extension colors and styles. Fixed potential problem when multiple episodes could be skipped. Added way how to show changes from configuration before they are save (ex. live video features applying).
+6.5.0    - 2021.07.13 - Bugfixes. Added way how to call an action when configuration changes per configuration item. Added option to roll credits before skipping to next episode. Style fixes at configuration UI to make it consistent with extension colors and styles. Fixed potential problem when multiple episodes could be skipped. Added way how to show changes from configuration before they are save (ex. live video features applying). Improved extension performance.
 
 TODO:
 
 - General:
     - Move as much styles as possible into CSS file and use classes instead.
-        - Rework status icon via CSS val()
+        - Rework status icon via CSS val() and FontAwesome.
 - Firefox:
     - https://bugzilla.mozilla.org/show_bug.cgi?id=1413872
 
@@ -113,7 +113,7 @@ TODO:
 Known issues:
 
 - Possible new Netflix video player UI.
-- Incoming manifest v3
+- Incoming manifest v3.
 - Video features work on all browsers except Edge, in fact Edge will get completely destroyed if video features are used/enabled
   and by completely destroyed I mean whole Edge turns black and starts flashing based on mouse location. This happens only when
   hardware acceleration on Edge is enabled. Bug report was sent to Microsoft including step by step instructions, command and

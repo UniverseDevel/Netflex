@@ -603,7 +603,7 @@ function environment_update() {
 
         inject_styles();
 
-        load_configuration();
+        //load_configuration();
 
         log('debug', 'environment', 'environment_update');
 

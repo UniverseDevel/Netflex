@@ -1441,7 +1441,11 @@ function handle_video_features() {
 
                     // Video aspect ratio and zoom
                     if (cfg['videoAspectRatio']['access']) {
-                        video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                        if (video.getAttribute('netflex_aspect_ratio') != 'original') {
+                            video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                        } else {
+                            video.removeAttribute('netflex_aspect_ratio');
+                        }
 
                         if (cfg['videoZoom']['access']) {
                             if (videoZoom_change != cfg['videoZoom']['val']) {
@@ -1735,7 +1739,7 @@ function netflix_assistant() {
                     next_no_wait = true;
                 }
 
-                // Play next episode
+                // Perform activities at title end
                 if ((next_is_offered && !loading_next_title) || forceNextEpisode) {
                     if (cfg['titleEndAction']['val'] != cfg['titleEndAction']['off'] && cfg['titleEndAction']['access']) {
                         // Check configuration if we want to start next episodes
