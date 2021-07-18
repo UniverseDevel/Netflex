@@ -764,7 +764,7 @@
         "description":""
     },
     "cfg_enableVideoFeatures_name":{
-        "message":"Video features",
+        "message":"Enable video features",
         "description":""
     },
     "cfg_enableVideoFeatures_description":{
@@ -961,6 +961,14 @@
     },
     "cfg_bubbleHideDelay_name":{
         "message":"Status bubble hide delay",
+        "description":""
+    },
+    "cfg_titleEndActionsDelay_description":{
+        "message":"How long should extension wait before it starts checking for next title buttons after it started next title.",
+        "description":""
+    },
+    "cfg_titleEndActionsDelay_name":{
+        "message":"Loading next episode delay",
         "description":""
     },
     "cfg_controlsSwitchTimer_description":{

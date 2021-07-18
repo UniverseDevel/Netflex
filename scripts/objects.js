@@ -159,8 +159,16 @@ function object_handler(object_category, related_object) {
             obj = document.querySelectorAll('.nf-flat-button-primary, .btn-draining, [data-uia="next-episode-seamless-button"], [data-uia="next-episode-seamless-button-draining"]');
             if (obj[0]) { return obj; }
             break;
+        case 'next_episode':
+            obj = document.querySelector('.MdxControls__button.MdxControls__button--primary');
+            if (obj) { return obj; }
+            break;
+        case 'watch_credits':
+            obj = document.querySelector('[data-uia="watch-credits-seamless-button"], .nfp-aspect-wrapper');
+            if (obj) { return obj; }
+            break;
         case 'player_video':
-            obj = document.querySelector('video');
+            obj = document.querySelector('.AkiraPlayer > .nf-player-container video');
             if (obj) { return obj; }
             break;
         case 'player_video_container':
@@ -174,14 +182,6 @@ function object_handler(object_category, related_object) {
             break;
         case 'player_container':
             obj = document.querySelector('.nf-player-container');
-            if (obj) { return obj; }
-            break;
-        case 'next_episode':
-            obj = document.querySelector('.MdxControls__button.MdxControls__button--primary');
-            if (obj) { return obj; }
-            break;
-        case 'watch_credits':
-            obj = document.querySelector('[data-uia="watch-credits-seamless-button"], .nfp-aspect-wrapper');
             if (obj) { return obj; }
             break;
         case 'disliked_title':

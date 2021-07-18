@@ -49,7 +49,7 @@ function events_injector() {
                 workers['assistant'] = setInterval(netflix_assistant, cfg['netflixAssistantTimer']['val']);
                 netflix_assistant();
             } else {
-                var currentTime = new Date();
+                currentTime = new Date();
                 var difference = (currentTime.getTime() - lastCall.getTime());
 
                 // If last assistant call is too old, there might be a problem and
@@ -114,7 +114,7 @@ function page_reloader() {
         }
     }
 
-    if (!reloading) {
+    if (!reloading_page) {
         if (reload_requested) {
             if (forceReloadDifference <= 0) {
                 reload_delay = false;
@@ -123,7 +123,7 @@ function page_reloader() {
                 // Mark forced reload to prevent account blocking
                 localStorage.setItem('netflex_lastForceReload', JSON.stringify(new Date()));
                 // Prevent any more reloads
-                reloading = true;
+                reloading_page = true;
                 // Reload page - should be the only place where reload is called and requesters can be found by looking for "reload_requests" variable
                 window.location.reload(false);
             } else {
@@ -764,11 +764,11 @@ function environment_update() {
         debug_variables['assistant']['pausedByExtension'] = pausedByExtension;
         debug_variables['assistant']['storage_stats'] = storage_stats;
         debug_variables['assistant']['oldLink'] = oldLink;
-        debug_variables['assistant']['loading'] = loading;
+        debug_variables['assistant']['title_end_actions'] = loading_next_title;
         debug_variables['assistant']['skipping'] = skipping;
         debug_variables['assistant']['stuckTime'] = stuckTime;
         debug_variables['assistant']['reload_delay'] = reload_delay;
-        debug_variables['assistant']['reloading'] = reloading;
+        debug_variables['assistant']['reloading_page'] = reloading_page;
         debug_variables['assistant']['loadingTime'] = loadingTime;
         debug_variables['assistant']['forceNextEpisode'] = forceNextEpisode;
         debug_variables['assistant']['next_is_offered'] = next_is_offered;

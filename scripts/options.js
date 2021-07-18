@@ -386,6 +386,8 @@ function generate_options_data(load_tab) {
 
 function update_current_value(option) {
     addDOM(document.getElementById(option.id + '_current_val'), document.getElementById(option.id).value);
+    // Apply current value before configuration is saved to preview changes
+    cfg[option.id]['val'] = Number(document.getElementById(option.id).value);
 }
 
 function process_preset(key, value) {

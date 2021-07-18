@@ -27,10 +27,11 @@ workers['options_style'] = false;
 workers['close_status_content'] = false;
 workers['local_storage_size'] = false;
 workers['synopsis_reveal'] = false;
+workers['title_end_actions'] = false;
 
 var reload_requests = {};
 var reload_requested = false;
-var reloading = false;
+var reloading_page = false;
 var reload_delay = false;
 
 var netflix_head = object_handler('head', null);
@@ -133,7 +134,8 @@ var local_storage_max_size = (5 * 1024 * 1024); // Could be determined by local_
 var oldLink = window.location.href;
 var oldTimestamp = 0;
 var currentTimestamp = 0;
-var loading = false;
+var loading_next_title = false;
+var rolling_credits = false;
 var skipping = false;
 var forceNextEpisode = false;
 var next_is_offered = false;

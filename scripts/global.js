@@ -145,6 +145,8 @@ var lang_keys = [
     'cfg_autoDisableKids_name',
     'cfg_bubbleHideDelay_description',
     'cfg_bubbleHideDelay_name',
+    'cfg_titleEndActionsDelay_description',
+    'cfg_titleEndActionsDelay_name',
     'cfg_changed',
     'cfg_controlsSwitchTimer_description',
     'cfg_controlsSwitchTimer_name',
@@ -1957,6 +1959,22 @@ function init_configuration() {
             'callback' : null,
             'name' : getLang('cfg_bubbleHideDelay_name'),
             'desc' : getLang('cfg_bubbleHideDelay_description')
+        },
+        'titleEndActionsDelay' : {
+            'type' : 'range',
+            'category' : 'debug',
+            'access' : true,
+            'order' : cfg_order['debug']++,
+            'val' : 2000,
+            'def' : 2000,
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [],
+            'callback' : null,
+            'name' : getLang('cfg_titleEndActionsDelay_name'),
+            'desc' : getLang('cfg_titleEndActionsDelay_description')
         },
         'controlsSwitchTimer' : {
             'type' : 'range',

@@ -1592,17 +1592,18 @@ function netflix_assistant() {
     // Adjust video display settings
     handle_video_features();
 
+    var location_changed = false
+    if (full_url != full_url_old) {
+        full_url_old = full_url;
+        location_changed = true;
+        loadTime = new Date(); // Each URL change is basically time of load
+    }
+
     // If key is pressed for some time nothing should be performed to avoid errors
     if (!key_disabled) {
         // Check if Kids Netflix is shown and extension should be disabled, unless manual override
         if ((check_kids() || check_kids_profile()) && cfg['autoDisableKids']['val'] && !document.getElementById('extension_manual_override') && cfg['autoDisableKids']['access']) {
             enableAssistant = false;
-        }
-
-        var location_changed = false
-        if (full_url != full_url_old) {
-            full_url_old = full_url;
-            location_changed = true;
         }
 
         // Check if extension is disabled
@@ -1694,11 +1695,8 @@ function netflix_assistant() {
                 get_title_names();
 
                 // Play next episode
-                var is_next_available = false;
                 var next_episode_obj = object_handler('next_episode', null);
                 if (next_episode_obj) {
-                    // Next video is available
-                    is_next_available = true;
                     // Check configuration if we want to start next episodes
                     if (cfg['titleEndAction']['val'] == 'skip' && cfg['titleEndAction']['access']) {
                         // Play next video
@@ -1731,17 +1729,15 @@ function netflix_assistant() {
                 next_is_offered = false;
                 if (object_handler('next_episode_offer_wait', null)) {
                     next_is_offered = true;
+                    next_no_wait = false;
                 } else if (object_handler('next_episode_offer_nowait', null)) {
                     next_is_offered = true;
                     next_no_wait = true;
                 }
 
                 // Play next episode
-                var is_next_available = false;
-                if ((next_is_offered && !loading) || forceNextEpisode) {
+                if ((next_is_offered && !loading_next_title) || forceNextEpisode) {
                     if (cfg['titleEndAction']['val'] != cfg['titleEndAction']['off'] && cfg['titleEndAction']['access']) {
-                        // Next video is available or we didn't find next video, but next episode button is available
-                        is_next_available = true;
                         // Check configuration if we want to start next episodes
                         if (cfg['titleEndAction']['val'] == 'skip' || forceNextEpisode) {
                             if (nextVideo != '' || (nextVideo == '' && next_no_wait)) {
@@ -1752,7 +1748,7 @@ function netflix_assistant() {
 
                                 // Check if next video is from different title and we want to stop playing
                                 if (((!is_series && cfg['nextEpisodeStopMovies']['val']) || (is_series && cfg['nextEpisodeStopSeries']['val'])) && currentVideo != nextVideo) {
-                                    loading = true;
+                                    loading_next_title = true;
                                     log('output', '', getLang('next_video_stop'));
                                     if (!is_series) {
                                         add_stats_count('stat_nextEpisodeStopSeries');
@@ -1769,18 +1765,19 @@ function netflix_assistant() {
 
                                 // Play next video, if it is from same show as current or we waited long enough
                                 if (forceNextEpisode || (currentVideo == nextVideo || nextTitleDelay >= cfg['nextTitleDelayLimit']['val'] || cfg['nextTitleDelayLimit']['val'] == cfg['nextTitleDelayLimit']['off'])) {
-                                    next_is_offered = false;
-                                    next_no_wait = false;
+                                    if (!forceNextEpisode) {
+                                        add_stats_count('stat_titleEndActionSkip');
+                                    }
                                     forceNextEpisode = false;
                                     nextTitleDelay = 0;
-                                    loading = true;
+                                    loading_next_title = true;
                                     log('output', '', getLang('next_episode'));
-                                    add_stats_count('stat_titleEndActionSkip');
 
                                     // Click to start next episode
                                     var next_episode_buttons = [];
                                     var next_episode_buttons_list1 = object_handler('next_episode_offer_wait', null);
                                     var next_episode_buttons_list2 = object_handler('next_episode_offer_nowait', null);
+                                    var button_next_episode = object_handler('button_next_episode', null);
                                     if (next_episode_buttons_list1) {
                                         next_episode_buttons_list1 = Array.prototype.slice.call(next_episode_buttons_list1);
                                     }
@@ -1788,13 +1785,19 @@ function netflix_assistant() {
                                         next_episode_buttons_list2 = Array.prototype.slice.call(next_episode_buttons_list2);
                                     }
                                     next_episode_buttons = next_episode_buttons.concat(next_episode_buttons_list1, next_episode_buttons_list2).filter(item => item !== undefined);
+                                    // Last attempt if others fail to click next episode button in video controls
+                                    if (is_series && button_next_episode) {
+                                        next_episode_buttons.push(button_next_episode);
+                                    }
                                     if (next_episode_buttons[0]) {
                                         for (var i = 0; i < next_episode_buttons.length; i++) {
                                             try {doClick(next_episode_buttons[i]);} catch (e) {}
+                                            if (oldLink != window.location.href) {
+                                                // Prevent multiple episode skips
+                                                break;
+                                            }
                                         }
                                     }
-                                    // Last attempt if others fail to click next episode button in video controls
-                                    try {doClick(object_handler('button_next_episode', null));} catch (e) {}
                                 } else {
                                     nextTitleDelay = addTimeFraction(nextTitleDelay, cfg['netflixAssistantTimer']['val']);
                                     if (nextTitleDelay % 1 == 0) {
@@ -1802,30 +1805,34 @@ function netflix_assistant() {
                                     }
                                 }
                             }
-                        } else if (cfg['titleEndAction']['val'] == 'roll' && object_handler('watch_credits', null)) {
-                            next_is_offered = false;
-                            next_no_wait = false;
-                            forceNextEpisode = false;
-                            nextTitleDelay = 0;
-                            loading = true;
-                            log('output', '', getLang('roll_credits'));
-                            add_stats_count('stat_titleEndActionRoll');
-                            try {doClick(object_handler('watch_credits', null));} catch (e) {}
-                            if (video.getAttribute('netflex_video_end_event') != 'on') {
-                                video.addEventListener('ended', function () { if (cfg['titleEndAction']['val'] == 'roll' && cfg['titleEndAction']['access']) { forceNextEpisode = true; } }, false);
-                                video.getAttribute('netflex_video_end_event', 'on');
+                        } else if (cfg['titleEndAction']['val'] == 'roll') {
+                            if (object_handler('watch_credits', null) && !rolling_credits) {
+                                rolling_credits = true;
+                                log('output', '', getLang('roll_credits'));
+                                add_stats_count('stat_titleEndActionRoll');
+                                try {doClick(object_handler('watch_credits', null));} catch (e) {}
+                            }
+                            if (video) {
+                                if (video.duration - 1 < video.currentTime) {
+                                    forceNextEpisode = true;
+                                }
+                            } else {
+                                forceNextEpisode = true;
                             }
                         }
                     }
                 } else {
-                    next_is_offered = false;
-                    next_no_wait = false;
                     forceNextEpisode = false;
                     nextTitleDelay = 0;
                     // Mark end of loading period
-                    if (oldLink != window.location.href) {
+                    if (oldLink != window.location.href && workers['title_end_actions'] === false) {
                         oldLink = window.location.href;
-                        loading = false;
+                        // Delay end action reset
+                        workers['title_end_actions'] = setTimeout(function () {
+                            rolling_credits = false;
+                            loading_next_title = false;
+                            stop_worker('title_end_actions');
+                        }, cfg['titleEndActionsDelay']['val']);
                     }
                 }
 
@@ -1988,7 +1995,8 @@ function netflix_assistant() {
 
                 // Detect if video playback is stuck and reload, if it is stuck for long enough
                 try {
-                    var timeFromLoad = (currentTime - loadTime) / 100;
+                    var timeFromLoadDiff = currentTime - loadTime;
+                    var timeFromLoad = timeFromLoadDiff / 1000; // Convert to seconds
                     try {currentTimestamp = video.currentTime;} catch (e) {}
 
                     // Give it a little time for objects to load before considering any reloading (browser load time)
@@ -1996,7 +2004,7 @@ function netflix_assistant() {
                     // may trigger page reload, because next video does not load until tab is in focus, also in case
                     // we stop at next available episode it is no reason to refresh, or in case we are stopped via
                     // interruption.
-                    if (!check_error() && timeFromLoad > cfg['timeFromLoadLimit']['val'] && visibleAPI && !is_next_available && !is_interrupted) {
+                    if (!check_error() && timeFromLoad > cfg['timeFromLoadLimit']['val'] && visibleAPI && !next_is_offered && !is_interrupted) {
                         // If video object does not exist or video is stopped and spinning loader is present or if video is stopped and also it is not paused
                         var video_spinner_obj = object_handler('video_loading_spinner', null);
                         if (!video || (currentTimestamp == oldTimestamp && video_spinner_obj) || (currentTimestamp == oldTimestamp && !video.paused)) {
