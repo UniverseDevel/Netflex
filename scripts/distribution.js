@@ -30,3 +30,27 @@ function load_source_urls() {
     };
     return source;
 };
+
+function load_prod_ids() {
+    // As there is no other way to find out if unpacked extension is used on Firefox, we have to specify IDs for production extensions
+    // Note: in non Firefox extensions 'extension_manifest.update_url == null' used to work to identify development environment
+    var prod = [
+        'CHROME_PROD_EXTENSION_ID', // Chrome
+        'EDGE_PROD_EXTENSION_ID', // Edge
+        'FIREFOX_PROD_EXTENSION_ID', // Firefox
+        'OPERA_PROD_EXTENSION_ID' // Opera
+    ];
+    return prod;
+}
+
+function load_test_ids() {
+    // Opera won't accept multiple extensions with same name, Firefox will just block any two same/similar extensions from same author
+    // Edge takes weeks to publish so there is no point in making a test version, seems like Chrome test should be fine for now
+    var test = [
+        'CHROME_TEST_EXTENSION_ID', // Chrome
+        'EDGE_TEST_EXTENSION_ID', // Edge
+        'FIREFOX_TEST_EXTENSION_ID', // Firefox
+        'OPERA_TEST_EXTENSION_ID' // Opera
+    ];
+    return test;
+}
