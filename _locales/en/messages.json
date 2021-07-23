@@ -539,6 +539,14 @@
         "message":"Configuration has changed. (Affected variables: {0})",
         "description":""
     },
+    "cfg_default_on":{
+        "message":"On",
+        "description":""
+    },
+    "cfg_default_off":{
+        "message":"Off",
+        "description":""
+    },
     "cfg_logLevel_name":{
         "message":"Log level",
         "description":""
@@ -561,6 +569,10 @@
     },
     "cfg_simulateProduction_description":{
         "message":"Turns on/off debug simulation of production environment.",
+        "description":""
+    },
+    "cfg_simulateProduction_notice":{
+        "message":"This option will force page reload to properly initialise extension. Such reload has a timeout configured in 'Repeated reload delay' debug option to prevent Netflix™ from blocking you for too many queries to their servers.",
         "description":""
     },
     "cfg_showElapsedTime_name":{
@@ -611,6 +623,10 @@
         "message":"Sets what action should be done when title ends.",
         "description":""
     },
+    "cfg_titleEndAction_notice":{
+        "message":"There is one situation when credits will start and Netflix™ will not provide clickable object to roll credits, in this situation extension will start next episode the moment when Netflix™ will try to run trailer video for next title.",
+        "description":""
+    },
     "cfg_nextEpisodeStopMovies_name":{
         "message":"Stop movies on different title",
         "description":""
@@ -640,7 +656,11 @@
         "description":""
     },
     "cfg_revealSpoilers_description":{
-        "message":"Turns on/off and sets delay for revealing spoilers when mouse hovering over blurred object. This might not work when blurred object is covered by other object (ex. Play button).",
+        "message":"Turns on/off and sets delay for revealing spoilers when mouse hovering over blurred object.",
+        "description":""
+    },
+    "cfg_revealSpoilers_notice":{
+        "message":"Reveal might not work when blurred object is covered by other object (ex. Play button).",
         "description":""
     },
     "cfg_spoilersBlurAmount_name":{
@@ -723,6 +743,10 @@
         "message":"Turns on/off ratings display and collection. Already collected ratings will stay in local storage but will not be used.",
         "description":""
     },
+    "cfg_showRatings_notice_dev":{
+        "message":"Ratings might not work on Development or Test environments.",
+        "description":""
+    },
     "cfg_ratingsAnchors_name":{
         "message":"Links to rating sites",
         "description":""
@@ -736,7 +760,11 @@
         "description":""
     },
     "cfg_ratingsWikidataAnchors_description":{
-        "message":"<span style='font-weight: bold;'>This is advised only for advanced users or regular Wikidata contributors.</span><br>Turns on/off feature to show links to Wikidata for adding identifications for movies to improve ratings. This will also show Netflix™ title ID in link and in UI to provide relevant data. Some titles will need to be searched manually, in case title name is in language that is not available by Wikidata. If title is completely missing from Wikidata, new title page will have to be created and both IMDb and Netflix™ IDs have to be added. If IMDb ID is missing it has to be searched and added to Wikidata. Data should automatically refresh within one hour.",
+        "message":"Turns on/off feature to show links to Wikidata for adding identifications for movies to improve ratings. This will also show Netflix™ title ID in link and in UI to provide relevant data. Some titles will need to be searched manually, in case title name is in language that is not available by Wikidata. If title is completely missing from Wikidata, new title page will have to be created and both IMDb and Netflix™ IDs have to be added. If IMDb ID is missing it has to be searched and added to Wikidata. Data should automatically refresh within one hour.",
+        "description":""
+    },
+    "cfg_ratingsWikidataAnchors_notice":{
+        "message":"This is advised only for advanced users or regular Wikidata contributors.",
         "description":""
     },
     "cfg_ratingsTileSize_name":{
@@ -768,7 +796,11 @@
         "description":""
     },
     "cfg_enableVideoFeatures_description":{
-        "message":"Turns on/off all video features. Netflix™ playback speed will be ignored while this option is enabled. Other extensions with similar video functions might stop working as expected.<br><br>Disabling this feature might require a page refresh to reset video values to default.",
+        "message":"Turns on/off all video features. Netflix™ playback speed will be ignored while this option is enabled. Other extensions with similar video functions might stop working as expected.",
+        "description":""
+    },
+    "cfg_enableVideoFeatures_notice":{
+        "message":"Disabling this feature might require a page refresh to reset video values to default.",
         "description":""
     },
     "cfg_videoSpeedRate_name":{
@@ -776,7 +808,11 @@
         "description":""
     },
     "cfg_videoSpeedRate_description":{
-        "message":"Sets video speed rate at which will every title play. This can be temporarily overwritten by status bubble controls. Too sudden changes can de-synchronize audio and video, page refresh can fix that.",
+        "message":"Sets video speed rate at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_videoSpeedRate_notice":{
+        "message":"Too sudden changes can de-synchronize audio and video. Page refresh can fix that.",
         "description":""
     },
     "cfg_videoAspectRatio_name":{
@@ -792,7 +828,7 @@
         "description":""
     },
     "cfg_videoZoom_description":{
-        "message":"Sets video zoom at which will every title play. Video aspect ratio must be set to manual for this option to take effect.",
+        "message":"Sets video zoom at which will every title play. Video aspect ratio must be set to manual for this option to take effect. This can be temporarily overwritten by status bubble controls.",
         "description":""
     },
     "cfg_videoBrightness_name":{

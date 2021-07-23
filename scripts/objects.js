@@ -164,7 +164,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'watch_credits':
-            obj = document.querySelector('[data-uia="watch-credits-seamless-button"], .nfp-aspect-wrapper');
+            obj = document.querySelector('[data-uia="watch-credits-seamless-button"], .nfp-aspect-wrapper, [aria-label="Watch credits"]');
             if (obj) { return obj; }
             break;
         case 'player_video':

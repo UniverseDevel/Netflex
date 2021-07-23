@@ -116,19 +116,17 @@
 	display: none;
 }
 
-#extension_options_scrollable .hint,
-#extension_options_scrollable .option_recommended {
-	color: #999999;
+#extension_options_scrollable .description {
+	color: #CCCCCC;
 	font-style: italic;
-	font-size: 12px;
 }
 
 #extension_options_scrollable label {
-	font-size: 13px;
+	font-size: 14px;
 }
 
 #extension_options_scrollable .cfg_name, .stats_name {
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: bold;
 	margin-right: 5px;
 	margin-bottom: 5px;
@@ -166,10 +164,12 @@
 
 #extension_options_scrollable .green {
 	color: #00b642;
+	font-style: italic;
 }
 
 #extension_options_scrollable .orange {
 	color: #e77400;
+	font-style: italic;
 }
 
 #extension_options_scrollable .right {

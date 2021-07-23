@@ -28,11 +28,12 @@
                 "libs/jquery/jquery.min.js",
                 "libs/fontawesome/fontawesome.js",
 
+                "scripts/distribution.js",
+
                 "scripts/global.js",
 
                 "scripts/functions.js",
                 "scripts/objects.js",
-                "scripts/distribution.js",
                 "scripts/vars.js",
 
                 "scripts/options.js",
@@ -53,11 +54,12 @@
             "libs/dompurify/purify.min.js",
             "libs/jquery/jquery.min.js",
 
+            "scripts/distribution.js",
+
             "scripts/global.js",
 
             "scripts/functions.js",
             "scripts/objects.js",
-            "scripts/distribution.js",
             "scripts/vars.js",
 
             "scripts/versions.js",

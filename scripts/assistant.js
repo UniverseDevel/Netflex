@@ -1110,71 +1110,88 @@ function mouse_simulation() {
     for (var key in simulation_objects) {
         if (simulation_objects.hasOwnProperty(key)) {
             try {
-                var el1 = simulation_objects[key];
-                if (movement_offset == 0) {
-                    movement_offset = 1;
-                } else {
-                    movement_offset = 0;
+                var elm = simulation_objects[key];
+                if (elm) {
+                    if (movement_offset == 0) {
+                        movement_offset = 1;
+                    } else {
+                        movement_offset = 0;
+                    }
+
+                    if (cfg['debug']['val'].includes('mouse_simulation')) {
+                        var dbg_el1 = document.createElement('div');
+                        dbg_el1.className = 'netflex_mouse_move_debug';
+                        dbg_el1.setAttribute('data-creation', new Date().getTime());
+                        addCSS(dbg_el1, {
+                            'width': '1px',
+                            'height': '1px',
+                            'border': '1px solid green',
+                            'background-color': 'green',
+                            'position': 'absolute',
+                            'z-index': '9999999999',
+                            'top': (elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset + 1) + 'px',
+                            'left': (elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset + 1) + 'px'
+                        })
+                        elm.appendChild(dbg_el1);
+
+                        var dbg_el2 = document.createElement('div');
+                        dbg_el2.className = 'netflex_mouse_move_debug';
+                        dbg_el2.setAttribute('data-creation', new Date().getTime());
+                        addCSS(dbg_el2, {
+                            'width': '1px',
+                            'height': '1px',
+                            'border': '1px solid red',
+                            'background-color': 'red',
+                            'position': 'absolute',
+                            'z-index': '9999999999',
+                            'top': (elm.offsetHeight/2 + movement_offset + 2) + 'px',
+                            'left': (elm.offsetWidth/2 + movement_offset + 2) + 'px'
+                        })
+                        elm.appendChild(dbg_el2);
+
+                        var dbg_el3 = document.createElement('div');
+                        dbg_el3.className = 'netflex_mouse_move_debug';
+                        dbg_el3.setAttribute('data-creation', new Date().getTime());
+                        addCSS(dbg_el3, {
+                            'width': '1px',
+                            'height': '1px',
+                            'border': '1px solid blue',
+                            'background-color': 'blue',
+                            'position': 'absolute',
+                            'z-index': '9999999999',
+                            'top': (elm.offsetHeight/2 + movement_offset + 3) + 'px',
+                            'left': (elm.offsetWidth/2 + movement_offset + 3) + 'px'
+                        })
+                        elm.appendChild(dbg_el3);
+                    }
+
+                    // Keep controls displayed
+                    var eventOptions = {
+                        'bubbles': true,
+                        'button': 0,
+                        'clientX': elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset,
+                        'clientY': elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset,
+                        'offsetX': elm.offsetWidth/2 + movement_offset,
+                        'offsetY': elm.offsetHeight/2 + movement_offset,
+                        'pageX': elm.offsetWidth/2 + movement_offset,
+                        'pageY': elm.offsetHeight/2 + movement_offset,
+                        'currentTarget': elm[0]
+                    };
+                    elm.dispatchEvent(new MouseEvent('mousemove', eventOptions));
                 }
-
-                if (cfg['debug']['val'].includes('mouse_simulation')) {
-                    var dbg_el1 = document.createElement('div');
-                    addCSS(dbg_el1, {
-                        'width': '1px',
-                        'height': '1px',
-                        'border': '1px solid green',
-                        'background-color': 'green',
-                        'position': 'absolute',
-                        'z-index': '9999999999',
-                        'top': (el1.getBoundingClientRect().top + el1.offsetHeight/2 + movement_offset + 1) + 'px',
-                        'left': (el1.getBoundingClientRect().left + el1.offsetWidth/2 + movement_offset + 1) + 'px'
-                    })
-                    document.body.appendChild(dbg_el1);
-                    setTimeout(function() {removeDOM(dbg_el1);}, cfg['debugControlsSwitchTimer']['val']);
-
-                    var dbg_el2 = document.createElement('div');
-                    addCSS(dbg_el2, {
-                        'width': '1px',
-                        'height': '1px',
-                        'border': '1px solid red',
-                        'background-color': 'red',
-                        'position': 'absolute',
-                        'z-index': '9999999999',
-                        'top': (el1.offsetHeight/2 + movement_offset + 2) + 'px',
-                        'left': (el1.offsetWidth/2 + movement_offset + 2) + 'px'
-                    })
-                    el1.appendChild(dbg_el2);
-                    setTimeout(function() {removeDOM(dbg_el2);}, cfg['debugControlsSwitchTimer']['val']);
-
-                    var dbg_el3 = document.createElement('div');
-                    addCSS(dbg_el3, {
-                        'width': '1px',
-                        'height': '1px',
-                        'border': '1px solid blue',
-                        'background-color': 'blue',
-                        'position': 'absolute',
-                        'z-index': '9999999999',
-                        'top': (el1.offsetHeight/2 + movement_offset + 3) + 'px',
-                        'left': (el1.offsetWidth/2 + movement_offset + 3) + 'px'
-                    })
-                    el1.appendChild(dbg_el3);
-                    setTimeout(function() {removeDOM(dbg_el3);}, cfg['debugControlsSwitchTimer']['val']);
-                }
-
-                // Keep controls displayed
-                var eventOptions = {
-                    'bubbles': true,
-                    'button': 0,
-                    'clientX': el1.getBoundingClientRect().left + el1.offsetWidth/2 + movement_offset,
-                    'clientY': el1.getBoundingClientRect().top + el1.offsetHeight/2 + movement_offset,
-                    'offsetX': el1.offsetWidth/2 + movement_offset,
-                    'offsetY': el1.offsetHeight/2 + movement_offset,
-                    'pageX': el1.offsetWidth/2 + movement_offset,
-                    'pageY': el1.offsetHeight/2 + movement_offset,
-                    'currentTarget': el1[0]
-                };
-                el1.dispatchEvent(new MouseEvent('mousemove', eventOptions));
             } catch (e) {}
+        }
+    }
+
+    // Check for debug objects and remove them if they are old enough
+    var elms = document.querySelectorAll('.netflex_mouse_move_debug');
+    if (elms[0]) {
+        for (var i = 0; i < elms.length; i++) {
+            var created_epoch_time = Number(elms[i].getAttribute('data-creation'));
+            var curr_epoch_time = new Date().getTime();
+            if (created_epoch_time < (curr_epoch_time - cfg['debugControlsSwitchTimer']['val']) || !cfg['debug']['val'].includes('mouse_simulation')) {
+                removeDOM(elms[i]);
+            }
         }
     }
 }
@@ -1441,7 +1458,7 @@ function handle_video_features() {
 
                     // Video aspect ratio and zoom
                     if (cfg['videoAspectRatio']['access']) {
-                        if (video.getAttribute('netflex_aspect_ratio') != 'original') {
+                        if (cfg['videoAspectRatio']['val'] != 'original') {
                             video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
                         } else {
                             video.removeAttribute('netflex_aspect_ratio');

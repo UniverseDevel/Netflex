@@ -129,7 +129,7 @@ function generate_options_data(load_tab) {
         var fields = [];
         switch (key) {
             case 'debug':
-                fields.push(fillArgs('<label class="orange cfg_notice">{0}<br><button id="button_reset_debug" class="control button_reset_debug">{1}</button><hr style="height: 1px;"></label>', getLang('debug_warning_notice'), getLang('button_reset_debug')));
+                fields.push(fillArgs('<label class="cfg_notice"><span class="orange">{0}</span><br><button id="button_reset_debug" class="control button_reset_debug">{1}</button><hr style="height: 1px;"></label>', getLang('debug_warning_notice'), getLang('button_reset_debug')));
                 break;
             case 'video':
                 fields.push(fillArgs('<label><button id="button_reset_video" class="control button_reset_video">{0}</button><hr style="height: 1px;"></label>', getLang('button_reset_video')));
@@ -271,17 +271,19 @@ function generate_options_data(load_tab) {
                 cfg_presets = '[ ' + cfg_presets.join(' | ') + ' ]';
             }
 
-            var cfg_warning = '';
+            var cfg_notice = '';
             if (disabled_features.includes(cfgkey)) {
-                cfg_warning = fillArgs('<span class="orange">{0}</span>', getLang('netflix_changes'));
+                cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang('netflix_changes'));
+            } else if (cfg[cfgkey]['notice'] !== null) {
+                cfg_notice = fillArgs('<span class="orange">{0}</span>', cfg[cfgkey]['notice']);
             }
 
-            var cfg_desc = fillArgs('<span class="hint">{0}</span>', cfg[cfgkey]['desc']);
+            var cfg_desc = fillArgs('<span class="description">{0}</span>', cfg[cfgkey]['desc']);
 
             var new_line = [
                 'bool',
             ];
-            var field_content = '<label style="{SHOW_CFG_ITEM}">{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}<br>{CFG_WARNING}<br>{CFG_DESC}<hr style="height: 1px;"></label>';
+            var field_content = '<label style="{SHOW_CFG_ITEM}">{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></label>';
             var field_keys = {
                 'SHOW_CFG_ITEM': ((cfg[conf_cat[key][i]]['access']) ? '' : 'display: none;'),
                 'CFG_NAME': cfg_name,
@@ -289,7 +291,7 @@ function generate_options_data(load_tab) {
                 'CFG_FORM': cfg_form,
                 'CFG_RESET': cfg_reset,
                 'CFG_PRESETS': cfg_presets,
-                'CFG_WARNING': cfg_warning,
+                'CFG_NOTICE': cfg_notice,
                 'CFG_DESC': cfg_desc
             };
             fields.push(fillKeys(field_content, field_keys));
@@ -392,8 +394,15 @@ function update_current_value(option) {
 
 function process_preset(key, value) {
     value = transform_value(key, value);
+    if (cfg[key]['type'] == 'bool') {
+        if (value) {
+            value = getLang('cfg_default_on');
+        } else {
+            value = getLang('cfg_default_off');
+        }
+    }
     if (cfg[key]['type'] == 'array') {
-        value = JSON.stringify(translate_array_default(key + '_type', value)).replaceAll(/(^\[|\]$)/gi, '');
+        value = JSON.stringify(translate_array_default(key + '_type', value)).replaceAll(/(^\[|\]$|")/gi, '');
     }
     if (cfg[key]['type'] == 'option') {
         value = getLang(key + '_type_' + value);
