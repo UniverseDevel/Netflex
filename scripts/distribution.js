@@ -31,6 +31,11 @@ function load_source_urls() {
     return source;
 };
 
+function load_news_url() {
+    var news = 'YOUR_NEWS_URL';
+    return news;
+};
+
 function load_prod_ids() {
     // As there is no other way to find out if unpacked extension is used on Firefox, we have to specify IDs for production extensions
     // Note: in non Firefox extensions 'extension_manifest.update_url == null' used to work to identify development environment
