@@ -534,7 +534,7 @@ function load_changelog() {
 
 function fill_about() {
     load_changelog();
-    document.getElementById('about_logo').src = logo_icon;
+    document.getElementById('about_logo').src = logo_icon_prod;
     addDOM(document.getElementById('about_founder_name'), getLang('founded_by') + ' ' + getLang('founder'));
     addDOM(document.getElementById('about_provider_name'), getLang('provided_by') + ' ' + getLang('provider'));
     addDOM(document.getElementById('about_developer_name'), getLang('developed_by') + ' ' + getLang('developer'));

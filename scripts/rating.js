@@ -207,7 +207,7 @@ function ratings_handler(object, object_id) {
                             if (resp['Response'] == 'True') {
                                 // Found
                                 var released = resp['Released']; // Not used for now
-                                year = resp['Year'];
+                                year = resp['Year'].replace(/–/gi, '-'); // Windows dash is yuck!
                                 var year_num = new Date().getFullYear();
                                 try {year_num = parseInt(year.split('-')[0]);} catch (e) {}
                                 var ratings = resp['Ratings'];
@@ -329,7 +329,7 @@ function handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_
             'meta_id': meta_id
         },
         'title_name': title_name,
-        'year': year,
+        'year': year.replace(/–/gi, '-'), // Windows dash is yuck!
         'urls': {
             'wikidata': wikidata_url
         },

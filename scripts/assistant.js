@@ -181,7 +181,7 @@ function generate_status_data(status_text) {
     // Define and insert fields into template
     var keys = {
         'SHOW_LOGO': ((!isOrphan) ? '' : 'display: none;' ),
-        'LOGO': logo_icon,
+        'LOGO': logo_icon_prod,
         'SHORT_NAME': getLang('short_name'),
         'NAME': getLang('name'),
         'VERSION': extension_version,
@@ -244,6 +244,7 @@ function processDynamicNewsContent(msg) {
 function generate_news_entry(news_item) {
     var entry = {
         'msg': news_item['msg'],
+        'env': news_item['env'],
         'valid_from': news_item['valid_from'],
         'valid_to': news_item['valid_to'],
         'received_at': new Date(),
@@ -285,27 +286,64 @@ function generate_news_content(reset_unread_values) {
 
             // HTML template for news items
             var news_content_data = `
-<div style="background-color: {NEWS_COLOR_BG}; color: {NEWS_COLOR_FNT}; margin-bottom: 10px; margin-right: 10px; border-radius: 10px; padding: 15px;">
+<div style="position: relative; background-color: {NEWS_COLOR_BG}; color: {NEWS_COLOR_FNT}; margin-bottom: 15px; margin-left: 10px; margin-right: 10px; border: 2px solid rgba(255, 255, 255, 0.50); border-radius: 10px; padding: 15px;">
     <table style="width: 100%;">
         <tr>
             <td colspan="2">
+                <img src="{ENV_LOGO}" atl="{SHORT_NAME}" style="{HIDE_LOGO} width: 25px; position: absolute; top: -8px; left: -8px;">
                 {NEWS_MSG}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
                 <hr style="border: 1px solid {NEWS_COLOR_FNT};">
             </td>
         </tr>
         <tr style="font-size: 12px;">
-            <td>
+            <td style="width: 50%;">
                 {RECEIVED_AT_TEXT}<br>{RECEIVED_AT}
             </td>
-            <td>
+            <td style="width: 50%;">
                 {UPDATED_AT_TEXT}<br>{UPDATED_AT}
             </td>
         </tr>
     </table>
 </div>
 `;
+
+            // Use logo based on environment message is for
+            var hide_icon = false;
+            var logo_icon = logo_icon_prod;
+            switch (news_item['env']) {
+                case 'prod':
+                    hide_icon = true;
+                    logo_icon = logo_icon_prod;
+                    break;
+                case 'test':
+                    if (isProd) {
+                        continue;
+                    }
+                    hide_icon = false;
+                    logo_icon = logo_icon_test;
+                    break;
+                case 'dev':
+                    if (isProd || isTest) {
+                        continue;
+                    }
+                    hide_icon = false;
+                    logo_icon = logo_icon_dev;
+                    break;
+                default:
+                    log('debug', 'news', fillArgs('Unknown news environment value: {0}.', news_item['env']));
+                    continue;
+                    break;
+            }
+
             // Define and insert fields into template
             var keys = {
+                'SHORT_NAME': getLang('short_name'),
+                'ENV_LOGO': logo_icon,
+                'HIDE_LOGO': ((hide_icon) ? 'display: none;' : ''),
                 'NEWS_COLOR_BG': ((last_news_read_old < news_item['received_at']) ? 'rgba(255, 255, 255, 0.90)' : 'rgba(38, 38, 38, 0.90)'),
                 'NEWS_COLOR_FNT': ((last_news_read_old < news_item['received_at']) ? '#000000' : '#FFFFFF'),
                 'NEWS_MSG': processDynamicNewsContent(news_item['msg']),

@@ -757,7 +757,10 @@ function environment_update() {
 
         debug_variables['assistant']['enableAssistant'] = enableAssistant;
         debug_variables['assistant']['key_disabled'] = key_disabled;
-        debug_variables['assistant']['logo_icon'] = logo_icon;
+        debug_variables['assistant']['logo_icon_prod'] = logo_icon_prod;
+        debug_variables['assistant']['logo_icon_test'] = logo_icon_test;
+        debug_variables['assistant']['logo_icon_dev'] = logo_icon_dev;
+        debug_variables['assistant']['logo_icon_sup'] = logo_icon_sup;
         debug_variables['assistant']['forceReloadDifference'] = forceReloadDifference;
         debug_variables['assistant']['key_pressed'] = key_pressed;
         debug_variables['assistant']['wheel_direction'] = wheel_direction;
@@ -1101,118 +1104,105 @@ function checkNews() {
                 loading_icon.style.display = 'inline';
             }
 
-            var news_url_type = 'news_prod';
-            if (isProd) {
-                news_url_type = 'news_prod';
-            } else if (isTest) {
-                news_url_type = 'news_test';
-            } else {
-                news_url_type = 'news_dev';
-            }
+            // Download latest news data
+            $.ajax({
+                // Configuration
+                type: 'GET',
+                url: news_urls['news'],
+                timeout: 10000,
+                cache: false,
+                async: true,
+                crossDomain: true,
+                dataType: 'text',
+                global: true, // ajaxStart/ajaxStop
+                // Data
+                data: {},
+                // Actions
+                beforeSend: function() {
+                    log('debug', 'news', news_urls['news']);
+                    log('info', '', getLang('checking_news'));
+                },
+                success: function(result, status, xhr) {
+                    try {
+                        var news_created = 0;
+                        var news_updated = 0;
+                        var news_removed = 0;
+                        var data_new = {};
+                        var data = JSON.parse(nvl(result, "{}"), JSON.dateParser);
 
-            var news_url = news_urls[news_url_type];
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                var news_item = data[key];
+                                var entry = generate_news_entry(news_item);
 
-            if (news_url != '') {
-                // Download latest news data
-                $.ajax({
-                    // Configuration
-                    type: 'GET',
-                    url: news_url,
-                    timeout: 10000,
-                    cache: false,
-                    async: true,
-                    crossDomain: true,
-                    dataType: 'text',
-                    global: true, // ajaxStart/ajaxStop
-                    // Data
-                    data: {},
-                    // Actions
-                    beforeSend: function() {
-                        log('debug', 'news', news_url);
-                        log('info', '', getLang('checking_news'));
-                    },
-                    success: function(result, status, xhr) {
-                        try {
-                            var news_created = 0;
-                            var news_updated = 0;
-                            var news_removed = 0;
-                            var data_new = {};
-                            var data = JSON.parse(nvl(result, "{}"), JSON.dateParser);
+                                // Check if news message is still/already valid
+                                if ((new Date() >= news_item['valid_from'] || news_item['valid_from'] == '') && (new Date() <= news_item['valid_to'] || news_item['valid_to'] == '')) {
+                                    // Check if key already exists
+                                    if (news_data.hasOwnProperty(key)) {
+                                        // Update existing entry and keep created at timestamp
+                                        data[key]['received_at'] = news_data[key]['received_at'];
+                                        data[key]['updated_at'] = news_data[key]['updated_at'];
+                                        log('debug', 'news', JSON.stringify(objSortByKey(news_data[key], 'asc')));
+                                        log('debug', 'news', JSON.stringify(objSortByKey(data[key], 'asc')));
 
-                            for (var key in data) {
-                                if (data.hasOwnProperty(key)) {
-                                    var news_item = data[key];
-                                    var entry = generate_news_entry(news_item);
-
-                                    // Check if news message is still/already valid
-                                    if ((new Date() >= news_item['valid_from'] || news_item['valid_from'] == '') && (new Date() <= news_item['valid_to'] || news_item['valid_to'] == '')) {
-                                        // Check if key already exists
-                                        if (news_data.hasOwnProperty(key)) {
-                                            // Update existing entry and keep created at timestamp
-                                            data[key]['received_at'] = news_data[key]['received_at'];
-                                            data[key]['updated_at'] = news_data[key]['updated_at'];
-                                            log('debug', 'news', JSON.stringify(objSortByKey(news_data[key], 'asc')));
-                                            log('debug', 'news', JSON.stringify(objSortByKey(data[key], 'asc')));
-
-                                            if (JSON.stringify(objSortByKey(news_data[key], 'asc')) != JSON.stringify(objSortByKey(data[key], 'asc'))) {
-                                                entry['received_at'] = news_data[key]['received_at'];
-                                                news_updated++;
-                                                log('debug', 'news', 'Entry updated.');
-                                            } else {
-                                                entry = news_data[key];
-                                            }
+                                        if (JSON.stringify(objSortByKey(news_data[key], 'asc')) != JSON.stringify(objSortByKey(data[key], 'asc'))) {
+                                            entry['received_at'] = news_data[key]['received_at'];
+                                            news_updated++;
+                                            log('debug', 'news', 'Entry updated.');
                                         } else {
-                                            // Create new entry
-                                            news_created++;
-                                            log('debug', 'news', 'Entry created.');
+                                            entry = news_data[key];
                                         }
-
-                                        data_new[key] = entry;
+                                    } else {
+                                        // Create new entry
+                                        news_created++;
+                                        log('debug', 'news', 'Entry created.');
                                     }
+
+                                    data_new[key] = entry;
                                 }
                             }
-                            // Count removed entries
-                            for (var key in news_data) {
-                                if (news_data.hasOwnProperty(key)) {
-                                    if (!data_new.hasOwnProperty(key)) {
-                                        news_removed++;
-                                    }
+                        }
+                        // Count removed entries
+                        for (var key in news_data) {
+                            if (news_data.hasOwnProperty(key)) {
+                                if (!data_new.hasOwnProperty(key)) {
+                                    news_removed++;
                                 }
                             }
-
-                            log('debug', 'news', 'News data:');
-                            log('debug', 'news', news_data);
-                            log('debug', 'news', 'Data new:');
-                            log('debug', 'news', data_new);
-
-                            news_data = data_new;
-
-                            // If there were changes perform updates
-                            log('debug', 'news', fillArgs('news_created = {0}, news_updated = {1}, news_removed = {2}', news_created, news_updated, news_removed));
-                            if (news_created != 0 || news_updated != 0 || news_removed != 0) {
-                                localStorage.setItem('netflex_newsData', JSON.stringify(news_data));
-
-                                // Generate data and show them to user
-                                generate_news_content(false);
-                            }
-                        } catch (e) {
-                            log('debug', 'news', 'ERROR: ' + e.message);
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        // Nothing for now
-                    },
-                    complete: function(xhr, status) {
-                        last_news_update = new Date();
-                        localStorage.setItem('netflex_lastNewsUpdate', JSON.stringify(last_news_update));
-                        news_update_running = false;
-                        var loading_icon = document.getElementById('news_loading_icon');
-                        if (loading_icon) {
-                            loading_icon.style.display = 'none';
+
+                        log('debug', 'news', 'News data:');
+                        log('debug', 'news', news_data);
+                        log('debug', 'news', 'Data new:');
+                        log('debug', 'news', data_new);
+
+                        news_data = data_new;
+
+                        // If there were changes perform updates
+                        log('debug', 'news', fillArgs('news_created = {0}, news_updated = {1}, news_removed = {2}', news_created, news_updated, news_removed));
+                        if (news_created != 0 || news_updated != 0 || news_removed != 0) {
+                            localStorage.setItem('netflex_newsData', JSON.stringify(news_data));
+
+                            // Generate data and show them to user
+                            generate_news_content(false);
                         }
+                    } catch (e) {
+                        log('debug', 'news', 'ERROR: ' + e.message);
                     }
-                });
-            };
+                },
+                error: function(xhr, status, error) {
+                    // Nothing for now
+                },
+                complete: function(xhr, status) {
+                    last_news_update = new Date();
+                    localStorage.setItem('netflex_lastNewsUpdate', JSON.stringify(last_news_update));
+                    news_update_running = false;
+                    var loading_icon = document.getElementById('news_loading_icon');
+                    if (loading_icon) {
+                        loading_icon.style.display = 'none';
+                    }
+                }
+            });
 
             news_force_update = false;
         }

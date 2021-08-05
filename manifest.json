@@ -77,6 +77,9 @@
 
     "web_accessible_resources": [
         "images/netflex.png",
+        "images/netflex_test.png",
+        "images/netflex_dev.png",
+        "images/netflex_sup.png",
         "CHANGELOG",
 
         "styles/netflex-ui.css",
