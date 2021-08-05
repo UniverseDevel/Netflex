@@ -80,6 +80,7 @@ var api_keys = load_api_keys();
 var donation_urls = load_donation_urls();
 var stores_urls = load_stores_urls();
 var source_urls = load_source_urls();
+var news_urls = load_news_urls();
 
 var show_donation_link = true;
 var show_source_link = true;
@@ -156,6 +157,14 @@ var stats_counter = {};
 var simulation_objects = {};
 var overflowData = {};
 
+var news_data = JSON.parse(nvl(localStorage.getItem('netflex_newsData'), "{}"), JSON.dateParser);
+var last_news_update = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsUpdate'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
+var last_news_read = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsRead'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
+var unread_news_count = 0;
+var news_update_interval = 60; // Minutes
+var news_update_running = false;
+var news_force_update = false;
+
 var video = null;
 var video_id = '';
 var is_series = false;
@@ -170,6 +179,11 @@ var currentEpisode_2 = '';
 var nextVideo_1 = '';
 var nextVideo_2 = '';
 var nextVideo_3 = '';
+
+var status_bubble_opened = false;
+var news_opened = false;
+var options_opened = false;
+var features_opened = false;
 
 var videoSpeedRate = cfg['videoSpeedRate']['def'];
 var videoSpeedRate_change = cfg['videoSpeedRate']['def'];

@@ -1,13 +1,66 @@
-function extension_options() {
-    var feat = document.getElementById('extension_features_integrated');
-    var icon = document.getElementById('extension_features');
-    if (feat) {
-        if (feat.style.display != 'none') {
-            feat.style.display = 'none';
-            try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
-            icon.children[0].classList.add('fa-plus');
+function hide_extension_containers(container) {
+    // Status bubble
+    if (container != 'status_bubble') {
+        status_bubble_opened = false;
+    }
+
+    // News panel
+    if (container != 'news') {
+        var news = document.getElementById('extension_news_integrated');
+        if (news) {
+            if (news.style.display != 'none') {
+                news.style.display = 'none';
+                news_opened = false;
+            }
         }
     }
+
+    // Options panel
+    if (container != 'options') {
+        var opt = document.getElementById('extension_options_integrated');
+        if (opt) {
+            if (opt.style.display != 'none') {
+                opt.style.display = 'none';
+                options_opened = false;
+            }
+        }
+    }
+
+    // Features panel
+    if (container != 'features') {
+        var feat = document.getElementById('extension_features_integrated');
+        var icon = document.getElementById('extension_features');
+        if (feat) {
+            if (feat.style.display != 'none') {
+                feat.style.display = 'none';
+                try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
+                icon.children[0].classList.add('fa-plus');
+                features_opened = false
+            }
+        }
+    }
+}
+
+function extension_news() {
+    hide_extension_containers('news');
+
+    // Open news page
+    var news = document.getElementById('extension_news_integrated');
+    if (news) {
+        if (news.style.display == 'none') {
+            addDOM(document.getElementById('extension_news_scrollable'), generate_news());
+            generate_news_content(true);
+            news.style.display = 'table-cell';
+            news_opened = true;
+        } else {
+            news.style.display = 'none';
+            news_opened = false;
+        }
+    }
+}
+
+function extension_options() {
+    hide_extension_containers('options');
 
     // Open options page
     var opt = document.getElementById('extension_options_integrated');
@@ -16,19 +69,16 @@ function extension_options() {
             addDOM(document.getElementById('extension_options_scrollable'), generate_options());
             generate_options_content();
             opt.style.display = 'table-cell';
+            options_opened = true;
         } else {
             opt.style.display = 'none';
+            options_opened = false;
         }
     }
 }
 
 function extension_features() {
-    var opt = document.getElementById('extension_options_integrated');
-    if (opt) {
-        if (opt.style.display != 'none') {
-            opt.style.display = 'none';
-        }
-    }
+    hide_extension_containers('features');
 
     // Show features part of status bubble element
     var feat = document.getElementById('extension_features_integrated');
@@ -41,10 +91,12 @@ function extension_features() {
             feat.style.display = 'table-cell';
             try {icon.children[0].classList.remove('fa-plus');} catch (e) {}
             icon.children[0].classList.add('fa-minus');
+            features_opened = true;
         } else {
             feat.style.display = 'none';
             try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
             icon.children[0].classList.add('fa-plus');
+            features_opened = false;
         }
     }
 }
@@ -69,11 +121,18 @@ function generate_status_data(status_text) {
 <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;">
     <tr>
         <td rowspan="3" style="vertical-align: top; max-width: 75px; width: 75px;{SHOW_LOGO}">
-            <img id="extension_logo" src="{LOGO}" style="width: 64px; cursor: pointer;" alt="{SHORT_NAME}">
+            <img id="extension_logo" src="{LOGO}" style="width: 64px;" alt="{SHORT_NAME}">
         </td>
         <th>
             {NAME} <span style="font-size: .5em;">(v{VERSION})</span>
-            <a href="javascript:void(0);" id="extension_options" style="color: #00b642; position: relative; top: 0.1em; float: right; cursor: pointer;{SHOW_OPTIONS_ICON}"><i id="extension_options_icon" class="fas fa-cog" title="{OPTIONS}"></i></a>
+            <span style="position: relative; top: 0.1em; float: right;">
+                <table style="position: absolute; right: 0px; white-space: nowrap;">
+                    <tr>
+                        <td><a href="javascript:void(0);" id="extension_news" class="{NEWS_UNREAD_CLASS}" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_NEWS_ICON}"><span id="extension_unread_news_count">{UNREAD_NEWS_COUNT}</span><i id="extension_news_icon" class="fas fa-newspaper" title="{NEWS}"></i></a></td>
+                        <td><a href="javascript:void(0);" id="extension_options" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_OPTIONS_ICON}"><i id="extension_options_icon" class="fas fa-cog" title="{OPTIONS}"></i></a></td>
+                    </tr>
+                </table>
+            </span>
         </th>
     </tr>
     <tr>
@@ -87,7 +146,13 @@ function generate_status_data(status_text) {
             <span style="font-size: 12px; display: unset;{SHOW_DONATIONS}">
                 - {DONATE} {DONATION_LINKS}
             </span>
-            <a href="javascript:void(0);" id="extension_features" style="color: #00b642; position: relative; float: right; cursor: pointer;{SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a>
+            <span style="position: relative; top: 0.1em; float: right;">
+                <table style="position: absolute; right: 0px; white-space: nowrap;">
+                    <tr>
+                        <td><a href="javascript:void(0);" id="extension_features" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a></td>
+                    </tr>
+                </table>
+            </span>
         </td>
     </tr>
     <tr>
@@ -96,6 +161,12 @@ function generate_status_data(status_text) {
             <div id="extension_features_scrollable" style="max-height: 300px; overflow-y: scroll;">
                 {FEATURES_CONTENT}
             </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" id="extension_news_integrated" style="display: none;">
+            <hr>
+            <div id="extension_news_scrollable" style="width: 100%; max-height: 430px; border: 0px; overflow-y: scroll;">{NEWS_CONTENT}</div>
         </td>
     </tr>
     <tr>
@@ -114,8 +185,6 @@ function generate_status_data(status_text) {
         'SHORT_NAME': getLang('short_name'),
         'NAME': getLang('name'),
         'VERSION': extension_version,
-        'SHOW_OPTIONS_ICON': ((!isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
-        'OPTIONS': getLang('options'),
         'STATUS_TEXT': status_text,
         'WEBSTORE_URL': stores_urls[browser],
         'SHOW_WEBSTORE': ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
@@ -123,6 +192,13 @@ function generate_status_data(status_text) {
         'SHOW_DONATIONS': ((show_donation_link) ? '' : 'display: none;'),
         'DONATE': getLang('donate'),
         'DONATION_LINKS': donations,
+        'NEWS': getLang('news'),
+        'SHOW_NEWS_ICON': ((!isProd && !isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ), // TODO: Remove !isProd when supported on production environment
+        'UNREAD_NEWS_COUNT': notification_format(unread_news_count),
+        'NEWS_UNREAD_CLASS': ((unread_news_count == 0) ? '' : ' unread'),
+        'NEWS_CONTENT': ((!isOrphan) ? generate_news() : ''),
+        'OPTIONS': getLang('options'),
+        'SHOW_OPTIONS_ICON': ((!isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
         'OPTIONS_CONTENT': ((!isOrphan) ? generate_options() : ''),
         'FEATURES': getLang('features'),
         'FEATURES_CONTENT': generate_status_features()
@@ -130,6 +206,129 @@ function generate_status_data(status_text) {
     status_data = fillKeys(status_data, keys);
 
     return status_data;
+}
+
+function generate_news() {
+    // HTML template for extension news status pop-up bubble injected into status icon in Netflix
+    var news_data = `
+        <div id="news_loading" style="text-align: center;">
+            <i class="fas fa-spinner fa-pulse" title="{LOADING_TEXT}" style="font-size: 30px; font-weight: bold; margin-top: 150px;"></i>
+        </div>
+        <div id="extension_news_content" style="display: none;">
+        </div>
+`;
+
+    var keys = {
+        'LOADING_TEXT': getLang('data_loading')
+    };
+    news_data = fillKeys(news_data, keys);
+
+    return news_data;
+}
+
+function processDynamicNewsContent(msg) {
+    return msg.replace(/%(.+):*(.*)*%/g, (m, str) => {
+        var data = str.split(':');
+        switch (data[0]) {
+            // %unixtime:<unixtime in UTC>% => Date in local time zone
+            case 'unixtime':
+                if (data[1]) {
+                    return new Date(data[1] * 1000).toLocaleString(undefined, date_format['full']);
+                }
+                return fillArgs(getLang('news_missing_data'), data[0]);
+                break;
+        }
+    });
+}
+
+function generate_news_entry(news_item) {
+    var entry = {
+        'msg': news_item['msg'],
+        'valid_from': news_item['valid_from'],
+        'valid_to': news_item['valid_to'],
+        'received_at': new Date(),
+        'updated_at': new Date()
+    };
+    return entry
+}
+
+function generate_news_content(reset_unread_values) {
+    var last_news_read_old = last_news_read;
+    if (reset_unread_values) {
+        unread_news_count = 0;
+        last_news_read = new Date();
+        localStorage.setItem('netflex_lastNewsRead', JSON.stringify(last_news_read));
+    }
+
+    // Reorder news items
+    var ordered_news = {};
+    for (var key in news_data) {
+        if (news_data.hasOwnProperty(key)) {
+            var news_item = news_data[key];
+            var regex_ts_rep = /[\-\.:TZ]/gi;
+            var news_id_padding = 20;
+            var order_key = news_item['received_at'].toJSON().replace(regex_ts_rep, '') + '_' + news_item['updated_at'].toJSON().replace(regex_ts_rep, '') + '_' + key.replace('news_', '').padStart(news_id_padding, '0');
+            ordered_news[order_key] = news_item;
+        }
+    }
+    ordered_news = objSortByKey(ordered_news, 'desc');
+    log('debug', 'news', 'Ordered news:');
+    log('debug', 'news', ordered_news);
+
+    // Generate content with news
+    var news_content = fillArgs('<div style="text-align: center; margin: auto; height: 20px;"><i id="news_loading_icon" class="fas fa-spinner fa-pulse" title="{0}" style="display: none; font-size: 10px;"></i></div>', getLang('data_loading'));
+    var news_count = 0;
+    for (var key in ordered_news) {
+        if (ordered_news.hasOwnProperty(key)) {
+            var news_content_data = '';
+            var news_item = ordered_news[key];
+
+            // HTML template for news items
+            var news_content_data = `
+<div style="background-color: {NEWS_COLOR_BG}; color: {NEWS_COLOR_FNT}; margin-bottom: 10px; margin-right: 10px; border-radius: 10px; padding: 15px;">
+    <table style="width: 100%;">
+        <tr>
+            <td colspan="2">
+                {NEWS_MSG}
+                <hr style="border: 1px solid {NEWS_COLOR_FNT};">
+            </td>
+        </tr>
+        <tr style="font-size: 12px;">
+            <td>
+                {RECEIVED_AT_TEXT}<br>{RECEIVED_AT}
+            </td>
+            <td>
+                {UPDATED_AT_TEXT}<br>{UPDATED_AT}
+            </td>
+        </tr>
+    </table>
+</div>
+`;
+            // Define and insert fields into template
+            var keys = {
+                'NEWS_COLOR_BG': ((last_news_read_old < news_item['received_at']) ? 'rgba(255, 255, 255, 0.90)' : 'rgba(38, 38, 38, 0.90)'),
+                'NEWS_COLOR_FNT': ((last_news_read_old < news_item['received_at']) ? '#000000' : '#FFFFFF'),
+                'NEWS_MSG': processDynamicNewsContent(news_item['msg']),
+                'RECEIVED_AT_TEXT': getLang('news_received_at'),
+                'RECEIVED_AT': news_item['received_at'].toLocaleString(undefined, date_format['full']),
+                'UPDATED_AT_TEXT': getLang('news_updated_at'),
+                'UPDATED_AT': news_item['updated_at'].toLocaleString(undefined, date_format['full'])
+            };
+            news_content_data = fillKeys(news_content_data, keys);
+
+            news_content += news_content_data;
+            news_count++;
+        }
+    }
+
+    if (news_count == 0) {
+        news_content = fillArgs('<div><table style="width: 100%;"><tr><th>{0}</th></tr></table></div>', getLang('no_news'));
+    }
+
+    addDOM(document.getElementById('extension_news_content'), news_content);
+
+    document.getElementById('news_loading').style.display = 'none';
+    document.getElementById('extension_news_content').style.display = 'block';
 }
 
 function generate_options() {
@@ -835,13 +1034,18 @@ function status_updater() {
                 }
 
                 // Set elements for status elements
+                document.getElementById('extension_news').addEventListener('click', function() { logEvent('status_updater > extension_news'); extension_news(); });
+
                 document.getElementById('extension_options').addEventListener('click', function() { logEvent('status_updater > extension_options'); extension_options(); });
                 document.getElementById('extension_options').addEventListener('mouseenter', function() { logEvent('status_updater > extension_options > enter'); options_icon_animate(true); });
                 document.getElementById('extension_options').addEventListener('mouseleave', function() { logEvent('status_updater > extension_options > leave'); options_icon_animate(false); });
+
                 document.getElementById('extension_features').addEventListener('click', function() { logEvent('status_updater > extension_features'); extension_features(); });
+
                 if (check_watch()) {
                     document.getElementById('extension_logo').addEventListener('click', function() { logEvent('status_updater > extension_logo'); create_fireworks_mark(); });
                 }
+
                 create_features_events();
 
                 // Set closing events for other buttons
@@ -900,13 +1104,18 @@ function status_updater() {
                     addCSS(el_pop_style, { 'color': text_color, 'background-color' : background_color });
 
                     // Set elements for status elements
+                    document.getElementById('extension_news').addEventListener('click', function() { logEvent('status_updater > extension_news'); extension_news(); });
+
                     document.getElementById('extension_options').addEventListener('click', function() { logEvent('status_updater > extension_options'); extension_options(); });
                     document.getElementById('extension_options').addEventListener('mouseenter', function() { logEvent('status_updater > extension_options > enter'); options_icon_animate(true); });
                     document.getElementById('extension_options').addEventListener('mouseleave', function() { logEvent('status_updater > extension_options > leave'); options_icon_animate(false); });
+
                     document.getElementById('extension_features').addEventListener('click', function() { logEvent('status_updater > extension_features'); extension_features(); });
+
                     if (check_watch()) {
                         document.getElementById('extension_logo').addEventListener('click', function() { logEvent('status_updater > extension_logo'); create_fireworks_mark(); });
                     }
+
                     create_features_events();
 
                     // Set closing events for other buttons
@@ -1073,23 +1282,27 @@ function switch_simulation(state, type) {
                 var feat = document.getElementById('extension_features_integrated');
 
                 if (state) {
-                    if (progress_bar) {
-                        progress_bar.classList.add('PlayerControlsNeo__progress-control-row--row-hidden');
-                    }
-                    addCSS(el_pop_content, {'display': 'inherit'});
-                    addCSS(el_status, {'transform': 'scale(1.2)'});
-                } else {
-                    addCSS(el_status, {'transform': 'scale(1)'});
-                    addCSS(el_pop_content, {'display': 'none'});
-                    if (progress_bar) {
-                        progress_bar.classList.remove('PlayerControlsNeo__progress-control-row--row-hidden');
-                    }
-                    addCSS(opt, {'display': 'none'});
-                    addCSS(feat, {'display': 'none'});
+                    try {
+                        if (progress_bar) {
+                            progress_bar.classList.add('PlayerControlsNeo__progress-control-row--row-hidden');
+                        }
+                        addCSS(el_pop_content, {'display': 'inherit'});
+                        addCSS(el_status, {'transform': 'scale(1.2)'});
 
-                    var icon = document.getElementById('extension_features');
-                    try {icon.children[0].classList.remove('fa-minus');} catch (e) {}
-                    icon.children[0].classList.add('fa-plus');
+                        status_bubble_opened = true;
+                    } catch (e) {}
+                } else {
+                    try {
+                        addCSS(el_status, {'transform': 'scale(1)'});
+                        addCSS(el_pop_content, {'display': 'none'});
+                        if (progress_bar) {
+                            progress_bar.classList.remove('PlayerControlsNeo__progress-control-row--row-hidden');
+                        }
+
+                        hide_extension_containers('status_bubble');
+
+                        status_bubble_opened = false;
+                    } catch (e) {}
                 }
                 break;
         }

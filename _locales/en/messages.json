@@ -175,6 +175,30 @@
         "message":"Renaming local storage variable from '{0}' to '{1}'.",
         "description":""
     },
+    "news":{
+        "message":"News",
+        "description":""
+    },
+    "no_news":{
+        "message":"No news at this moment.",
+        "description":""
+    },
+    "news_missing_data":{
+        "message":"Missing data in news dynamic value '{0}'.",
+        "description":""
+    },
+    "news_received_at":{
+        "message":"Received at: ",
+        "description":""
+    },
+    "news_updated_at":{
+        "message":"Updated at: ",
+        "description":""
+    },
+    "checking_news":{
+        "message":"Checking for news...",
+        "description":""
+    },
     "options":{
         "message":"Options",
         "description":""
@@ -1381,6 +1405,10 @@
     },
     "debug_type_dom_events":{
         "message":"DOM events",
+        "description":""
+    },
+    "debug_type_news":{
+        "message":"News",
         "description":""
     },
     "debug_type_ratings":{

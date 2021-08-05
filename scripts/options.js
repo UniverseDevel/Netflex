@@ -129,13 +129,13 @@ function generate_options_data(load_tab) {
         var fields = [];
         switch (key) {
             case 'debug':
-                fields.push(fillArgs('<label class="cfg_notice"><span class="orange">{0}</span><br><button id="button_reset_debug" class="control button_reset_debug">{1}</button><hr style="height: 1px;"></label>', getLang('debug_warning_notice'), getLang('button_reset_debug')));
+                fields.push(fillArgs('<label class="cfg_notice"><span class="orange">{0}</span><br><button id="button_reset_debug" class="control marginTop5px button_reset_debug">{1}</button><hr style="height: 1px;"></label>', getLang('debug_warning_notice'), getLang('button_reset_debug')));
                 break;
             case 'video':
-                fields.push(fillArgs('<label><button id="button_reset_video" class="control button_reset_video">{0}</button><hr style="height: 1px;"></label>', getLang('button_reset_video')));
+                fields.push(fillArgs('<label><button id="button_reset_video" class="control marginTop5px button_reset_video">{0}</button><hr style="height: 1px;"></label>', getLang('button_reset_video')));
                 break;
             case 'bindings':
-                fields.push(fillArgs('<label><button id="button_reset_bindings" class="control button_reset_bindings">{0}</button><hr style="height: 1px;"></label>', getLang('button_reset_bindings')));
+                fields.push(fillArgs('<label><button id="button_reset_bindings" class="control marginTop5px button_reset_bindings">{0}</button><hr style="height: 1px;"></label>', getLang('button_reset_bindings')));
                 break;
         }
 

@@ -607,9 +607,11 @@ function environment_update() {
 
         log('debug', 'environment', 'environment_update');
 
+
         checkIfOrphan();
         checkVisibility();
         checkProfile();
+        checkNews();
         url = window.location.href;
         origin = window.location.origin;
         try {ancestorOrigins = window.location.ancestorOrigins[0];} catch (e) {}
@@ -745,6 +747,15 @@ function environment_update() {
         debug_variables['variables']['netflix_profile'] = netflix_profile;
         debug_variables['variables']['reload_requests'] = reload_requests;
         debug_variables['variables']['reload_requested'] = reload_requested;
+        debug_variables['variables']['api_keys'] = api_keys;
+        debug_variables['variables']['donation_urls'] = donation_urls;
+        debug_variables['variables']['stores_urls'] = stores_urls;
+        debug_variables['variables']['source_urls'] = source_urls;
+        debug_variables['variables']['news_urls'] = news_urls;
+        debug_variables['variables']['status_bubble_opened'] = status_bubble_opened;
+        debug_variables['variables']['news_opened'] = news_opened;
+        debug_variables['variables']['options_opened'] = options_opened;
+        debug_variables['variables']['features_opened'] = features_opened;
 
         debug_variables['assistant']['enableAssistant'] = enableAssistant;
         debug_variables['assistant']['key_disabled'] = key_disabled;
@@ -820,6 +831,13 @@ function environment_update() {
         debug_variables['assistant']['videoSepia_temp'] = videoSepia_temp;
         debug_variables['assistant']['hideSubtitles_temp'] = hideSubtitles_temp;
         debug_variables['assistant']['reset_features'] = reset_features;
+        debug_variables['assistant']['news_data'] = news_data;
+        debug_variables['assistant']['last_news_update'] = last_news_update;
+        debug_variables['assistant']['last_news_read'] = last_news_read;
+        debug_variables['assistant']['unread_news_count'] = unread_news_count;
+        debug_variables['assistant']['news_update_running'] = news_update_running;
+        debug_variables['assistant']['news_force_update'] = news_force_update;
+        debug_variables['assistant']['news_update_interval'] = news_update_interval;
 
         debug_variables['rating']['enableProactiveRatings'] = enableProactiveRatings;
         debug_variables['rating']['ratings_limit_reached'] = ratings_limit_reached;
@@ -1069,6 +1087,172 @@ function checkVisibility() {
     }
 }
 
+function checkNews() {
+    // TODO: This feature is not supported on production environment until we request permissions for URL providing news
+    if (isProd) {
+        return;
+    }
+
+    if (!isOrphan) {
+        // Check if news are expired and if yes, download current news
+        var news_expiration = new Date(last_news_update).addMinutes(news_update_interval);
+        if ((news_expiration < new Date() || news_force_update) && !news_update_running) {
+            news_update_running = true;
+            var loading_icon = document.getElementById('news_loading_icon');
+            if (loading_icon) {
+                loading_icon.style.display = 'inline';
+            }
+
+            var news_url_type = 'news_prod';
+            if (isProd) {
+                news_url_type = 'news_prod';
+            } else if (isTest) {
+                news_url_type = 'news_test';
+            } else {
+                news_url_type = 'news_dev';
+            }
+
+            var news_url = news_urls[news_url_type];
+
+            if (news_url != '') {
+                // Download latest news data
+                $.ajax({
+                    // Configuration
+                    type: 'GET',
+                    url: news_url,
+                    timeout: 10000,
+                    cache: false,
+                    async: true,
+                    crossDomain: true,
+                    dataType: 'text',
+                    global: true, // ajaxStart/ajaxStop
+                    // Data
+                    data: {},
+                    // Actions
+                    beforeSend: function() {
+                        log('debug', 'news', news_url);
+                        log('info', '', getLang('checking_news'));
+                    },
+                    success: function(result, status, xhr) {
+                        try {
+                            var news_created = 0;
+                            var news_updated = 0;
+                            var news_removed = 0;
+                            var data_new = {};
+                            var data = JSON.parse(nvl(result, "{}"), JSON.dateParser);
+
+                            for (var key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    var news_item = data[key];
+                                    var entry = generate_news_entry(news_item);
+
+                                    // Check if news message is still/already valid
+                                    if ((new Date() >= news_item['valid_from'] || news_item['valid_from'] == '') && (new Date() <= news_item['valid_to'] || news_item['valid_to'] == '')) {
+                                        // Check if key already exists
+                                        if (news_data.hasOwnProperty(key)) {
+                                            // Update existing entry and keep created at timestamp
+                                            data[key]['received_at'] = news_data[key]['received_at'];
+                                            data[key]['updated_at'] = news_data[key]['updated_at'];
+                                            log('debug', 'news', JSON.stringify(objSortByKey(news_data[key], 'asc')));
+                                            log('debug', 'news', JSON.stringify(objSortByKey(data[key], 'asc')));
+
+                                            if (JSON.stringify(objSortByKey(news_data[key], 'asc')) != JSON.stringify(objSortByKey(data[key], 'asc'))) {
+                                                entry['received_at'] = news_data[key]['received_at'];
+                                                news_updated++;
+                                                log('debug', 'news', 'Entry updated.');
+                                            } else {
+                                                entry = news_data[key];
+                                            }
+                                        } else {
+                                            // Create new entry
+                                            news_created++;
+                                            log('debug', 'news', 'Entry created.');
+                                        }
+
+                                        data_new[key] = entry;
+                                    }
+                                }
+                            }
+                            // Count removed entries
+                            for (var key in news_data) {
+                                if (news_data.hasOwnProperty(key)) {
+                                    if (!data_new.hasOwnProperty(key)) {
+                                        news_removed++;
+                                    }
+                                }
+                            }
+
+                            log('debug', 'news', 'News data:');
+                            log('debug', 'news', news_data);
+                            log('debug', 'news', 'Data new:');
+                            log('debug', 'news', data_new);
+
+                            news_data = data_new;
+
+                            // If there were changes perform updates
+                            log('debug', 'news', fillArgs('news_created = {0}, news_updated = {1}, news_removed = {2}', news_created, news_updated, news_removed));
+                            if (news_created != 0 || news_updated != 0 || news_removed != 0) {
+                                localStorage.setItem('netflex_newsData', JSON.stringify(news_data));
+
+                                // Generate data and show them to user
+                                generate_news_content(false);
+                            }
+                        } catch (e) {
+                            log('debug', 'news', 'ERROR: ' + e.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Nothing for now
+                    },
+                    complete: function(xhr, status) {
+                        last_news_update = new Date();
+                        localStorage.setItem('netflex_lastNewsUpdate', JSON.stringify(last_news_update));
+                        news_update_running = false;
+                        var loading_icon = document.getElementById('news_loading_icon');
+                        if (loading_icon) {
+                            loading_icon.style.display = 'none';
+                        }
+                    }
+                });
+            };
+
+            news_force_update = false;
+        }
+
+        // If news are opened mark constantly as read
+        if (news_opened) {
+            last_news_read = new Date();
+            localStorage.setItem('netflex_lastNewsRead', JSON.stringify(last_news_read));
+        }
+
+        // Count new entries
+        var news_counter = 0;
+        for (var key in news_data) {
+            if (news_data.hasOwnProperty(key)) {
+                if (last_news_read < news_data[key]['received_at']) {
+                    news_counter++;
+                }
+            }
+        }
+        unread_news_count = news_counter;
+
+        // Handle status bubble data update
+        var elm1 = document.getElementById('extension_news');
+        var elm2 = document.getElementById('extension_unread_news_count');
+        if (elm1 && elm2) {
+            var formatted_news_unread_count = notification_format(unread_news_count);
+            if (elm2.innerText != formatted_news_unread_count) {
+                if (formatted_news_unread_count != '') {
+                    elm1.classList.add('unread');
+                } else {
+                    elm1.classList.remove('unread');
+                }
+                addDOM(elm2, formatted_news_unread_count);
+            }
+        }
+    }
+}
+
 function checkProfile() {
     netflix_profile = localStorage.getItem('netflex_profile');
     var netflix_profile_copy = netflix_profile;
@@ -1093,12 +1277,31 @@ function checkProfile() {
     }
 }
 
-function addLeadingZero(number) {
-    var ret_num = '' + number;
-    if (number < 10) {
-        ret_num = '0' + number;
+function notification_format(count) {
+    if (count == 0) {
+        count = '';
+    } else {
+        if (count > 99) {
+            count = '99+ ';
+        } else {
+            count = count + ' ';
+        }
     }
-    return ret_num;
+    return count;
+}
+
+function objSortByKey(obj, sort) {
+    if (sort.toLowerCase() == 'desc') {
+        return Object.keys(obj).sort().reverse().reduce(function (result, key) {
+            result[key] = obj[key];
+            return result;
+        }, {});
+    } else {
+        return Object.keys(obj).sort().reduce(function (result, key) {
+            result[key] = obj[key];
+            return result;
+        }, {});
+    }
 }
 
 function convertToInterval(seconds) {
@@ -1106,8 +1309,8 @@ function convertToInterval(seconds) {
     var sec = Math.floor(seconds);
     var int_days = Math.floor(sec / 86400);
     var int_hours = Math.floor(((sec % 31536000) % 86400) / 3600);
-    var int_mins = Math.floor((((sec % 31536000) % 86400) % 3600) / 60);
-    var int_secs = (((sec % 31536000) % 86400) % 3600) % 60;
+    var int_mins = Math.floor((((sec % 31536000) % 86400) % 3600) / 60).toString();
+    var int_secs = ((((sec % 31536000) % 86400) % 3600) % 60).toString();
 
     if (int_days != 0) {
         interval += int_days + ' ';
@@ -1117,7 +1320,7 @@ function convertToInterval(seconds) {
         interval += int_hours + ':';
     }
 
-    interval += addLeadingZero(int_mins) + ':' + addLeadingZero(int_secs);
+    interval += int_mins.padStart(2, '0') + ':' + int_secs.padStart(2, '0');
 
     return interval;
 }
