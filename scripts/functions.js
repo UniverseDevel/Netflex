@@ -719,8 +719,6 @@ function environment_update() {
         debug_variables['variables']['cadmium_version_normalized'] = cadmium_version_normalized;
         debug_variables['variables']['show_donation_link'] = show_donation_link;
         debug_variables['variables']['show_source_link'] = show_source_link;
-        debug_variables['variables']['donation_urls'] = donation_urls;
-        debug_variables['variables']['stores_urls'] = stores_urls;
         debug_variables['variables']['options_tab_selected'] = options_tab_selected;
         debug_variables['variables']['extension_id'] = extension_id;
         debug_variables['variables']['environment'] = environment;
@@ -1410,7 +1408,7 @@ function obj2html(obj) {
         } else if (isObject(obj[key])) {
             result +=  '<tr><th><span class="sticky">' + key + '</span></th><td class="td_type"><span class="sticky">object (' + Object.keys(obj[key]).length + ')</span></td><td class="td_value' + highlight + '">' + obj2html(obj[key]) + '</td></tr>';
         } else {
-            result += '<tr><th><span class="sticky">' + key + '</span></th><td class="td_type"><span class="sticky">' + typeof(obj[key]) + '</span></td><td class="td_value' + highlight + '">' + obj[key] + '</td></tr>';
+            result += '<tr><th><span class="sticky">' + key + '</span></th><td class="td_type"><span class="sticky">' + typeof(obj[key]) + '</span></td><td class="td_value' + highlight + '">' + (( typeof(obj[key]) !== 'string' ) ? obj[key] : obj[key].toString().replace(/&/gi, '&amp;').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') ) + '</td></tr>';
         }
     });
 
@@ -1452,14 +1450,40 @@ function process_debug_variables(data, error, filter) {
 }
 
 function show_debug_variables(type) {
-    log('output', '', getLang('show_debug_variables_hint'));
     var debug_content = '';
     if (!type || type == 'json') {
+        log('output', '', getLang('show_debug_variables_hint_json'));
         debug_content = JSON.parse(load_debug_variables(), JSON.dateParser);
     }
     if (type == 'html') {
-        debug_content = document.createElement('html');
-        addDOM(debug_content, '<head></head><body>' + process_debug_variables(load_debug_variables(), false, 'none') + '</body>');
+        log('output', '', getLang('show_debug_variables_hint_html'));
+
+        // Create elements, their attributes and contents
+        var debug_html = document.createElement('html');
+        debug_html.setAttribute('lang', 'en');
+
+        var debug_head = document.createElement('head');
+
+        var debug_title = document.createElement('title');
+        addDOM(debug_title, 'Debug variables');
+
+        var debug_css = document.createElement('link');
+        debug_css.setAttribute('rel', 'stylesheet');
+        debug_css.setAttribute('href', 'devtools.css');
+
+        var debug_body = document.createElement('body');
+        addDOM(debug_body, process_debug_variables(load_debug_variables(), false, 'none'));
+
+        // Join elements
+        debug_head.appendChild(debug_title);
+        debug_head.appendChild(debug_css);
+
+        debug_html.appendChild(debug_head);
+        debug_html.appendChild(debug_body);
+
+        debug_content = debug_html;
+
+        // Indent code
         debug_content = html_indent(debug_content, 0);
     }
     log('output', '', debug_content);
@@ -1473,7 +1497,7 @@ function addDOM(object, content) {
         // jQuery used to remove warning on Firefox
         SAFE_FOR_JQUERY: true,
         ADD_TAGS: [
-            "use"
+            'use'
         ],
         ADD_ATTR: [
             // Allow attribute target to open links on new page "_blank"

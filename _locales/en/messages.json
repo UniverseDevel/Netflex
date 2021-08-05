@@ -1479,8 +1479,12 @@
         "message":"Provided configuration item '{0}' is of wrong type '{1}', expected type is '{2}'.",
         "description":""
     },
-    "show_debug_variables_hint":{
-        "message":"Show debug variables as JSON (default) or HTML.",
+    "show_debug_variables_hint_json":{
+        "message":"Generating debug variables as JSON (default).",
+        "description":""
+    },
+    "show_debug_variables_hint_html":{
+        "message":"Generating debug variables as HTML.",
         "description":""
     },
     "unsupported_cfg_type":{

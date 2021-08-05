@@ -3,10 +3,10 @@ html, body {
     padding: 0px;
     width: 100%;
     height: 100%;
-    font-size: x-small;
+    font-size: large;
 }
 input {
-    font-size: x-small;
+    font-size: large;
 }
 .controls {
     width: 100%;
@@ -27,7 +27,7 @@ table {
     border-spacing: 0px;
     border-collapse: separate;
     border: 1px solid #000000;
-    font-size: x-small;
+    font-size: large;
 }
 tr:nth-child(odd) {
     background: #cccccc;
