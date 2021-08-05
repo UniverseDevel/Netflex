@@ -33,9 +33,7 @@ function load_source_urls() {
 
 function load_news_urls() {
     var news = {
-        'news_prod': 'YOUR_PROD_NEWS_URL',
-        'news_test': 'YOUR_TEST_NEWS_URL',
-        'news_dev': 'YOUR_DEV_NEWS_URL'
+        'news': 'YOUR_NEWS_URL'
     };
     return news;
 };
