@@ -92,9 +92,9 @@ var options_tab_selected = 'tab_assistant';
 // ------------------------
 
 var logo_icon_prod = extension_extension.getURL('images/netflex.png');
-var logo_icon_test = extension_extension.getURL('images/netflex_test.png')
-var logo_icon_dev = extension_extension.getURL('images/netflex_dev.png')
-var logo_icon_sup = extension_extension.getURL('images/netflex_sup.png')
+var logo_icon_test = extension_extension.getURL('images/netflex_test.png');
+var logo_icon_dev = extension_extension.getURL('images/netflex_dev.png');
+var logo_icon_sup = extension_extension.getURL('images/netflex_sup.png');
 var changelog_page = extension_extension.getURL('CHANGELOG');
 
 var control_panel = 'none';

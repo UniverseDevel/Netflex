@@ -1187,11 +1187,12 @@ function checkNews() {
                             generate_news_content(false);
                         }
                     } catch (e) {
-                        log('debug', 'news', 'ERROR: ' + e.message);
+                        log('debug', 'news', 'NEWS ERROR (success): ' + e.message);
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Nothing for now
+                    log('debug', 'news', 'NEWS ERROR (error): ' + error);
+                    //log('debug', 'news', xhr);
                 },
                 complete: function(xhr, status) {
                     last_news_update = new Date();
