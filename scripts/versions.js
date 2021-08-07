@@ -15,14 +15,14 @@ function localStorage_rename(key_from, key_to) {
 function cfg_rename(cfg_key_from, cfg_key_to) {
     try {
         log('info', '', getLang('versions_rename_variable'), cfg_key_from, cfg_key_to);
-        extension_storage.local.get(cfg_key_from, function(result) {
+        chrome.storage.local.get(cfg_key_from, function(result) {
             if (result[cfg_key_from] !== undefined) {
                 var new_cfg = {};
                 new_cfg[cfg_key_to] = result[cfg_key_from].toString();
-                extension_storage.local.set(new_cfg, function() {});
+                chrome.storage.local.set(new_cfg, function() {});
             }
         });
-        extension_storage.local.remove([cfg_key_from],function(){});
+        chrome.storage.local.remove([cfg_key_from],function(){});
         log('info', '', getLang('success'));
     } catch (e) {log('error', '', getLang('failed'));}
 }
@@ -30,7 +30,7 @@ function cfg_rename(cfg_key_from, cfg_key_to) {
 function cfg_remove(cfg_key) {
     try {
         log('info', '', getLang('versions_remove_variable'), cfg_key);
-        extension_storage.local.remove(cfg_key, function() {});
+        chrome.storage.local.remove(cfg_key, function() {});
         log('info', '', getLang('success'));
     } catch (e) {log('error', '', getLang('failed'));}
 }
@@ -104,7 +104,7 @@ function version_consistency_changes() {
             // Configuration variable highlightSubtitles converted from boolean to number
             try {
                 log('info', '', getLang('versions_reset_data'), 'highlightSubtitles');
-                extension_storage.local.set({ 'highlightSubtitles': 0 }, function() {});
+                chrome.storage.local.set({ 'highlightSubtitles': 0 }, function() {});
                 log('info', '', getLang('success'));
             } catch (e) {log('error', '', getLang('failed'));}
 
@@ -185,9 +185,9 @@ function version_consistency_changes() {
             // Configuration variable exitPlayerKey converted from code to key
             try {
                 log('info', '', getLang('versions_reset_data'), 'exitPlayerKey');
-                extension_storage.local.get(['exitPlayerKey'], function(result) {
+                chrome.storage.local.get(['exitPlayerKey'], function(result) {
                     if (result['exitPlayerKey'] !== undefined && !isNaN(result['exitPlayerKey'])) {
-                        extension_storage.local.set({ 'exitPlayerKey': code_to_key(result['exitPlayerKey']) }, function() {});
+                        chrome.storage.local.set({ 'exitPlayerKey': code_to_key(result['exitPlayerKey']) }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -196,9 +196,9 @@ function version_consistency_changes() {
             // Configuration variable prevEpisodeKey converted from code to key
             try {
                 log('info', '', getLang('versions_reset_data'), 'prevEpisodeKey');
-                extension_storage.local.get(['prevEpisodeKey'], function(result) {
+                chrome.storage.local.get(['prevEpisodeKey'], function(result) {
                     if (result['prevEpisodeKey'] !== undefined && !isNaN(result['prevEpisodeKey'])) {
-                        extension_storage.local.set({ 'prevEpisodeKey': code_to_key(result['prevEpisodeKey']) }, function() {});
+                        chrome.storage.local.set({ 'prevEpisodeKey': code_to_key(result['prevEpisodeKey']) }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -207,9 +207,9 @@ function version_consistency_changes() {
             // Configuration variable nextEpisodeKey converted from code to key
             try {
                 log('info', '', getLang('versions_reset_data'), 'nextEpisodeKey');
-                extension_storage.local.get(['nextEpisodeKey'], function(result) {
+                chrome.storage.local.get(['nextEpisodeKey'], function(result) {
                     if (result['nextEpisodeKey'] !== undefined && !isNaN(result['nextEpisodeKey'])) {
-                        extension_storage.local.set({ 'nextEpisodeKey': code_to_key(result['nextEpisodeKey']) }, function() {});
+                        chrome.storage.local.set({ 'nextEpisodeKey': code_to_key(result['nextEpisodeKey']) }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -218,9 +218,9 @@ function version_consistency_changes() {
             // Configuration variable randomMovieKey converted from code to key
             try {
                 log('info', '', getLang('versions_reset_data'), 'randomMovieKey');
-                extension_storage.local.get(['randomMovieKey'], function(result) {
+                chrome.storage.local.get(['randomMovieKey'], function(result) {
                     if (result['randomMovieKey'] !== undefined && !isNaN(result['randomMovieKey'])) {
-                        extension_storage.local.set({ 'randomMovieKey': code_to_key(result['randomMovieKey']) }, function() {});
+                        chrome.storage.local.set({ 'randomMovieKey': code_to_key(result['randomMovieKey']) }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -229,7 +229,7 @@ function version_consistency_changes() {
             // Configuration variable highlightSubtitles converted from number to string
             try {
                 log('info', '', getLang('versions_reset_data'), 'highlightSubtitles');
-                extension_storage.local.get(['highlightSubtitles'], function(result) {
+                chrome.storage.local.get(['highlightSubtitles'], function(result) {
                     if (result['highlightSubtitles'] !== undefined && !isNaN(result['highlightSubtitles'])) {
                         var new_value = 'disabled';
                         switch (result['highlightSubtitles'].toString()) {
@@ -246,7 +246,7 @@ function version_consistency_changes() {
                                 new_value = 'background';
                                 break;
                         }
-                        extension_storage.local.set({ 'highlightSubtitles': new_value }, function() {});
+                        chrome.storage.local.set({ 'highlightSubtitles': new_value }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -255,7 +255,7 @@ function version_consistency_changes() {
             // Configuration variable pauseOnBlur converted from number to string
             try {
                 log('info', '', getLang('versions_reset_data'), 'pauseOnBlur');
-                extension_storage.local.get(['pauseOnBlur'], function(result) {
+                chrome.storage.local.get(['pauseOnBlur'], function(result) {
                     if (result['pauseOnBlur'] !== undefined && !isNaN(result['pauseOnBlur'])) {
                         var new_value = 'disabled';
                         switch (result['pauseOnBlur'].toString()) {
@@ -269,7 +269,7 @@ function version_consistency_changes() {
                                 new_value = 'high';
                                 break;
                         }
-                        extension_storage.local.set({ 'pauseOnBlur': new_value }, function() {});
+                        chrome.storage.local.set({ 'pauseOnBlur': new_value }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));
@@ -376,8 +376,8 @@ function version_consistency_changes() {
             localStorage.setItem('netflex_ratingsDB', JSON.stringify(ratingsDB_tmp));
 
             // Changing default intervals
-            extension_storage.local.set({'startupTimer': 200}, function() {});
-            extension_storage.local.set({'injectorTimer': 200}, function() {});
+            chrome.storage.local.set({'startupTimer': 200}, function() {});
+            chrome.storage.local.set({'injectorTimer': 200}, function() {});
 
             apply_version('6.2.8');
         }
@@ -405,14 +405,14 @@ function version_consistency_changes() {
             // Configuration variable nextEpisode converted from bool to option
             try {
                 log('info', '', getLang('versions_reset_data'), 'nextEpisode');
-                extension_storage.local.get(['nextEpisode'], function(result) {
+                chrome.storage.local.get(['nextEpisode'], function(result) {
                     if (result['nextEpisode'] !== undefined) {
-                        extension_storage.local.set({ 'titleEndAction': 'skip' }, function() {
+                        chrome.storage.local.set({ 'titleEndAction': 'skip' }, function() {
                             // Configuration variable nextEpisode removed
                             cfg_remove('nextEpisode');
                         });
                     } else {
-                        extension_storage.local.set({ 'titleEndAction': 'none' }, function() {
+                        chrome.storage.local.set({ 'titleEndAction': 'none' }, function() {
                             // Configuration variable nextEpisode removed
                             cfg_remove('nextEpisode');
                         });
@@ -424,9 +424,9 @@ function version_consistency_changes() {
             // Configuration variable logLevel converted from option number to option text
             try {
                 log('info', '', getLang('versions_reset_data'), 'logLevel');
-                extension_storage.local.get(['logLevel'], function(result) {
+                chrome.storage.local.get(['logLevel'], function(result) {
                     if (result['logLevel'] !== undefined) {
-                        extension_storage.local.set({ 'logLevel': result['logLevel'].toString() }, function() {});
+                        chrome.storage.local.set({ 'logLevel': result['logLevel'].toString() }, function() {});
                     }
                 });
                 log('info', '', getLang('success'));

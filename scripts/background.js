@@ -1,11 +1,80 @@
-extension_browserAction.onClicked.addListener(function (activeTab) {
+var environment = 'developement';
+var isDev = true;
+var isTest = false;
+var isProd = false;
+
+var extension_id = chrome.runtime.id;
+var prod_extension_list = load_prod_ids();
+var test_extension_list = load_test_ids();
+
+if (prod_extension_list.includes(extension_id)) { // PROD
+    environment = 'production';
+    isDev = false;
+    isTest = false;
+    isProd = true;
+} else if (test_extension_list.includes(extension_id)) { // TEST
+    environment = 'test';
+    isDev = false;
+    isTest = true;
+    isProd = false;
+} else { // DEV
+    environment = 'developement';
+    isDev = true;
+    isTest = false;
+    isProd = false;
+}
+
+function injectWindows() {
+    chrome.windows.getAll({
+        populate: true
+    }, function (windows) {
+        try {
+            // Auto re-inject to all Netflix tabs
+            for (var i = 0; i < windows.length; i++) {
+                var currentWindow = windows[i];
+                for (var j = 0 ; j < currentWindow.tabs.length; j++) {
+                    currentTab = currentWindow.tabs[j];
+                    if (currentTab.url) {
+                        // Skip chrome:// and about:// and apply only to allowed URL
+                        if (currentTab.url.match(chrome.runtime.getManifest().content_scripts[0].matches[0].replace('/','\/').replace('.','\.').replace('*','.*')) && !currentTab.url.match(/(chrome|about):\/\//gi)) {
+                            var scripts = chrome.runtime.getManifest().content_scripts[0].js;
+
+                            // Add DevTools script to injected scripts if available in manifest and is Development or Test environment
+                            if ((isDev || isTest) && chrome.runtime.getManifest().devtools_page) {
+                                scripts.push(chrome.runtime.getManifest().devtools_page);
+                            }
+
+                            for (var k = 0; k < scripts.length; k++) {
+                                console.log('NETFLEX INFO: Injecting script with ID ' + k + ' on path: "' + chrome.runtime.getURL(scripts[k]) + '", to tab with ID ' + j + ' and URL: "' + currentTab.url + '", in window with ID ' + i + '.');
+
+                                chrome.tabs.executeScript(currentTab.id, {
+                                    file: scripts[k]
+                                }, function(e) {
+                                    if (chrome.runtime.lastError) {
+                                        console.error('NETFLEX ERROR: Injecting script failed with: ' + chrome.runtime.lastError.message + '. Error was suppressed.');
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (e) {
+            console.error('NETFLEX ERROR: Failed to auto-inject tabs.');
+            console.error(e);
+        }
+    });
+}
+
+chrome.browserAction.onClicked.addListener(function (activeTab) {
     var newURL = 'https://www.netflix.com/';
-    extension_tabs.create({ url: newURL });
+    chrome.tabs.create({ url: newURL });
 });
 /*
 // Requires "management" permission which shows as "Manage your apps, extensions, and themes"
-extension_management.onEnabled.addListener(function (details) {
-    log('info', '', getLang('extension_enable'));
+chrome.management.onEnabled.addListener(function (details) {
+    console.log('NETFLEX INFO: Extension enabled.');
 
     if (last_version_normalized >= normalize_version('3.8', 4)) { // 3.8
         // Automated injection is supported from version 3.8 forward, older versions
@@ -13,64 +82,35 @@ extension_management.onEnabled.addListener(function (details) {
         injectWindows();
     }
 });
-extension_management.onDisabled.addListener(function (details) {
-    log('info', '', getLang('extension_disable'));
+chrome.management.onDisabled.addListener(function (details) {
+    console.log('NETFLEX INFO: Extension disabled.');
 });
 */
-extension_runtime.onInstalled.addListener(function (details) {
-    if (isDev) { // DEV: Any local installation
-        extension_browserAction.setIcon({
-            path: extension_extension.getURL('images/netflex_dev.png')
-        });
-        extension_browserAction.setTitle({
-            title: getLang('name') + ' DEV'
-        });
-    } else if (isTest) { // TEST
-        extension_browserAction.setIcon({
-            path: extension_extension.getURL('images/netflex_test.png')
-        });
-        extension_browserAction.setTitle({
-            title: getLang('name') + ' TEST'
-        });
-    } else { // PROD: Anything that is not TEST or DEV
-        // Keep production settings
-    }
-
-    if (details.reason == 'install') {
-        log('info', '', getLang('extension_install'));
-
-        if (last_version == null) {
-            // Initiation - extension was installed store variables
-            localStorage.setItem('netflex_lastVersion', extension_manifest.version);
-            localStorage.setItem('netflex_previousVersion', details.previousVersion);
-            localStorage.setItem('netflex_thisVersion', extension_manifest.version);
+chrome.runtime.onInstalled.addListener(function (details) {
+    chrome.browserAction.getTitle({}, function(name) {
+        if (isDev) { // DEV: Any local installation
+            chrome.browserAction.setIcon({
+                path: chrome.runtime.getURL('images/netflex_dev.png')
+            });
+            chrome.browserAction.setTitle({
+                title: name + ' DEV'
+            });
+        } else if (isTest) { // TEST
+            chrome.browserAction.setIcon({
+                path: chrome.runtime.getURL('images/netflex_test.png')
+            });
+            chrome.browserAction.setTitle({
+                title: name + ' TEST'
+            });
+        } else { // PROD: Anything that is not TEST or DEV
+            // Keep production settings
         }
 
-        // After installation no configuration loading is needed as default configuration will be used anyway
-    } else if (details.reason == 'update') {
-        log('info', '', getLang('extension_update'));
-
-        if (last_version == null) {
-            // Initiation - extension was updated but values does not exist
-            localStorage.setItem('netflex_lastVersion', extension_manifest.version);
-            localStorage.setItem('netflex_previousVersion', details.previousVersion);
-            localStorage.setItem('netflex_thisVersion', extension_manifest.version);
-        } else if (last_version != extension_version) {
-            // Update - extension was updated and versions does not match
-            localStorage.setItem('netflex_lastVersion', extension_manifest.version);
-            localStorage.setItem('netflex_previousVersion', details.previousVersion);
-            localStorage.setItem('netflex_thisVersion', extension_manifest.version);
-        }
-
-        // Automated injection is supported from version 3.8 forward, older versions
-        // will have to perform manual page refresh when updating to 3.8 or above
-        if (last_version_normalized >= normalize_version('3.8', 4)) {
-            injectWindows();
-        }
-    }
+        injectWindows();
+    });
 });
 
-extension_runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     var status = 'OK';
     var message = '';
     var data = {};
@@ -78,13 +118,13 @@ extension_runtime.onMessage.addListener(function(request, sender, sendResponse) 
     try {
         switch(request.action) {
             case 'openOptionsPage':
-                extension_runtime.openOptionsPage();
+                chrome.runtime.openOptionsPage();
                 break;
             case 'reloadExtension':
-                extension_runtime.reload();
+                chrome.runtime.reload();
                 break;
             case 'checkPermissions':
-                extension_permissions.contains({
+                chrome.permissions.contains({
                     permissions: request.permissions,
                     origins: request.origins
                 }, function(result) {
@@ -92,7 +132,7 @@ extension_runtime.onMessage.addListener(function(request, sender, sendResponse) 
                 });
                 break;
             case 'requestPermissions':
-                extension_permissions.request({
+                chrome.permissions.request({
                     permissions: request.permissions,
                     origins: request.origins
                 }, function(result) {
@@ -100,7 +140,7 @@ extension_runtime.onMessage.addListener(function(request, sender, sendResponse) 
                 });
                 break;
             case 'revokePermissions':
-                extension_permissions.remove({
+                chrome.permissions.remove({
                     permissions: request.permissions,
                     origins: request.origins
                 }, function(result) {
@@ -116,46 +156,3 @@ extension_runtime.onMessage.addListener(function(request, sender, sendResponse) 
 
     sendResponse({request: request, status: status, message: message, data: data});
 });
-
-function injectWindows() {
-    extension_windows.getAll({
-        populate: true
-    }, function (windows) {
-        try {
-            // Auto re-inject to all Netflix tabs
-            for (var i = 0; i < windows.length; i++) {
-                var currentWindow = windows[i];
-                for (var j = 0 ; j < currentWindow.tabs.length; j++) {
-                    currentTab = currentWindow.tabs[j];
-                    if (currentTab.url) {
-                        // Skip chrome:// and about:// and apply only to allowed URL
-                        if (currentTab.url.match(extension_manifest.content_scripts[0].matches[0].replace('/','\/').replace('.','\.').replace('*','.*')) && !currentTab.url.match(/(chrome|about):\/\//gi)) {
-                            var scripts = extension_manifest.content_scripts[0].js;
-
-                            // Add DevTools script to injected scripts if available in manifest and is Development or Test environment
-                            if ((isDev || isTest) && extension_manifest.devtools_page) {
-                                scripts.push(extension_manifest.devtools_page);
-                            }
-
-                            for (var k = 0; k < scripts.length; k++) {
-                                log('debug', 'background', 'Injecting script with ID {0} on path: \'{1}\', to tab with ID {2} and URL: \'{3}\', in window with ID {4}.', k, extension_extension.getURL(scripts[k]), j, currentTab.url, i);
-
-                                extension_tabs.executeScript(currentTab.id, {
-                                    file: scripts[k]
-                                }, function(e) {
-                                    if (extension_runtime.lastError) {
-                                        log('debug', 'background', 'Injecting script failed with: {0}. Error was suppressed.', extension_runtime.lastError.message);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (e) {
-            log('error', '', getLang('extension_autoinject_failed'));
-        }
-    });
-}
-

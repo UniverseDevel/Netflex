@@ -272,7 +272,7 @@ function reset_configuration() {
                 }
             }
         }
-        extension_storage.local.clear();
+        chrome.storage.local.clear();
         load_configuration(null, cfg_changes);
     } catch (e) {
         error_detected = true;
@@ -289,7 +289,7 @@ function reset_configuration_cat(type) {
                     if (cfg[key]['def'] != cfg[key]['val']) {
                         cfg_changes.push({'key': key, 'value_new': cfg[key]['def'], 'value_old': cfg[key]['val']});
                     }
-                    extension_storage.local.remove(key, function() {});
+                    chrome.storage.local.remove(key, function() {});
                 }
             }
         }
@@ -306,17 +306,17 @@ function reload_extension() {
             try {
                 if (isChrome) {
                     isOrphan = true;
-                    extension_runtime.reload();
+                    chrome.runtime.reload();
                     return;
                 }
             } catch (e) {}
 
-            extension_runtime.sendMessage({
+            chrome.runtime.sendMessage({
                     action: 'reloadExtension'
                 }, function(response) {
                     try {
-                        if (extension_runtime.lastError) {
-                            log('error', 'core_errors', extension_runtime.lastError);
+                        if (chrome.runtime.lastError) {
+                            log('error', 'core_errors', chrome.runtime.lastError);
                         }
                         if (response.status = 'OK') {
                             isOrphan = true;
@@ -538,8 +538,8 @@ function check_options() {
 
 function extension_storage_size() {
     if (!isOrphan) {
-        extension_storage.local.getBytesInUse(null, function(used_bytes) {
-            var max_bytes = extension_storage.local.QUOTA_BYTES;
+        chrome.storage.local.getBytesInUse(null, function(used_bytes) {
+            var max_bytes = chrome.storage.local.QUOTA_BYTES;
             var used_pct = Math.round((used_bytes / max_bytes * 100) * 1000) / 1000;
 
             storage_stats['extension'] = {
@@ -662,22 +662,6 @@ function environment_update() {
         debug_variables['global']['isEdgeChromium'] = isEdgeChromium;
         debug_variables['global']['isFirefox'] = isFirefox;
         debug_variables['global']['isOpera'] = isOpera;
-
-        /**-/
-        // Cross browser variables, DevTools cannot display these
-        debug_variables['global']['extension'] = extension;
-        debug_variables['global']['extension_runtime'] = extension_runtime;
-        debug_variables['global']['extension_browserAction'] = extension_browserAction;
-        debug_variables['global']['extension_tabs'] = extension_tabs;
-        debug_variables['global']['extension_manifest'] = extension_manifest;
-        debug_variables['global']['extension_devtools'] = extension_devtools;
-        debug_variables['global']['extension_windows'] = extension_windows;
-        debug_variables['global']['extension_extension'] = extension_extension;
-        debug_variables['global']['extension_storage'] = extension_storage;
-        debug_variables['global']['extension_management'] = extension_management;
-        debug_variables['global']['extension_permissions'] = extension_permissions;
-        debug_variables['global']['extension_i18n'] = extension_i18n;
-        /**/
 
         debug_variables['lang'] = lang;
 
@@ -926,7 +910,7 @@ function load_debug_variables() {
 function checkIfOrphan() {
     var port;
     try {
-        port = extension_runtime.connect();
+        port = chrome.runtime.connect();
     }
     catch (e) {
         port = false;
@@ -1440,46 +1424,6 @@ function process_debug_variables(data, error, filter) {
     }
 }
 
-function show_debug_variables(type) {
-    var debug_content = '';
-    if (!type || type == 'json') {
-        log('output', '', getLang('show_debug_variables_hint_json'));
-        debug_content = JSON.parse(load_debug_variables(), JSON.dateParser);
-    }
-    if (type == 'html') {
-        log('output', '', getLang('show_debug_variables_hint_html'));
-
-        // Create elements, their attributes and contents
-        var debug_html = document.createElement('html');
-        debug_html.setAttribute('lang', 'en');
-
-        var debug_head = document.createElement('head');
-
-        var debug_title = document.createElement('title');
-        addDOM(debug_title, 'Debug variables');
-
-        var debug_css = document.createElement('link');
-        debug_css.setAttribute('rel', 'stylesheet');
-        debug_css.setAttribute('href', 'devtools.css');
-
-        var debug_body = document.createElement('body');
-        addDOM(debug_body, process_debug_variables(load_debug_variables(), false, 'none'));
-
-        // Join elements
-        debug_head.appendChild(debug_title);
-        debug_head.appendChild(debug_css);
-
-        debug_html.appendChild(debug_head);
-        debug_html.appendChild(debug_body);
-
-        debug_content = debug_html;
-
-        // Indent code
-        debug_content = html_indent(debug_content, 0);
-    }
-    log('output', '', debug_content);
-}
-
 function addDOM(object, content) {
     // Sanitize content
     var options = {
@@ -1588,6 +1532,49 @@ function addCSS(object, css) {
 
 function logEvent(information) {
     log('debug', 'dom_events', 'Event triggered originating from object related to: {0}.', information);
+}
+
+// Generate debug output to be analysed
+// show_debug_variables('html');
+function show_debug_variables(type) {
+    var debug_content = '';
+    if (!type || type == 'json') {
+        log('output', '', getLang('show_debug_variables_hint_json'));
+
+        debug_content = JSON.parse(load_debug_variables(), JSON.dateParser);
+    }
+    if (type == 'html') {
+        log('output', '', getLang('show_debug_variables_hint_html'));
+
+        // Create elements, their attributes and contents
+        var debug_html = document.createElement('html');
+        debug_html.setAttribute('lang', 'en');
+
+        var debug_head = document.createElement('head');
+
+        var debug_title = document.createElement('title');
+        addDOM(debug_title, 'Debug variables');
+
+        var debug_css = document.createElement('link');
+        debug_css.setAttribute('rel', 'stylesheet');
+        debug_css.setAttribute('href', 'devtools.css');
+
+        var debug_body = document.createElement('body');
+        addDOM(debug_body, process_debug_variables(load_debug_variables(), false, 'none'));
+
+        // Join elements
+        debug_head.appendChild(debug_title);
+        debug_head.appendChild(debug_css);
+
+        debug_html.appendChild(debug_head);
+        debug_html.appendChild(debug_body);
+
+        debug_content = debug_html;
+
+        // Indent code
+        debug_content = html_indent(debug_content, 0);
+    }
+    log('output', '', debug_content);
 }
 
 // To shut Firefox up, keep it a last line

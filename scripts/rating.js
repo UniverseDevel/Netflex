@@ -761,7 +761,7 @@ function remove_expired() {
             var expiration_time = new Date(ratingsDB[ratings_version][title_id]['expire']);
             if (expiration_time < current_time) {
                 if (count == 0) {
-                    log('group_start', 'ratings', 'Ratings local DB expires');
+                    log('group_start', 'ratings', 'Rating in local DB expires');
                 }
                 count++;
                 log('debug', 'ratings', 'Deleting expired rating {0}:', title_id);

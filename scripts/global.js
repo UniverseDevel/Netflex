@@ -4,48 +4,6 @@ var error_count = 0;
 var error_reload = false;
 
 // ------------------------
-// Browser handler
-// ------------------------
-
-var browser = 'unknown';
-var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime) && !(navigator.userAgent.indexOf('Edg') != -1) && !(navigator.userAgent.indexOf(' OPR/') != -1);
-var isEdgeChromium = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime) && (navigator.userAgent.indexOf('Edg') != -1) && !(navigator.userAgent.indexOf(' OPR/') != -1);
-var isFirefox = typeof InstallTrigger !== 'undefined';
-var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || (navigator.userAgent.indexOf(' OPR/') != -1);
-
-if (isChrome) {
-    browser = 'chrome';
-} else if (isEdgeChromium) {
-    browser = 'edge';
-} else if (isFirefox) {
-    browser = 'firefox';
-} else if (isOpera) {
-    browser = 'opera';
-}
-
-function generate_extension() {
-    if (!isChrome && !isEdgeChromium && !isFirefox && !isOpera) {
-        // Unsupported browser
-        console.error('ERROR: Unsupported browser running extension.');
-    }
-}
-
-var extension = chrome;
-
-var extension_runtime = extension.runtime;
-var extension_browserAction = extension.browserAction;
-var extension_tabs = extension.tabs;
-var extension_manifest = extension.manifest;
-var extension_devtools = extension.devtools;
-var extension_windows = extension.windows;
-var extension_extension = extension.extension;
-var extension_storage = extension.storage;
-var extension_management = extension.management;
-var extension_i18n = extension.i18n;
-var extension_manifest = extension_runtime.getManifest();
-var extension_permissions = extension.permissions;
-
-// ------------------------
 // Environment handler
 // ------------------------
 
@@ -55,7 +13,7 @@ var isTest = false;
 var isProd = false;
 var isSimulated = false;
 
-var extension_id = extension_runtime.id;
+var extension_id = chrome.runtime.id;
 var prod_extension_list = load_prod_ids();
 var test_extension_list = load_test_ids();
 
@@ -84,25 +42,11 @@ determine_environment();
 // Language handler
 // ------------------------
 
-function lang_generate() {
-    var lang_prepare = {};
-    for (i = 0; i < lang_keys.length; i++) {
-        var message = lang_dnf_error;
-        try {
-            message = extension_i18n.getMessage(lang_keys[i]);
-        } catch (e) {
-            console.error('ERROR: Unable to load translation of key \'' + lang_keys[i] + '\'.');
-        }
-        lang_prepare[lang_keys[i]] = message;
-    }
-    return lang_prepare;
-}
-
 function getLang(key) {
     try {
         var value = lang[key];
         if (value !== undefined && value != '') {
-            return lang[key];
+            return lang[key]['message'];
         } else {
             log('error', '', getLang('lang_key_missing'), key);
             return '??? - ' + key;
@@ -113,454 +57,41 @@ function getLang(key) {
     }
 }
 
-// Easy way to generate:
-//   1. Go to https://jqplay.org/
-//   2. Paste '[keys[]]' into Filter field
-//   3. Paste messages.json into JSON field
-//   4. Copy contents of Result field
-var lang_keys = [
-    'adjusting_stored_data',
-    'applied_version',
-    'assistant_disabled',
-    'assistant_enabled',
-    'button_debug',
-    'button_default',
-    'button_reload',
-    'button_reset',
-    'button_reset_bindings',
-    'button_reset_debug',
-    'button_reset_video',
-    'cfg_autoDisableKids_description',
-    'cfg_autoDisableKids_name',
-    'cfg_bubbleHideDelay_description',
-    'cfg_bubbleHideDelay_name',
-    'cfg_titleEndActionsDelay_description',
-    'cfg_titleEndActionsDelay_name',
-    'cfg_changed',
-    'cfg_default_on',
-    'cfg_default_off',
-    'cfg_controlsSwitchTimer_description',
-    'cfg_controlsSwitchTimer_name',
-    'cfg_debugControlsSwitchTimer_description',
-    'cfg_debugControlsSwitchTimer_name',
-    'cfg_debug_description',
-    'cfg_debug_name',
-    'cfg_devToolsConfigLoadTimer_description',
-    'cfg_devToolsConfigLoadTimer_name',
-    'cfg_devToolsRefreshTimer_description',
-    'cfg_devToolsRefreshTimer_name',
-    'cfg_elementHandlerTimer_description',
-    'cfg_elementHandlerTimer_name',
-    'cfg_enableVideoFeatures_description',
-    'cfg_enableVideoFeatures_notice',
-    'cfg_enableVideoFeatures_name',
-    'cfg_environmentUpdateTimer_description',
-    'cfg_environmentUpdateTimer_name',
-    'cfg_errorExtensionReloadDelay_description',
-    'cfg_errorExtensionReloadDelay_name',
-    'cfg_exitPlayerKey_description',
-    'cfg_exitPlayerKey_name',
-    'cfg_forceReloadDelay_description',
-    'cfg_forceReloadDelay_name',
-    'cfg_hideDisliked_description',
-    'cfg_hideDisliked_name',
-    'cfg_hideSpoilersObjects_description',
-    'cfg_hideSpoilersObjects_name',
-    'cfg_hideSpoilers_description',
-    'cfg_hideSpoilers_name',
-    'cfg_hideStatusIcon_description',
-    'cfg_hideStatusIcon_name',
-    'cfg_hideSubtitlesKey_description',
-    'cfg_hideSubtitlesKey_name',
-    'cfg_highlightSubtitles_description',
-    'cfg_highlightSubtitles_name',
-    'cfg_injectorTimer_description',
-    'cfg_injectorTimer_name',
-    'cfg_keepHistory_description',
-    'cfg_keepHistory_name',
-    'cfg_keyEventProcessingDelay_description',
-    'cfg_keyEventProcessingDelay_name',
-    'cfg_load_timedout',
-    'cfg_loaded',
-    'cfg_loading',
-    'cfg_loadingTimeLimit_description',
-    'cfg_loadingTimeLimit_name',
-    'cfg_logLevel_description',
-    'cfg_logLevel_name',
-    'cfg_netflixAssistantTimer_description',
-    'cfg_netflixAssistantTimer_name',
-    'cfg_netflixRatingsTimer_description',
-    'cfg_netflixRatingsTimer_name',
-    'cfg_nextEpisodeKey_description',
-    'cfg_nextEpisodeKey_name',
-    'cfg_nextEpisodeStopMovies_description',
-    'cfg_nextEpisodeStopMovies_name',
-    'cfg_nextEpisodeStopSeries_description',
-    'cfg_nextEpisodeStopSeries_name',
-    'cfg_nextTitleDelayLimit_description',
-    'cfg_nextTitleDelayLimit_name',
-    'cfg_omdbApi_description',
-    'cfg_omdbApi_name',
-    'cfg_pageReloadTimer_description',
-    'cfg_pageReloadTimer_name',
-    'cfg_pauseOnBlur_description',
-    'cfg_pauseOnBlur_name',
-    'cfg_playOnFocus_description',
-    'cfg_playOnFocus_name',
-    'cfg_playPauseButtonDelay_description',
-    'cfg_playPauseButtonDelay_name',
-    'cfg_prevEpisodeKey_description',
-    'cfg_prevEpisodeKey_name',
-    'cfg_randomMovieKey_description',
-    'cfg_randomMovieKey_name',
-    'cfg_ratingsAnchors_description',
-    'cfg_ratingsAnchors_name',
-    'cfg_ratingsTilePosition_description',
-    'cfg_ratingsTilePosition_name',
-    'cfg_ratingsTileSize_description',
-    'cfg_ratingsTileSize_name',
-    'cfg_ratingsTileTextAlign_description',
-    'cfg_ratingsTileTextAlign_name',
-    'cfg_ratingsWikidataAnchors_description',
-    'cfg_ratingsWikidataAnchors_notice',
-    'cfg_ratingsWikidataAnchors_name',
-    'cfg_revealSpoilers_description',
-    'cfg_revealSpoilers_notice',
-    'cfg_revealSpoilers_name',
-    'cfg_saved',
-    'cfg_saving',
-    'cfg_showElapsedTime_description',
-    'cfg_showElapsedTime_name',
-    'cfg_showRatings_description',
-    'cfg_showRatings_notice_dev',
-    'cfg_showRatings_name',
-    'cfg_simulateProduction_description',
-    'cfg_simulateProduction_notice',
-    'cfg_simulateProduction_name',
-    'cfg_skipInterrupter_description',
-    'cfg_skipInterrupter_name',
-    'cfg_skipIntros_description',
-    'cfg_skipIntros_name',
-    'cfg_skipRecaps_description',
-    'cfg_skipRecaps_name',
-    'cfg_skippingPreventionTimer_description',
-    'cfg_skippingPreventionTimer_name',
-    'cfg_spoilersBlurAmount_description',
-    'cfg_spoilersBlurAmount_name',
-    'cfg_startupTimer_description',
-    'cfg_startupTimer_name',
-    'cfg_stuckTimeLimit_description',
-    'cfg_stuckTimeLimit_name',
-    'cfg_timeFromLoadLimit_description',
-    'cfg_timeFromLoadLimit_name',
-    'cfg_titleEndAction_description',
-    'cfg_titleEndAction_notice',
-    'cfg_titleEndAction_name',
-    'cfg_toggleAssistantKey_description',
-    'cfg_toggleAssistantKey_name',
-    'cfg_trailerVideoStop_description',
-    'cfg_trailerVideoStop_name',
-    'cfg_videoAspectRatio_description',
-    'cfg_videoAspectRatio_name',
-    'cfg_videoBrightness_description',
-    'cfg_videoBrightness_name',
-    'cfg_videoContrast_description',
-    'cfg_videoContrast_name',
-    'cfg_videoGrayscale_description',
-    'cfg_videoGrayscale_name',
-    'cfg_videoHue_description',
-    'cfg_videoHue_name',
-    'cfg_videoInvert_description',
-    'cfg_videoInvert_name',
-    'cfg_videoSaturation_description',
-    'cfg_videoSaturation_name',
-    'cfg_videoSepia_description',
-    'cfg_videoSepia_name',
-    'cfg_videoSpeedRate_description',
-    'cfg_videoSpeedRate_notice',
-    'cfg_videoSpeedRate_name',
-    'cfg_videoZoom_description',
-    'cfg_videoZoom_name',
-    'cfg_wheelVolume_description',
-    'cfg_wheelVolume_name',
-    'changelog',
-    'changelog_fetch_failed',
-    'confirm_reset',
-    'data_loading',
-    'debug_message',
-    'debug_message_without_access',
-    'debug_type_assistant_loop',
-    'debug_type_background',
-    'debug_type_configuration',
-    'debug_type_core_errors',
-    'debug_type_dom_activities',
-    'debug_type_dom_events',
-    'debug_type_environment',
-    'debug_type_fractions_counter',
-    'debug_type_init',
-    'debug_type_keypress',
-    'debug_type_main_loop',
-    'debug_type_mouse_simulation',
-    'debug_type_options_generation',
-    'debug_type_overflow',
-    'debug_type_news',
-    'debug_type_ratings',
-    'debug_type_skip_button_text',
-    'debug_type_startup',
-    'debug_type_wheelturn',
-    'debug_variables_nodata',
-    'debug_variables_noloop',
-    'debug_warning_notice',
-    'description',
-    'description_hidden',
-    'developed_by',
-    'developer',
-    'devtools_loading_error',
-    'devtools_page_loading',
-    'devtools_pause',
-    'devtools_resume',
-    'devtools_show_content',
-    'devtools_tabs_error',
-    'disclaimer',
-    'disliked_hidden',
-    'dnf_error',
-    'donate',
-    'dummy',
-    'error_core',
-    'error_core_assistant_delay',
-    'error_gen_tab_content',
-    'error_invalid_value',
-    'error_loading_value',
-    'error_message',
-    'error_obtaining_ratings',
-    'error_obtaining_ratings_error',
-    'error_range_config',
-    'error_reload',
-    'error_showing_ratings',
-    'extension_autoinject_failed',
-    'extension_disable',
-    'extension_enable',
-    'extension_feature_reset_cfg',
-    'extension_feature_reset_default',
-    'extension_install',
-    'extension_update',
-    'extension_version',
-    'extension_webstore',
-    'failed',
-    'feature_tempHideSubtitles',
-    'feature_videoBrightness',
-    'feature_videoContrast',
-    'feature_videoGrayscale',
-    'feature_videoHue',
-    'feature_videoInvert',
-    'feature_videoSaturation',
-    'feature_videoSepia',
-    'feature_videoSpeedRate',
-    'feature_videoZoom',
-    'features',
-    'fireworks_start',
-    'founded_by',
-    'founder',
-    'gained_focus_play',
-    'github',
-    'help_wikidata',
-    'hideSpoilersObjects_type_description',
-    'hideSpoilersObjects_type_episode_name',
-    'hideSpoilersObjects_type_episode_picture',
-    'hideSpoilersObjects_type_runner_thumbnail',
-    'highlightSubtitles_type_background',
-    'highlightSubtitles_type_disabled',
-    'highlightSubtitles_type_hidden',
-    'highlightSubtitles_type_shadow',
-    'info_message',
-    'lang_key_missing',
-    'last_version',
-    'logLevel_type_debug',
-    'logLevel_type_error',
-    'logLevel_type_info',
-    'logLevel_type_none',
-    'logLevel_type_output',
-    'logLevel_type_unknown',
-    'logLevel_type_warn',
-    'log_type_unknown',
-    'loop_overflow',
-    'lost_focus_pause',
-    'menu_about',
-    'menu_api',
-    'menu_assistant',
-    'menu_bindings',
-    'menu_debug',
-    'menu_ratings',
-    'menu_statistics',
-    'menu_storage',
-    'menu_timers',
-    'menu_video',
-    'name',
-    'netflix_changes',
-    'next_episode',
-    'next_video_delay',
-    'next_video_stop',
-    'no_features_available',
-    'object_category_unknown',
-    'option_unknown',
-    'news',
-    'options',
-    'options_default',
-    'options_max',
-    'options_min',
-    'options_off',
-    'options_open',
-    'options_title',
-    'output_message',
-    'page_reload',
-    'page_reload_cancelled',
-    'page_reload_delay',
-    'page_reload_delay_info',
-    'patreon',
-    'pauseOnBlur_type_disabled',
-    'pauseOnBlur_type_high',
-    'pauseOnBlur_type_low',
-    'paypal',
-    'prev_episode_manual',
-    'prev_episode_manual_no_history',
-    'previous_version',
-    'provided_by',
-    'provider',
-    'rand_video_failed_play',
-    'rand_video_failed_select',
-    'rand_video_success',
-    'rate_extension',
-    'news_received_at',
-    'news_missing_data',
-    'no_news',
-    'news_updated_at',
-    'rating_daily_limit',
-    'rating_display_error',
-    'rating_id_not_found',
-    'rating_imdb',
-    'rating_invalid_key',
-    'rating_meta',
-    'rating_next_refresh',
-    'rating_no_rating',
-    'rating_rt',
-    'ratingsTilePosition_type_bottom_center',
-    'ratingsTilePosition_type_bottom_left',
-    'ratingsTilePosition_type_bottom_right',
-    'ratingsTilePosition_type_middle_center',
-    'ratingsTilePosition_type_middle_left',
-    'ratingsTilePosition_type_middle_right',
-    'ratingsTilePosition_type_top_center',
-    'ratingsTilePosition_type_top_left',
-    'ratingsTilePosition_type_top_right',
-    'ratingsTileTextAlign_type_center',
-    'ratingsTileTextAlign_type_left',
-    'ratingsTileTextAlign_type_right',
-    'ratingsTileTextAlign_type_same_as_position',
-    'ratings_error_message',
-    'ratings_imdb_id_not_found',
-    'ratings_no_data_omdb_api',
-    'ratings_no_data_wikidata',
-    'ratings_reason',
-    'ratings_unknown_error',
-    'ratings_wiki_missing_imdb_id',
-    'ratings_wiki_missing_netflix_id',
-    'roll_credits',
-    'second',
-    'second_less5',
-    'seconds',
-    'short_name',
-    'show_debug_variables_hint_json',
-    'show_debug_variables_hint_html',
-    'skipping_interrupter',
-    'skipping_intro',
-    'skipping_recap',
-    'source',
-    'stat_actions',
-    'stat_actions_count',
-    'stat_actions_none',
-    'stat_api_call',
-    'stat_api_error',
-    'stat_api_finished',
-    'stat_api_invalid',
-    'stat_api_limit',
-    'stat_api_not_available',
-    'stat_api_timeout',
-    'stat_cfg_changed',
-    'stat_extension_actions',
-    'stat_hideDisliked',
-    'stat_hideSpoilers',
-    'stat_highlightSubtitles',
-    'stat_keyBinding',
-    'stat_loaded_api',
-    'stat_loaded_storage',
-    'stat_nextEpisodeStopMovies',
-    'stat_nextEpisodeStopSeries',
-    'stat_pauseOnBlur',
-    'stat_playOnFocus',
-    'stat_randomTitle',
-    'stat_ratings',
-    'stat_ratings_api_limit',
-    'stat_ratings_expire_1w',
-    'stat_ratings_expire_24h',
-    'stat_ratings_general',
-    'stat_ratings_states',
-    'stat_ratings_total_size',
-    'stat_ratings_total_stored',
-    'stat_revealSpoilers',
-    'stat_skipInterrupter',
-    'stat_skipIntros',
-    'stat_skipRecaps',
-    'stat_storage',
-    'stat_storage_extension',
-    'stat_storage_local',
-    'stat_storage_percentage',
-    'stat_storage_size',
-    'stat_storage_size_unknown',
-    'stat_storage_type',
-    'stat_titleEndActionRoll',
-    'stat_titleEndActionSkip',
-    'stat_trailerVideoStop',
-    'stat_wheelTurn',
-    'stat_wiki_call',
-    'stat_wikidata_error',
-    'stat_wikidata_finished',
-    'stat_wikidata_imdb_not_available',
-    'stat_wikidata_not_available',
-    'stat_wikidata_timeout',
-    'status_text_broken',
-    'status_text_disabled',
-    'status_text_errors',
-    'status_text_ok',
-    'status_text_update',
-    'success',
-    'titleEndAction_type_none',
-    'titleEndAction_type_roll',
-    'titleEndAction_type_skip',
-    'trailer_stopped',
-    'unsupported_browser',
-    'unsupported_cfg_type',
-    'version',
-    'version_changed',
-    'version_changes',
-    'versions_remove_stats',
-    'versions_remove_variable',
-    'versions_rename_localStorage',
-    'checking_news',
-    'versions_rename_stats',
-    'versions_rename_variable',
-    'versions_reset_data',
-    'videoAspectRatio_type_21_9',
-    'videoAspectRatio_type_manual',
-    'videoAspectRatio_type_original',
-    'video_stuck',
-    'warn_message',
-    'wrong_configuration_type'
-];
+var lang = {};
+var locale = navigator.language;
+var locale_iso = locale.split('-')[0];
+var locale_default = chrome.runtime.getManifest().default_locale;
+var locale_resources = chrome.runtime.getManifest().web_accessible_resources[0];
+var locale_used = chrome.runtime.getURL((locale_resources.includes('_locales/' + locale_iso + '/messages.json') ? '_locales/' + locale_iso + '/messages.json' : '_locales/' + locale_default + '/messages.json' ));
 
-var lang_dnf_error = extension_i18n.getMessage('dnf_error');
-var lang = lang_generate();
-var locale = extension_i18n.getMessage('@@ui_locale');
-var locale_iso = locale.split('_')[0];
+// Load locale file available
+try {
+    $.ajax({
+        // Configuration
+        type: 'GET',
+        url: locale_used,
+        cache: false,
+        async: false,
+        crossDomain: false,
+        dataType: 'json',
+        global: false, // ajaxStart/ajaxStop
+        // Data
+        data: {},
+        // Actions
+        beforeSend: function() {},
+        success: function(result, status, xhr) {
+            lang = result;
+        },
+        error: function(xhr, status, error) {
+            error_detected = true;
+            error_message = error;
+        },
+        complete: function(xhr, status) {}
+    });
+} catch (e) {
+    error_detected = true;
+    error_message = e.message;
+}
 
 // ------------------------
 // Configuration
@@ -598,7 +129,7 @@ function load_configuration(callback, cfg_changes) {
     }
 
     try {
-        extension_storage.local.get(conf_def, function(conf) {
+        chrome.storage.local.get(conf_def, function(conf) {
             log('debug', 'configuration', 'Default configuration:');
             log('debug', 'configuration', conf_def);
 
@@ -800,7 +331,7 @@ function save_configuration(callback) {
 
     // Store values into storage
     try {
-        extension_storage.local.set(conf, function() {
+        chrome.storage.local.set(conf, function() {
 
             log('debug', 'configuration', 'Saved configuration:');
             log('debug', 'configuration', conf);
@@ -1810,7 +1341,6 @@ function init_configuration() {
             'def' : [
                 'init',
                 'news',
-                'ratings',
                 'overflow'
             ],
             'min' : null,

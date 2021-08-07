@@ -39,11 +39,11 @@ var netflix_body = object_handler('body', null);
 
 var styles_list = {
     'netflex-ui': {
-        'src': extension_extension.getURL('styles/netflex-ui.css'),
+        'src': chrome.runtime.getURL('styles/netflex-ui.css'),
         'cache': false
     },
     'netflex-features': {
-        'src': extension_extension.getURL('styles/netflex-features.css'),
+        'src': chrome.runtime.getURL('styles/netflex-features.css'),
         'cache': false
     }
 };
@@ -60,7 +60,7 @@ var full_url_old = full_url;
 var isOrphan = false;
 
 // Current extension version
-var extension_version = extension_manifest.version;
+var extension_version = chrome.runtime.getManifest().version;
 var extension_version_normalized = normalize_version(extension_version, 4);
 // Last version to be loaded, if value is not same as current version, version changes will be applied and value will be updated
 var last_version = ((localStorage.getItem('lastVersion') != null) ? localStorage.getItem('lastVersion') : localStorage.getItem('netflex_lastVersion'));
@@ -88,14 +88,34 @@ var show_source_link = true;
 var options_tab_selected = 'tab_assistant';
 
 // ------------------------
+// Browser handler
+// ------------------------
+
+var browser = 'unknown';
+var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime) && !(navigator.userAgent.indexOf('Edg') != -1) && !(navigator.userAgent.indexOf(' OPR/') != -1);
+var isEdgeChromium = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime) && (navigator.userAgent.indexOf('Edg') != -1) && !(navigator.userAgent.indexOf(' OPR/') != -1);
+var isFirefox = typeof InstallTrigger !== 'undefined';
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || (navigator.userAgent.indexOf(' OPR/') != -1);
+
+if (isChrome) {
+    browser = 'chrome';
+} else if (isEdgeChromium) {
+    browser = 'edge';
+} else if (isFirefox) {
+    browser = 'firefox';
+} else if (isOpera) {
+    browser = 'opera';
+}
+
+// ------------------------
 // Application
 // ------------------------
 
-var logo_icon_prod = extension_extension.getURL('images/netflex.png');
-var logo_icon_test = extension_extension.getURL('images/netflex_test.png');
-var logo_icon_dev = extension_extension.getURL('images/netflex_dev.png');
-var logo_icon_sup = extension_extension.getURL('images/netflex_sup.png');
-var changelog_page = extension_extension.getURL('CHANGELOG');
+var logo_icon_prod = chrome.runtime.getURL('images/netflex.png');
+var logo_icon_test = chrome.runtime.getURL('images/netflex_test.png');
+var logo_icon_dev = chrome.runtime.getURL('images/netflex_dev.png');
+var logo_icon_sup = chrome.runtime.getURL('images/netflex_sup.png');
+var changelog_page = chrome.runtime.getURL('CHANGELOG');
 
 var control_panel = 'none';
 var bubble_offset_right = 0;

@@ -13,23 +13,23 @@ Libraries description:
 - fontawesome.js - Official FontAwesome library that provides variety of icons. If updated, change version in description
                    as well.
 - firework.js - Library for Easter Egg. When you start a video title in Netflix and you click on N logo in status bubble,
-                fireworks will start to fly over video. Useless but I love Easter Eggs.
+                fireworks will start to fly over video. Useless, but I love Easter Eggs.
 
 Scripts description:
   
 - globals.js - Functions that are needed to generate core extension behavior like: browser detection, extension API load,
                localisation messages load and log handling functions.
-- background.js - Some functions that are used by extension to work and also some background adjustments like different
-                  icons of extension for development, test and for production version. In case you will create your own 
-                  test extension (published only to testers), change value in variable 'test_extension_id' to ID of this 
-                  test extension.
+- worker.js - Some functions that are used by extension to work and also some background adjustments like different
+              icons of extension for development, test and for production version. In case you will create your own 
+              test extension (published only to testers), change values in 'distribution.js' to ID of this 
+              test extension.
 - init.js - This script contains functions to inject JS scripts into Netflix page (look for comment '// MAIN'). Functions
             here handle injecting, re-injecting (in case of extension update/disable/enable or failure), all main
             internal intervals and loops. These intervals are responsible for everything running.
 - versions.js - This script contains function that executes version specific changes after extension is injected.
 - vars.js - All global variables are defined here, so they can be reached from other scripts. Default configuration is
             provided here. In case you will create your own test extension (published only to testers), change value
-            in variable 'test_extension_id' to ID of this test extension.
+            in 'distribution.js' to ID of this test extension.
 - distribution.js - Contains function to define some deployment specific variables, here you should put your new OMDB API key.
                     It also contains values of other providers like donation links or web store links.
 - functions.js - All functions that are somehow general or used by multiple other scripts are in this script.

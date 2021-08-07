@@ -51,18 +51,7 @@
 
     "background": {
         "scripts": [
-            "libs/dompurify/purify.min.js",
-            "libs/jquery/jquery.min.js",
-
             "scripts/distribution.js",
-
-            "scripts/global.js",
-
-            "scripts/functions.js",
-            "scripts/objects.js",
-            "scripts/vars.js",
-
-            "scripts/versions.js",
 
             "scripts/background.js"
         ]
@@ -76,6 +65,8 @@
     ],
 
     "web_accessible_resources": [
+        "_locales/en/messages.json",
+
         "images/netflex.png",
         "images/netflex_test.png",
         "images/netflex_dev.png",
