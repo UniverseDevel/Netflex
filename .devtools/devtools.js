@@ -18,7 +18,7 @@ try {
     var tabs_error = getLang('devtools_tabs_error');
 
     // Init - start DevTools only on Netflix domain
-    extension_devtools.inspectedWindow.eval('window.location.href', function(data, error) {
+    chrome.devtools.inspectedWindow.eval('window.location.href', function(data, error) {
         if (!error) {
             tab_url = data;
         } else {
@@ -26,9 +26,9 @@ try {
         }
 
         if (tab_url.match('*://www.netflix.com/*'.replace('/','\/').replace('.','\.').replace('*','.*'))) {
-            extension_devtools.panels.create(getLang('name'),
-                extension_extension.getURL('images/netflex_dev.png'),
-                extension_manifest.devtools_page,
+            chrome.devtools.panels.create(getLang('name'),
+                chrome.runtime.getURL('images/netflex_dev.png'),
+                chrome.runtime.getManifest().devtools_page,
                 function(panel) {
                     init_dev_tools();
                 }
@@ -49,7 +49,7 @@ try {
     }
 
     function get_url() {
-        extension_devtools.inspectedWindow.eval('window.location.href', function(data, error) {
+        chrome.devtools.inspectedWindow.eval('window.location.href', function(data, error) {
             //log('output', '', data);
             if (!error) {
                 tab_url = data;
@@ -143,7 +143,7 @@ try {
     }
 
     function generateVariables(generate_buttons) {
-        extension_devtools.inspectedWindow.eval(
+        chrome.devtools.inspectedWindow.eval(
             'load_debug_variables()',
             {
                 useContentScriptContext: true
