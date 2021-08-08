@@ -394,12 +394,12 @@ function optional_permission_handler(cfg_key, data) {
         permissions: data.permissions,
         origins: data.origins
     }, function(chk_response) {
-        log('debug', 'init', 'Check permissions response:');
-        log('debug', 'init', chk_response);
+        log('debug', 'configuration', 'Check permissions response:');
+        log('debug', 'configuration', chk_response);
 
         if (cfg[cfg_key]['access']) {
-            log('debug', 'init', cfg[cfg_key]['val']);
-            log('debug', 'init', cfg[cfg_key]['off']);
+            log('debug', 'configuration', cfg[cfg_key]['val']);
+            log('debug', 'configuration', cfg[cfg_key]['off']);
             if (cfg[cfg_key]['val'] != cfg[cfg_key]['off']) {
                 if (!chk_response['data']['granted']) {
                     chrome.runtime.sendMessage({
@@ -407,8 +407,8 @@ function optional_permission_handler(cfg_key, data) {
                         permissions: data.permissions,
                         origins: data.origins
                     }, function(req_response) {
-                        log('debug', 'init', 'Request permissions response:');
-                        log('debug', 'init', req_response);
+                        log('debug', 'configuration', 'Request permissions response:');
+                        log('debug', 'configuration', req_response);
 
                         if (req_response['data']['granted']) {
                             log('output', '', 'Permissions request accepted.');
@@ -432,8 +432,8 @@ function optional_permission_handler(cfg_key, data) {
                         permissions: data.permissions,
                         origins: data.origins
                     }, function(rvk_response) {
-                        log('debug', 'init', 'Revoke permissions response:');
-                        log('debug', 'init', rvk_response);
+                        log('debug', 'configuration', 'Revoke permissions response:');
+                        log('debug', 'configuration', rvk_response);
 
                         if (rvk_response['data']['revoked']) {
                             log('output', '', 'Permissions revoked.');
@@ -1498,7 +1498,6 @@ function init_configuration() {
             'def' : [
                 'init',
                 'news',
-                'core_errors',
                 'overflow'
             ],
             'min' : null,
