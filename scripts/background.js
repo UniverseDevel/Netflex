@@ -76,11 +76,7 @@ chrome.browserAction.onClicked.addListener(function (activeTab) {
 chrome.management.onEnabled.addListener(function (details) {
     console.log('NETFLEX INFO: Extension enabled.');
 
-    if (last_version_normalized >= normalize_version('3.8', 4)) { // 3.8
-        // Automated injection is supported from version 3.8 forward, older versions
-        // will have to perform manual page refresh when updating to 3.8 or above
-        injectWindows();
-    }
+    injectWindows();
 });
 chrome.management.onDisabled.addListener(function (details) {
     console.log('NETFLEX INFO: Extension disabled.');

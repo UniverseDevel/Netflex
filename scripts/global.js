@@ -39,7 +39,7 @@ function determine_environment() {
 determine_environment();
 
 // ------------------------
-// Language handler
+// Language
 // ------------------------
 
 function getLang(key) {
@@ -55,42 +55,6 @@ function getLang(key) {
         log('error', '', getLang('lang_key_missing'), key);
         return '??? - ' + key;
     }
-}
-
-var lang = {};
-var locale = navigator.language;
-var locale_iso = locale.split('-')[0];
-var locale_default = chrome.runtime.getManifest().default_locale;
-var locale_resources = chrome.runtime.getManifest().web_accessible_resources[0];
-var locale_used = chrome.runtime.getURL((locale_resources.includes('_locales/' + locale_iso + '/messages.json') ? '_locales/' + locale_iso + '/messages.json' : '_locales/' + locale_default + '/messages.json' ));
-
-// Load locale file available
-try {
-    $.ajax({
-        // Configuration
-        type: 'GET',
-        url: locale_used,
-        cache: false,
-        async: false,
-        crossDomain: false,
-        dataType: 'json',
-        global: false, // ajaxStart/ajaxStop
-        // Data
-        data: {},
-        // Actions
-        beforeSend: function() {},
-        success: function(result, status, xhr) {
-            lang = result;
-        },
-        error: function(xhr, status, error) {
-            error_detected = true;
-            error_message = error;
-        },
-        complete: function(xhr, status) {}
-    });
-} catch (e) {
-    error_detected = true;
-    error_message = e.message;
 }
 
 // ------------------------
@@ -547,9 +511,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_showElapsedTime_name'),
-            'desc' : getLang('cfg_showElapsedTime_description'),
-            'notice' : null
+            'notice' : false
         },'skipIntros' : {
             'type' : 'bool',
             'category' : 'assistant',
@@ -564,9 +526,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_skipIntros_name'),
-            'desc' : getLang('cfg_skipIntros_description'),
-            'notice' : null
+            'notice' : false
         },
         'skipRecaps' : {
             'type' : 'bool',
@@ -582,9 +542,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_skipRecaps_name'),
-            'desc' : getLang('cfg_skipRecaps_description'),
-            'notice' : null
+            'notice' : false
         },
         'skipInterrupter' : {
             'type' : 'bool',
@@ -600,9 +558,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_skipInterrupter_name'),
-            'desc' : getLang('cfg_skipInterrupter_description'),
-            'notice' : null
+            'notice' : false
         },
         'titleEndAction' : {
             'type' : 'option',
@@ -622,9 +578,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_titleEndAction_name'),
-            'desc' : getLang('cfg_titleEndAction_description'),
-            'notice' : getLang('cfg_titleEndAction_notice')
+            'notice' : true
         },
         'trailerVideoStop' : {
             'type' : 'bool',
@@ -640,9 +594,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_trailerVideoStop_name'),
-            'desc' : getLang('cfg_trailerVideoStop_description'),
-            'notice' : null
+            'notice' : false
         },
         'hideDisliked' : {
             'type' : 'bool',
@@ -658,9 +610,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_hideDisliked_name'),
-            'desc' : getLang('cfg_hideDisliked_description'),
-            'notice' : null
+            'notice' : false
         },
         'wheelVolume' : {
             'type' : 'range',
@@ -676,9 +626,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_wheelVolume_name'),
-            'desc' : getLang('cfg_wheelVolume_description'),
-            'notice' : null
+            'notice' : false
         },
         'hideSpoilers' : {
             'type' : 'bool',
@@ -694,9 +642,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_hideSpoilers_name'),
-            'desc' : getLang('cfg_hideSpoilers_description'),
-            'notice' : null
+            'notice' : false
         },
         'revealSpoilers' : {
             'type' : 'range',
@@ -712,9 +658,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_revealSpoilers_name'),
-            'desc' : getLang('cfg_revealSpoilers_description'),
-            'notice' : getLang('cfg_revealSpoilers_notice')
+            'notice' : true
         },
         'spoilersBlurAmount' : {
             'type' : 'range',
@@ -730,9 +674,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_spoilersBlurAmount_name'),
-            'desc' : getLang('cfg_spoilersBlurAmount_description'),
-            'notice' : null
+            'notice' : false
         },
         'hideSpoilersObjects' : {
             'type' : 'array',
@@ -756,9 +698,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_hideSpoilersObjects_name'),
-            'desc' : getLang('cfg_hideSpoilersObjects_description'),
-            'notice' : null
+            'notice' : false
         },
         'highlightSubtitles' : {
             'type' : 'option',
@@ -779,9 +719,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_highlightSubtitles_name'),
-            'desc' : getLang('cfg_highlightSubtitles_description'),
-            'notice' : null
+            'notice' : false
         },
         'pauseOnBlur' : {
             'type' : 'option',
@@ -801,9 +739,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_pauseOnBlur_name'),
-            'desc' : getLang('cfg_pauseOnBlur_description'),
-            'notice' : null
+            'notice' : false
         },
         'playOnFocus' : {
             'type' : 'bool',
@@ -819,9 +755,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_playOnFocus_name'),
-            'desc' : getLang('cfg_playOnFocus_description'),
-            'notice' : null
+            'notice' : false
         },
         'hideStatusIcon' : {
             'type' : 'bool',
@@ -837,9 +771,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_hideStatusIcon_name'),
-            'desc' : getLang('cfg_hideStatusIcon_description'),
-            'notice' : null
+            'notice' : false
         },
         'nextTitleDelayLimit' : {
             'type' : 'range',
@@ -855,9 +787,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_nextTitleDelayLimit_name'),
-            'desc' : getLang('cfg_nextTitleDelayLimit_description'),
-            'notice' : null
+            'notice' : false
         },
         'nextEpisodeStopMovies' : {
             'type' : 'bool',
@@ -873,9 +803,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_nextEpisodeStopMovies_name'),
-            'desc' : getLang('cfg_nextEpisodeStopMovies_description'),
-            'notice' : null
+            'notice' : false
         },
         'nextEpisodeStopSeries' : {
             'type' : 'bool',
@@ -891,9 +819,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_nextEpisodeStopSeries_name'),
-            'desc' : getLang('cfg_nextEpisodeStopSeries_description'),
-            'notice' : null
+            'notice' : false
         },
         'autoDisableKids' : {
             'type' : 'bool',
@@ -909,9 +835,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_autoDisableKids_name'),
-            'desc' : getLang('cfg_autoDisableKids_description'),
-            'notice' : null
+            'notice' : false
         },
         'showRatings' : {
             'type' : 'bool',
@@ -933,9 +857,7 @@ function init_configuration() {
                     '*://*.omdbapi.com/*'
                 ]
             },
-            'name' : getLang('cfg_showRatings_name'),
-            'desc' : getLang('cfg_showRatings_description'),
-            'notice' : ((/*isSimulated || */!isProd) ? getLang('cfg_showRatings_notice_dev') : null)
+            'notice' : ((/*isSimulated || */!isProd) ? true : false)
         },
         'ratingsAnchors' : {
             'type' : 'bool',
@@ -951,9 +873,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_ratingsAnchors_name'),
-            'desc' : getLang('cfg_ratingsAnchors_description'),
-            'notice' : null
+            'notice' : false
         },
         'ratingsWikidataAnchors' : {
             'type' : 'bool',
@@ -969,9 +889,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_ratingsWikidataAnchors_name'),
-            'desc' : getLang('cfg_ratingsWikidataAnchors_description'),
-            'notice' : getLang('cfg_ratingsWikidataAnchors_notice')
+            'notice' : true
         },
         'ratingsTileSize' : {
             'type' : 'range',
@@ -987,9 +905,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_ratingsTileSize_name'),
-            'desc' : getLang('cfg_ratingsTileSize_description'),
-            'notice' : null
+            'notice' : false
         },
         'ratingsTilePosition' : {
             'type' : 'option',
@@ -1015,9 +931,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_ratingsTilePosition_name'),
-            'desc' : getLang('cfg_ratingsTilePosition_description'),
-            'notice' : null
+            'notice' : false
         },
         'ratingsTileTextAlign' : {
             'type' : 'option',
@@ -1038,9 +952,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_ratingsTileTextAlign_name'),
-            'desc' : getLang('cfg_ratingsTileTextAlign_description'),
-            'notice' : null
+            'notice' : false
         },
         'enableVideoFeatures' : {
             'type' : 'bool',
@@ -1060,9 +972,7 @@ function init_configuration() {
                 }
              },
             'permissions' : null,
-            'name' : getLang('cfg_enableVideoFeatures_name'),
-            'desc' : getLang('cfg_enableVideoFeatures_description'),
-            'notice' : getLang('cfg_enableVideoFeatures_notice')
+            'notice' : true
         },
         'videoSpeedRate' : {
             'type' : 'range',
@@ -1078,9 +988,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoSpeedRate_name'),
-            'desc' : getLang('cfg_videoSpeedRate_description'),
-            'notice' : getLang('cfg_videoSpeedRate_notice')
+            'notice' : true
         },
         'videoAspectRatio' : {
             'type' : 'option',
@@ -1100,9 +1008,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoAspectRatio_name'),
-            'desc' : getLang('cfg_videoAspectRatio_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoZoom' : {
             'type' : 'range',
@@ -1118,9 +1024,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoZoom_name'),
-            'desc' : getLang('cfg_videoZoom_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoBrightness' : {
             'type' : 'range',
@@ -1136,9 +1040,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoBrightness_name'),
-            'desc' : getLang('cfg_videoBrightness_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoContrast' : {
             'type' : 'range',
@@ -1154,9 +1056,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoContrast_name'),
-            'desc' : getLang('cfg_videoContrast_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoGrayscale' : {
             'type' : 'range',
@@ -1172,9 +1072,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoGrayscale_name'),
-            'desc' : getLang('cfg_videoGrayscale_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoHue' : {
             'type' : 'range',
@@ -1190,9 +1088,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoHue_name'),
-            'desc' : getLang('cfg_videoHue_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoInvert' : {
             'type' : 'range',
@@ -1208,9 +1104,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoInvert_name'),
-            'desc' : getLang('cfg_videoInvert_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoSaturation' : {
             'type' : 'range',
@@ -1226,9 +1120,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoSaturation_name'),
-            'desc' : getLang('cfg_videoSaturation_description'),
-            'notice' : null
+            'notice' : false
         },
         'videoSepia' : {
             'type' : 'range',
@@ -1244,9 +1136,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_videoSepia_name'),
-            'desc' : getLang('cfg_videoSepia_description'),
-            'notice' : null
+            'notice' : false
         },
         'timeFromLoadLimit' : {
             'type' : 'range',
@@ -1262,9 +1152,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_timeFromLoadLimit_name'),
-            'desc' : getLang('cfg_timeFromLoadLimit_description'),
-            'notice' : null
+            'notice' : false
         },
         'loadingTimeLimit' : {
             'type' : 'range',
@@ -1280,9 +1168,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_loadingTimeLimit_name'),
-            'desc' : getLang('cfg_loadingTimeLimit_description'),
-            'notice' : null
+            'notice' : false
         },
         'stuckTimeLimit' : {
             'type' : 'range',
@@ -1298,9 +1184,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_stuckTimeLimit_name'),
-            'desc' : getLang('cfg_stuckTimeLimit_description'),
-            'notice' : null
+            'notice' : false
         },
         'forceReloadDelay' : {
             'type' : 'range',
@@ -1316,9 +1200,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_forceReloadDelay_name'),
-            'desc' : getLang('cfg_forceReloadDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'toggleAssistantKey' : {
             'type' : 'binding',
@@ -1334,9 +1216,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_toggleAssistantKey_name'),
-            'desc' : getLang('cfg_toggleAssistantKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'hideSubtitlesKey' : {
             'type' : 'binding',
@@ -1352,9 +1232,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_hideSubtitlesKey_name'),
-            'desc' : getLang('cfg_hideSubtitlesKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'exitPlayerKey' : {
             'type' : 'binding',
@@ -1370,9 +1248,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_exitPlayerKey_name'),
-            'desc' : getLang('cfg_exitPlayerKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'prevEpisodeKey' : {
             'type' : 'binding',
@@ -1388,9 +1264,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_prevEpisodeKey_name'),
-            'desc' : getLang('cfg_prevEpisodeKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'nextEpisodeKey' : {
             'type' : 'binding',
@@ -1406,9 +1280,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_nextEpisodeKey_name'),
-            'desc' : getLang('cfg_nextEpisodeKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'randomMovieKey' : {
             'type' : 'binding',
@@ -1424,9 +1296,7 @@ function init_configuration() {
             'list': keybinds,
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_randomMovieKey_name'),
-            'desc' : getLang('cfg_randomMovieKey_description'),
-            'notice' : null
+            'notice' : false
         },
         'keepHistory' : {
             'type' : 'range',
@@ -1442,9 +1312,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_keepHistory_name'),
-            'desc' : getLang('cfg_keepHistory_description'),
-            'notice' : null
+            'notice' : false
         },
         'omdbApi' : {
             'type' : 'api',
@@ -1460,9 +1328,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_omdbApi_name'),
-            'desc' : getLang('cfg_omdbApi_description'),
-            'notice' : null
+            'notice' : false
         },
         'logLevel' : {
             'type' : 'option',
@@ -1485,9 +1351,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_logLevel_name'),
-            'desc' : getLang('cfg_logLevel_description'),
-            'notice' : null
+            'notice' : false
         },
         'debug' : {
             'type' : 'array',
@@ -1527,9 +1391,7 @@ function init_configuration() {
             ],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_debug_name'),
-            'desc' : getLang('cfg_debug_description'),
-            'notice' : null
+            'notice' : false
         },
         'simulateProduction' : {
             'type' : 'bool',
@@ -1545,9 +1407,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_simulateProduction_name'),
-            'desc' : getLang('cfg_simulateProduction_description'),
-            'notice' : getLang('cfg_simulateProduction_notice')
+            'notice' : true
         },
         //-- CORE TIMERS START
         'startupTimer' : {
@@ -1564,9 +1424,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_startupTimer_name'),
-            'desc' : getLang('cfg_startupTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'injectorTimer' : {
             'type' : 'range',
@@ -1582,9 +1440,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_injectorTimer_name'),
-            'desc' : getLang('cfg_injectorTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'pageReloadTimer' : {
             'type' : 'range',
@@ -1600,9 +1456,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_pageReloadTimer_name'),
-            'desc' : getLang('cfg_pageReloadTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'errorExtensionReloadDelay' : {
             'type' : 'range',
@@ -1618,9 +1472,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_errorExtensionReloadDelay_name'),
-            'desc' : getLang('cfg_errorExtensionReloadDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'environmentUpdateTimer' : {
             'type' : 'range',
@@ -1636,9 +1488,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_environmentUpdateTimer_name'),
-            'desc' : getLang('cfg_environmentUpdateTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'keyEventProcessingDelay' : {
             'type' : 'range',
@@ -1654,9 +1504,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_keyEventProcessingDelay_name'),
-            'desc' : getLang('cfg_keyEventProcessingDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'netflixAssistantTimer' : {
             'type' : 'range',
@@ -1672,9 +1520,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_netflixAssistantTimer_name'),
-            'desc' : getLang('cfg_netflixAssistantTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'netflixRatingsTimer' : {
             'type' : 'range',
@@ -1690,9 +1536,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_netflixRatingsTimer_name'),
-            'desc' : getLang('cfg_netflixRatingsTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'elementHandlerTimer' : {
             'type' : 'range',
@@ -1708,9 +1552,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_elementHandlerTimer_name'),
-            'desc' : getLang('cfg_elementHandlerTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'bubbleHideDelay' : {
             'type' : 'range',
@@ -1726,9 +1568,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_bubbleHideDelay_name'),
-            'desc' : getLang('cfg_bubbleHideDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'titleEndActionsDelay' : {
             'type' : 'range',
@@ -1744,9 +1584,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_titleEndActionsDelay_name'),
-            'desc' : getLang('cfg_titleEndActionsDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'controlsSwitchTimer' : {
             'type' : 'range',
@@ -1762,9 +1600,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_controlsSwitchTimer_name'),
-            'desc' : getLang('cfg_controlsSwitchTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'debugControlsSwitchTimer' : {
             'type' : 'range',
@@ -1780,9 +1616,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_debugControlsSwitchTimer_name'),
-            'desc' : getLang('cfg_debugControlsSwitchTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'skippingPreventionTimer' : {
             'type' : 'range',
@@ -1798,9 +1632,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_skippingPreventionTimer_name'),
-            'desc' : getLang('cfg_skippingPreventionTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'playPauseButtonDelay' : {
             'type' : 'range',
@@ -1816,9 +1648,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_playPauseButtonDelay_name'),
-            'desc' : getLang('cfg_playPauseButtonDelay_description'),
-            'notice' : null
+            'notice' : false
         },
         'devToolsRefreshTimer' : {
             'type' : 'range',
@@ -1834,9 +1664,7 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_devToolsRefreshTimer_name'),
-            'desc' : getLang('cfg_devToolsRefreshTimer_description'),
-            'notice' : null
+            'notice' : false
         },
         'devToolsConfigLoadTimer' : {
             'type' : 'range',
@@ -1852,9 +1680,7 @@ function init_configuration() {
             'list': [],
              'callback' : null,
             'permissions' : null,
-            'name' : getLang('cfg_devToolsConfigLoadTimer_name'),
-            'desc' : getLang('cfg_devToolsConfigLoadTimer_description'),
-            'notice' : null
+            'notice' : false
         }
         //-- CORE TIMERS END
     };

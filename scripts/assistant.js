@@ -286,12 +286,12 @@ function generate_news_content(reset_unread_values) {
 
             // HTML template for news items
             var news_content_data = `
-<div style="position: relative; background-color: {NEWS_COLOR_BG}; color: {NEWS_COLOR_FNT}; margin-bottom: 15px; margin-left: 10px; margin-right: 10px; border: 2px solid rgba(255, 255, 255, 0.50); border-radius: 10px; padding: 15px;">
+<div class="{NEWS_CLASS}">
     <table style="width: 100%;">
         <tr>
             <td colspan="2">
                 <img src="{ENV_LOGO}" atl="{SHORT_NAME}" style="{HIDE_LOGO} width: 25px; position: absolute; top: -8px; left: -8px;">
-                {NEWS_MSG}
+                <div style="white-space: pre-line;">{NEWS_MSG}</div>
             </td>
         </tr>
         <tr>
@@ -344,8 +344,7 @@ function generate_news_content(reset_unread_values) {
                 'SHORT_NAME': getLang('short_name'),
                 'ENV_LOGO': logo_icon,
                 'HIDE_LOGO': ((hide_icon) ? 'display: none;' : ''),
-                'NEWS_COLOR_BG': ((last_news_read_old < news_item['received_at']) ? 'rgba(255, 255, 255, 0.90)' : 'rgba(38, 38, 38, 0.90)'),
-                'NEWS_COLOR_FNT': ((last_news_read_old < news_item['received_at']) ? '#000000' : '#FFFFFF'),
+                'NEWS_CLASS': ((last_news_read_old < news_item['received_at']) ? 'new_message news_content' : 'news_content'),
                 'NEWS_MSG': processDynamicNewsContent(news_item['msg']),
                 'RECEIVED_AT_TEXT': getLang('news_received_at'),
                 'RECEIVED_AT': news_item['received_at'].toLocaleString(undefined, date_format['full']),

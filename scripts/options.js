@@ -145,7 +145,7 @@ function generate_options_data(load_tab) {
 
             var cfgkey = conf_cat[key][i];
 
-            var cfg_name = fillArgs('<span class="cfg_name">{0}</span>', cfg[cfgkey]['name']);
+            var cfg_name = fillArgs('<span class="cfg_name">{0}</span>', getLang(fillArgs('cfg_{0}_name', cfgkey)));
 
             // Add values based on type
             var cfg_input_type = '';
@@ -274,11 +274,11 @@ function generate_options_data(load_tab) {
             var cfg_notice = '';
             if (disabled_features.includes(cfgkey)) {
                 cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang('netflix_changes'));
-            } else if (cfg[cfgkey]['notice'] !== null) {
-                cfg_notice = fillArgs('<span class="orange">{0}</span>', cfg[cfgkey]['notice']);
+            } else if (cfg[cfgkey]['notice']) {
+                cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang(fillArgs('cfg_{0}_notice', cfgkey)));
             }
 
-            var cfg_desc = fillArgs('<span class="description">{0}</span>', cfg[cfgkey]['desc']);
+            var cfg_desc = fillArgs('<span class="description">{0}</span>', getLang(fillArgs('cfg_{0}_description', cfgkey)));
 
             var new_line = [
                 'bool',

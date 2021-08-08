@@ -767,7 +767,7 @@
         "message":"Turns on/off ratings display and collection. Already collected ratings will stay in local storage but will not be used.",
         "description":""
     },
-    "cfg_showRatings_notice_dev":{
+    "cfg_showRatings_notice":{
         "message":"Ratings might not work on Development or Test environments.",
         "description":""
     },

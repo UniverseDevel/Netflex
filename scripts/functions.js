@@ -1107,6 +1107,9 @@ function checkNews() {
                     log('info', '', getLang('checking_news'));
                 },
                 success: function(result, status, xhr) {
+                    log('debug', 'news', 'Received news data:');
+                    log('debug', 'news', result);
+
                     try {
                         var news_created = 0;
                         var news_updated = 0;
