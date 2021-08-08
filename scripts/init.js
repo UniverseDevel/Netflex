@@ -6,7 +6,10 @@ function main() {
             exitContent(true);
         }
         workers['startup'] = setInterval(startup, cfg['startupTimer']['val']);
+
+        perform_permission_check([]);
     }
+
 }
 
 // Initialize extension by calling main function

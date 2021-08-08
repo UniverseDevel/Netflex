@@ -263,7 +263,7 @@ function generate_options_data(load_tab) {
                 var value = process_preset(cfgkey, cfg[cfgkey]['max']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_max'), value));
             }
-            if (cfg[cfgkey]['off'] !== null) {
+            if (cfg[cfgkey]['off'] !== null && cfg[cfgkey]['type'] != 'bool') {
                 var value = process_preset(cfgkey, cfg[cfgkey]['off']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_off'), value));
             }

@@ -129,6 +129,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     origins: request.origins
                 }, function(result) {
                     data['granted'] = result;
+
+                    sendResponse({request: request, status: status, message: message, data: data});
+                });
+                break;
+            case 'getPermissions':
+                chrome.permissions.getAll(function(result) {
+                    data['permissions'] = result;
+
+                    sendResponse({request: request, status: status, message: message, data: data});
                 });
                 break;
             case 'requestPermissions':
@@ -137,6 +146,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     origins: request.origins
                 }, function(result) {
                     data['granted'] = result;
+
+                    sendResponse({request: request, status: status, message: message, data: data});
                 });
                 break;
             case 'revokePermissions':
@@ -145,6 +156,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     origins: request.origins
                 }, function(result) {
                     data['revoked'] = result;
+
+                    sendResponse({request: request, status: status, message: message, data: data});
                 });
                 break;
         }
@@ -152,7 +165,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         status = 'ERROR';
         message = e.message;
         data = e;
+
+        sendResponse({request: request, status: status, message: message, data: data});
+
+        return;
     }
 
-    sendResponse({request: request, status: status, message: message, data: data});
+    // To prevent connection from closing before async message is returned
+    return true;
 });

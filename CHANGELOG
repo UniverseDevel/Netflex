@@ -96,7 +96,7 @@
 6.4.2    - 2021.05.03 - Updated DOMPurify library.
 6.4.3    - 2021.05.26 - Returned option to hide status icon but limited this option only to video player. Fixed blinking and style apply delay for subtitles.
 6.4.4    - 2021.07.07 - Added new version of DOMPurify library. Added option to show elapsed time in video player. Added option to stretch video for wide-screen aspect ratio (21:9) or manually defined zoom. Refactored most of the code for video features.
-6.5.0    - 2021.08.07 - Bugfixes. Added way how to call an action when configuration changes per configuration item. Added option to roll credits before skipping to next episode. Style fixes at configuration UI to make it consistent with extension colors and styles. Fixed potential problem when multiple episodes could be skipped. Added way how to show changes from configuration before they are save (ex. live video features applying). Improved extension performance. Added implementation for news that is currently disabled for production environments. Multiple preparations for manifest v3 and few consolidations.
+6.5.0    - 2021.08.08 - Bugfixes. Added way how to call an action when configuration changes per configuration item. Added option to roll credits before skipping to next episode. Style fixes at configuration UI to make it consistent with extension colors and styles. Fixed potential problem when multiple episodes could be skipped. Added way how to show changes from configuration before they are save (ex. live video features applying). Improved extension performance. Added implementation for news that is currently disabled for production environments. Multiple preparations for manifest v3 and few consolidations. Preparation for optional permissions, which will be unused for now as Firefox handles them in way it might not work with this extension.
 
 TODO:
 
@@ -107,7 +107,6 @@ TODO:
     - https://bugzilla.mozilla.org/show_bug.cgi?id=1413872
 
 - Ideas:
-    - With current configuration callbacks, optional permissions for Ratings/News could possibly be implemented.
 
 Known issues:
 
