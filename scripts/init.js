@@ -23,6 +23,7 @@ try {
     $.ajax({
         // Configuration
         type: 'GET',
+        timeout: 5000,
         url: locale_used,
         cache: false,
         async: true,
@@ -63,6 +64,14 @@ try {
             error_detected = true;
             error_message = error;
             console.error('NETFLEX ERROR: Failed to load localisation data.');
+
+            // Attempt self recovery
+            console.info('%cNETFLEX INFO: Extension will attempt to recover itself in 5 seconds.', 'color: #4d88ff;');
+            setTimeout(function () {
+                chrome.runtime.sendMessage({
+                    action: 'reloadExtension'
+                }, function(response) { });
+            }, 5000);
         },
         complete: function(xhr, status) {}
     });
