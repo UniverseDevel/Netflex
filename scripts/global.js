@@ -1361,7 +1361,6 @@ function init_configuration() {
             'val' : [],
             'def' : [
                 'init',
-                'news',
                 'overflow'
             ],
             'min' : null,
