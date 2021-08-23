@@ -1045,7 +1045,7 @@ function init_configuration() {
         'videoContrast' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 100,
             'def' : 100,
@@ -1061,7 +1061,7 @@ function init_configuration() {
         'videoGrayscale' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1077,7 +1077,7 @@ function init_configuration() {
         'videoHue' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1093,7 +1093,7 @@ function init_configuration() {
         'videoInvert' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
@@ -1109,7 +1109,7 @@ function init_configuration() {
         'videoSaturation' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 100,
             'def' : 100,
@@ -1125,7 +1125,7 @@ function init_configuration() {
         'videoSepia' : {
             'type' : 'range',
             'category' : 'video',
-            'access' : (!disableVideoFeatures  && !isEdgeChromium) || isDev,
+            'access' : (!disableVideoFeatures && !isEdgeChromium) || isDev,
             'order' : cfg_order['video']++,
             'val' : 0,
             'def' : 0,
