@@ -1598,5 +1598,5 @@ function show_debug_variables(type) {
     log('output', '', debug_content);
 }
 
-// To shut Firefox up, keep it a last line
+// To shut Firefox up, keep it a last line (result is non-structured-clonable data message)
 undefined;

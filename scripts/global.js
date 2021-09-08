@@ -1847,3 +1847,6 @@ function log(type, access, message, ...args) {
         throw new Error(getLang('error_message') + e.message);
     }
 }
+
+// To shut Firefox up, keep it a last line (result is non-structured-clonable data message)
+undefined;
