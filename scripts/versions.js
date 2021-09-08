@@ -392,9 +392,9 @@ function version_consistency_changes() {
             apply_version('6.4.0');
         }
 
-        // Before 6.5.0
-        if (applied_version_normalized < normalize_version('6.5.0', 4)) {
-            log('info', '', getLang('version_changes'), '6.5.0');
+        // Before 7.0.0
+        if (applied_version_normalized < normalize_version('7.0.0', 4)) {
+            log('info', '', getLang('version_changes'), '7.0.0');
 
             // Configuration variable elapsedTime renamed to showElapsedTime
             cfg_rename('elapsedTime', 'showElapsedTime');
@@ -432,7 +432,7 @@ function version_consistency_changes() {
                 log('info', '', getLang('success'));
             } catch (e) {log('error', '', getLang('failed'));}
 
-            apply_version('6.5.0');
+            apply_version('7.0.0');
         }
 
         /* - Template, add new changes to the 'Perform necessary changes' part and adjust version number

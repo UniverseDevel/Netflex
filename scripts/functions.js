@@ -31,13 +31,13 @@ function events_injector() {
             // Perform only when on specific pages
             if (check_watch() || check_browse() || check_latest() || check_title() || check_search()) {
                 // Update status icon just to be sure it is updated in case interval breaks
-                status_updater();
+                element_handler();
 
                 if (!workers['controls']) {
                     workers['controls'] = setInterval(mouse_simulation, cfg['controlsSwitchTimer']['val']);
                 }
                 if (!workers['elements']) {
-                    workers['elements'] = setInterval(status_updater, cfg['elementHandlerTimer']['val']);
+                    workers['elements'] = setInterval(element_handler, cfg['elementHandlerTimer']['val']);
                 }
             } else {
                 stop_worker('controls');
@@ -196,7 +196,7 @@ function exitContent(remove_icon) {
     log('debug', 'init', 'exitContent {0}', run_id);
 
     if (remove_icon) {
-        remove_status_icon();
+        remove_status_objects();
     }
 
     stopWorkers();
@@ -276,7 +276,7 @@ function reset_configuration() {
         load_configuration(null, cfg_changes);
     } catch (e) {
         error_detected = true;
-        error_message = 'reset_configuration: ' + e.message;
+        error_message = 'reset_configuration: ' + e.stack;
     }
 }
 
@@ -296,7 +296,7 @@ function reset_configuration_cat(type) {
         load_configuration(null, cfg_changes);
     } catch (e) {
         error_detected = true;
-        error_message = 'reset_configuration_cat: ' + e.message;
+        error_message = 'reset_configuration_cat: ' + e.stack;
     }
 }
 
@@ -322,7 +322,7 @@ function reload_extension() {
                             isOrphan = true;
                             try {
                                 stop_worker('elements');
-                                remove_status_icon();
+                                remove_status_objects();
                             } catch (e) {}
                         } else if (response.status = 'ERROR') {
                             if (response.message != '') {
@@ -465,6 +465,7 @@ function check_general_profile() {
 }
 
 function check_kids_profile() {
+    checkProfile();
     return (netflix_profile == 'kids');
 }
 
@@ -607,11 +608,11 @@ function environment_update() {
 
         log('debug', 'environment', 'environment_update');
 
-
         checkIfOrphan();
         checkVisibility();
         checkProfile();
         checkNews();
+        reset_status_data();
         url = window.location.href;
         origin = window.location.origin;
         try {ancestorOrigins = window.location.ancestorOrigins[0];} catch (e) {}
@@ -637,6 +638,25 @@ function environment_update() {
                     // Try reloading extension with delay
                     setTimeout(reload_extension, cfg['errorExtensionReloadDelay']['val']);
                 }
+            }
+
+            if (check_watch()) {
+                // Check proactively if configuration for hideStatusIcon did not change as this configuration can be
+                // turned off on browser page and this has to be reflected on watch page immediately.
+                chrome.storage.local.get(['hideStatusIcon'], function(result) {
+                    if (result['hideStatusIcon'] !== undefined) {
+                        var cfg_value = false;
+                        if (typeof result['hideStatusIcon'] == 'boolean') {
+                            cfg_value = result['hideStatusIcon'];
+                        } else {
+                            cfg_value = ((result['hideStatusIcon'] == 'true') ? true : false);
+                        }
+
+                        if (cfg_value != cfg['hideStatusIcon']['val']) {
+                            cfg['hideStatusIcon']['val'] = cfg_value;
+                        }
+                    }
+                });
             }
         }
 
@@ -745,17 +765,15 @@ function environment_update() {
         debug_variables['assistant']['logo_icon_test'] = logo_icon_test;
         debug_variables['assistant']['logo_icon_dev'] = logo_icon_dev;
         debug_variables['assistant']['logo_icon_sup'] = logo_icon_sup;
+        debug_variables['assistant']['changelog_page'] = changelog_page;
+        debug_variables['assistant']['status_data'] = status_data;
+        debug_variables['assistant']['status_data_old'] = status_data_old;
         debug_variables['assistant']['forceReloadDifference'] = forceReloadDifference;
         debug_variables['assistant']['key_pressed'] = key_pressed;
         debug_variables['assistant']['wheel_direction'] = wheel_direction;
         debug_variables['assistant']['lastForceReload'] = lastForceReload;
         debug_variables['assistant']['oldTimestamp'] = oldTimestamp;
         debug_variables['assistant']['currentTimestamp'] = currentTimestamp;
-        debug_variables['assistant']['control_panel'] = control_panel;
-        debug_variables['assistant']['status_profile'] = status_profile;
-        debug_variables['assistant']['status_profile_old'] = status_profile_old;
-        debug_variables['assistant']['status_color'] = status_color;
-        debug_variables['assistant']['status_color_old'] = status_color_old;
         debug_variables['assistant']['hiddenCFG'] = hiddenCFG;
         debug_variables['assistant']['pausedByExtension'] = pausedByExtension;
         debug_variables['assistant']['storage_stats'] = storage_stats;
@@ -853,7 +871,7 @@ function environment_update() {
         debug_variables['storage']['watchHistory'] = watchHistory;
     } catch (e) {
         error_detected = true;
-        error_message = 'environment_update: ' + e.message;
+        error_message = 'environment_update: ' + e.stack;
     }
 }
 

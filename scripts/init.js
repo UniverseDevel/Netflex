@@ -77,5 +77,5 @@ try {
     });
 } catch (e) {
     error_detected = true;
-    error_message = e.message;
+    error_message = e.stack;
 }

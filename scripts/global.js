@@ -183,7 +183,7 @@ function load_configuration(callback, cfg_changes) {
         });
     } catch (e) {
         error_detected = true;
-        error_message = 'load_configuration: ' + e.message;
+        error_message = 'load_configuration: ' + e.stack;
     }
 }
 
@@ -313,7 +313,7 @@ function save_configuration(callback) {
         });
     } catch (e) {
         error_detected = true;
-        error_message = 'save_configuration: ' + e.message;
+        error_message = 'save_configuration: ' + e.stack;
     }
 }
 

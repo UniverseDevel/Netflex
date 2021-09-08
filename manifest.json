@@ -5,7 +5,7 @@
     "name": "__MSG_name__",
     "short_name": "__MSG_short_name__",
     "description": "__MSG_description__",
-    "version": "6.5.0",
+    "version": "7.0.0",
     "author": "__MSG_provider__",
 
     "icons": {
@@ -38,6 +38,7 @@
 
                 "scripts/options.js",
 
+                "scripts/status.js",
                 "scripts/assistant.js",
                 "scripts/rating.js",
 

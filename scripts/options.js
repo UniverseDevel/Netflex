@@ -203,7 +203,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['val'].includes(cfg[cfgkey]['list'][l])) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
+                        list_items.push(fillArgs('<label class="cfg_option"><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -220,7 +220,7 @@ function generate_options_data(load_tab) {
                         if (cfg[cfgkey]['list'][l] == cfg[cfgkey]['val']) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
+                        list_items.push(fillArgs('<label class="cfg_option"><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;

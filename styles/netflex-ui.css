@@ -1,7 +1,52 @@
 /* STATUS BUBBLE */
 
-#extension_status_bubble_content .unread {
+#netflex_bubble_container {
+    position: fixed;
+    z-index: 100;
+    color: var(--netflex_txt_color, #FFFFFF) !important;
+    background-color: var(--netflex_bg_color, rgba(38,38,38,.85)) !important;
+    padding: 0.8em;
+    width: 500px;
+    border-radius: 0.5em;
+    font-size: 16px;
+    right: var(--netflex_off_right, auto) !important;
+    top: var(--netflex_off_top, auto) !important;
+    bottom: var(--netflex_off_bottom, auto) !important;
+}
+
+#netflex_bubble_container .unread {
     color: #e70000 !important;
+}
+
+#netflex_icon_status {
+    stroke: var(--netflex_bord_color, #FFFFFF) !important;
+    stroke-width: 80px;
+    color: var(--netflex_stat_color, #00b642) !important;
+    margin-top: 4px;
+    transform-origin: center center;
+}
+
+#netflex_icon_status[controls="browse"] {
+    position: relative;
+    top: 30%;
+    left: 40%;
+}
+
+#netflex_icon_status:hover {
+    cursor: pointer;
+    transition: transform .25s cubic-bezier(.5,0,.1,1);
+    transform: scale(1.2);
+}
+
+#netflex_icon_body {
+    min-width: 3.8rem;
+    width: 3.8rem;
+    min-height: 3.8rem;
+    height: 3.8rem;
+}
+
+#extension_logo {
+    cursor: pointer;
 }
 
 #extension_news_integrated .news_content {
@@ -175,12 +220,25 @@
 	font-size: 14px;
 }
 
-#extension_options_scrollable .cfg_name, .stats_name {
+#extension_options_scrollable label .cfg_option {
+	cursor: pointer;
+}
+
+#extension_options_scrollable .stats_name {
 	font-size: 15px;
 	font-weight: bold;
 	margin-right: 5px;
 	margin-bottom: 5px;
 	display: inline-block;
+}
+
+#extension_options_scrollable .cfg_name {
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	display: inline-block;
+	cursor: pointer;
 }
 
 #extension_options_scrollable .cfg_form:not([data-type="bool"]) {
@@ -267,6 +325,7 @@
 #extension_options_scrollable select {
 	background: transparent;
 	color: #ffffff;
+    cursor: pointer;
 }
 
 #extension_options_scrollable input[type="text"],
@@ -286,11 +345,13 @@
 #extension_options_scrollable .checked {
     color: #00b642;
     background-color: transparent;
+    cursor: pointer;
 }
 
 #extension_options_scrollable .unchecked {
     color: #00b642;
     background-color: transparent;
+    cursor: pointer;
 }
 
 #extension_options_scrollable input[type="checkbox"]:checked ~ .checked {

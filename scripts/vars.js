@@ -117,15 +117,8 @@ var logo_icon_dev = chrome.runtime.getURL('images/netflex_dev.png');
 var logo_icon_sup = chrome.runtime.getURL('images/netflex_sup.png');
 var changelog_page = chrome.runtime.getURL('CHANGELOG');
 
-var control_panel = 'none';
-var bubble_offset_right = 0;
-var bubble_offset_bottom = 0;
-var status_profile = 'init';
-var status_profile_old = 'none';
-var status_color = 'init';
-var status_color_old = 'none';
-var border_color = 'init';
-var border_color_old = 'none';
+var status_data = {};
+var status_data_old = {};
 
 var date_format = {
     'full': {
@@ -265,7 +258,7 @@ var rating_expiration_not_found_wiki = 1; // Hours
 var rating_expiration_error_wiki = 1; // Hours
 // OMDB API expiration times
 var rating_expiration_found_new = 30; // Days
-var rating_expiration_found_old = 183; // Days
+var rating_expiration_found_old = 365; // Days
 var rating_expiration_not_found = 15; // Days
 var rating_expiration_timeout = 1; // Days
 var rating_expiration_limit = 1; // Days

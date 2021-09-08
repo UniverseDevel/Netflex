@@ -56,42 +56,42 @@ function object_handler(object_category, related_object) {
         case 'synopsis':
             obj = {
                 'tiles': [
-                    [ '', 'synopsis', 'description' ], // Title details episode list
-                    [ '', 'episodeSynopsis', 'description' ], // Description on browser page
-                    [ '', 'preview-modal-synopsis', 'description' ], // Description on browser page
-                    [ '', 'previewModal-episodeDetails', 'episode_name' ], // Episode name on browser page
-                    [ '', 'titleCard-synopsis', 'description' ], // Description on browser page
-                    [ '', 'titleCard-title_text', 'episode_name' ], // Episode name on browser page
-                    [ 'titleCard-imageWrapper', 'ptrack-content', 'episode_picture' ], // Title details episode thumbnails
+                    [ '', '.synopsis', 'description' ], // Title details episode list
+                    [ '', '.episodeSynopsis', 'description' ], // Description on browser page
+                    [ '', '.preview-modal-synopsis', 'description' ], // Description on browser page
+                    [ '', '.previewModal-episodeDetails', 'episode_name' ], // Episode name on browser page
+                    [ '', '.titleCard-synopsis', 'description' ], // Description on browser page
+                    [ '', '.titleCard-title_text', 'episode_name' ], // Episode name on browser page
+                    [ '.titleCard-imageWrapper', '.ptrack-content', 'episode_picture' ], // Title details episode thumbnails
                 ],
                 'cast': [
-                    [ '', 'title-name-container', 'episode_name' ], // Title name while casting, will be blurred only for series
+                    [ '', '.title-name-container', 'episode_name' ], // Title name while casting, will be blurred only for series
                 ],
                 'watch': [
-                    [ '', 'synopsis', 'description' ], // Description on watch page in list of episodes
-                    [ '', 'PromotedVideo-synopsis', 'description' ], // Description on suggested next title
-                    [ '', 'nfa-fs-1-6-em nfa-c-gray-80 nfa-m-0 nfa-w-60', 'description' ], // Video player paused screen description
-                    [ '', 'nfa-fs-2-em nfa-m-0 nfa-pt-1-em nfa-pb-05-em', 'episode_name' ], // Video player paused screen title name
-                    [ '', 'ellipsize-text', 'episode_name' ], // Video player title name, code will search for last child element if there are more than one
-                    [ '', 'tp-image', 'runner_thumbnail' ], // Runner thumbnail
-                    [ '', 'playable-title', 'episode_name' ], // Episode title when loading player
-                    [ '', 'thumbnail-image', 'episode_picture' ], // Watch episode thumbnails
-                    [ '', 'title', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
-                    [ '', 'player-loading-background-image', 'episode_picture' ], // Episode picture while video loading
+                    [ '', '.synopsis, [data-uia="episode-preview-synopsis"], [data-uia="episode-pane-item-preview-open"] > span', 'description' ], // Description on watch page in list of episodes
+                    [ '', '.PromotedVideo-synopsis', 'description' ], // Description on suggested next title
+                    [ '', '.nfa-fs-1-6-em .nfa-c-gray-80 .nfa-m-0 nfa-w-60, [data-uia="evidence-overlay-synopsis"]', 'description' ], // Video player paused screen description
+                    [ '', '.nfa-fs-2-em .nfa-m-0 .nfa-pt-1-em .nfa-pb-05-em, [data-uia="evidence-overlay-episode-title"]', 'episode_name' ], // Video player paused screen title name
+                    [ '', '.ellipsize-text > span:last-child, [data-uia="video-title"] > span:last-child', 'episode_name' ], // Video player title name
+                    [ '', '.tp-image, [data-uia="trick-play-image"]', 'runner_thumbnail' ], // Runner thumbnail
+                    [ '', '.playable-title', 'episode_name' ], // Episode title when loading player
+                    [ '', '.thumbnail-image, [data-uia="episode-preview-thumbnail"], [data-uia="episode-pane-item-preview-open"] > div', 'episode_picture' ], // Watch episode thumbnails
+                    [ '', '.title, [data-uia="episode-preview-title"], [data-uia="episode-pane-item-number"]', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
+                    [ '', '.player-loading-background-image', 'episode_picture' ], // Episode picture while video loading
                 ]
             };
             return obj;
             break;
         case 'progress_bar':
-            obj = document.querySelector('.PlayerControlsNeo__progress-container');
+            obj = document.querySelector('.PlayerControlsNeo__progress-container, [data-uia="timeline"]');
             if (obj) { return obj; }
             break;
         case 'button_next_episode':
-            obj = document.querySelector('.button-nfplayerNextEpisode');
+            obj = document.querySelector('.button-nfplayerNextEpisode, [data-uia="control-next"]');
             if (obj) { return obj; }
             break;
         case 'button_exit_player':
-            obj = document.querySelector('.button-nfplayerBack');
+            obj = document.querySelector('.button-nfplayerBack, [data-uia="control-nav-back"]');
             if (obj) { return obj; }
             break;
         case 'video_loading_spinner':
@@ -131,11 +131,11 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_play':
-            obj = document.querySelector('.button-nfplayerPlay');
+            obj = document.querySelector('.button-nfplayerPlay, [data-uia="control-play-pause-play"][aria-label="Play"]');
             if (obj) { return obj; }
             break;
         case 'button_pause':
-            obj = document.querySelector('.button-nfplayerPause');
+            obj = document.querySelector('.button-nfplayerPause, [data-uia="control-play-pause-play"][aria-label="Pause"]');
             if (obj) { return obj; }
             break;
         case 'player_hit_zone':
@@ -143,7 +143,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_skip':
-            obj = document.querySelector('.skip-credits a .nf-flat-button-text');
+            obj = document.querySelector('.skip-credits a .nf-flat-button-text, [data-uia="player-skip-intro"], [data-uia="player-skip-recap"]');
             if (obj) { return obj; }
             break;
         case 'player_subtitles':
@@ -168,12 +168,12 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'player_video':
-            obj = document.querySelector('.AkiraPlayer > .nf-player-container video');
+            obj = document.querySelector('.AkiraPlayer > .nf-player-container video, .watch-video--player-view video');
             if (obj) { return obj; }
             break;
         case 'player_video_container':
             // Note: relates to CSS
-            obj = document.querySelector('.VideoContainer');
+            obj = document.querySelector('.VideoContainer, [data-uia="video-canvas"]');
             if (obj) { return obj; }
             break;
         case 'trailer_list':
@@ -181,7 +181,7 @@ function object_handler(object_category, related_object) {
             if (obj[0]) { return obj; }
             break;
         case 'player_container':
-            obj = document.querySelector('.nf-player-container');
+            obj = document.querySelector('.nf-player-container, .watch-video--player-view');
             if (obj) { return obj; }
             break;
         case 'disliked_title':
@@ -208,12 +208,28 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.OriginalsLogo');
             if (obj) { return obj; }
             break;
+        case 'remaining_time':
+            obj = document.querySelector('[data-uia="controls-time-remaining"]');
+            if (obj) { return obj; }
+            break;
         case 'movie_title':
             obj = document.querySelector('.Recommendation-bob-movie-title');
             if (obj) { return obj; }
             break;
         case 'chromecast_title':
             obj = document.querySelector('.title-name-container a');
+            if (obj) { return obj; }
+            break;
+        case 'player_controls_report_problem':
+            obj = document.querySelector('.ReportAProblemPopupContainer, [data-uia="control-question"]');
+            if (obj) { return obj; }
+            break;
+        case 'navigation_menu_account':
+            obj = document.querySelector('.account-menu-item');
+            if (obj) { return obj; }
+            break;
+        case 'navigation_menu_kids':
+            obj = document.querySelector('.show-kids, .nav-element:nth-of-type(2)');
             if (obj) { return obj; }
             break;
         case 'player_controls_elements':
@@ -230,22 +246,6 @@ function object_handler(object_category, related_object) {
             break;
         case 'navigation_menu':
             obj = document.querySelector('.secondary-navigation');
-            if (obj) { return obj; }
-            break;
-        case 'navigation_menu_search':
-            obj = document.querySelector('.nav-element:nth-of-type(2)');
-            if (obj) { return obj; }
-            break;
-        case 'player_controls_report_problem':
-            obj = document.querySelector('.ReportAProblemPopupContainer');
-            if (obj) { return obj; }
-            break;
-        case 'player_focus_trap':
-            obj = document.querySelector('.sizing-wrapper');
-            if (obj) { return obj; }
-            break;
-        case 'player_focus_trap_element':
-            obj = document.querySelector('.AkiraPlayer');
             if (obj) { return obj; }
             break;
         case 'player_episode_list':
