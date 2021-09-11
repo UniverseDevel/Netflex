@@ -466,8 +466,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoSpeedRate" value="{VIDEO_SPEED_RATE_VALUE}" min="{VIDEO_SPEED_RATE_MIN}" max="{VIDEO_SPEED_RATE_MAX}" step="{VIDEO_SPEED_RATE_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoSpeedRate_display">{VIDEO_SPEED_RATE_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoSpeedRate_display">{VIDEO_SPEED_RATE_VALUE_DISPLAY}</span>{VIDEO_SPEED_RATE_UNITS}
                 </td>
             </tr>
             <tr>
@@ -487,8 +487,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoZoom" value="{VIDEO_ZOOM_VALUE}" min="{VIDEO_ZOOM_MIN}" max="{VIDEO_ZOOM_MAX}" step="{VIDEO_ZOOM_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoZoom_display">{VIDEO_ZOOM_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoZoom_display">{VIDEO_ZOOM_VALUE_DISPLAY}</span>{VIDEO_ZOOM_UNITS}
                 </td>
             </tr>
             <tr>
@@ -508,8 +508,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoBrightness" value="{VIDEO_BRIGHTNESS_VALUE}" min="{VIDEO_BRIGHTNESS_MIN}" max="{VIDEO_BRIGHTNESS_MAX}" step="{VIDEO_BRIGHTNESS_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoBrightness_display">{VIDEO_BRIGHTNESS_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoBrightness_display">{VIDEO_BRIGHTNESS_VALUE_DISPLAY}</span>{VIDEO_BRIGHTNESS_UNITS}
                 </td>
             </tr>
             <tr>
@@ -529,8 +529,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoContrast" value="{VIDEO_CONTRAST_VALUE}" min="{VIDEO_CONTRAST_MIN}" max="{VIDEO_CONTRAST_MAX}" step="{VIDEO_CONTRAST_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoContrast_display">{VIDEO_CONTRAST_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoContrast_display">{VIDEO_CONTRAST_VALUE_DISPLAY}</span>{VIDEO_CONTRAST_UNITS}
                 </td>
             </tr>
             <tr>
@@ -550,8 +550,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoGrayscale" value="{VIDEO_GRAYSCALE_VALUE}" min="{VIDEO_GRAYSCALE_MIN}" max="{VIDEO_GRAYSCALE_MAX}" step="{VIDEO_GRAYSCALE_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoGrayscale_display">{VIDEO_GRAYSCALE_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoGrayscale_display">{VIDEO_GRAYSCALE_VALUE_DISPLAY}</span>{VIDEO_GRAYSCALE_UNITS}
                 </td>
             </tr>
             <tr>
@@ -571,8 +571,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoHue" value="{VIDEO_HUE_VALUE}" min="{VIDEO_HUE_MIN}" max="{VIDEO_HUE_MAX}" step="{VIDEO_HUE_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoHue_display">{VIDEO_HUE_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoHue_display">{VIDEO_HUE_VALUE_DISPLAY}</span>{VIDEO_HUE_UNITS}
                 </td>
             </tr>
             <tr>
@@ -592,8 +592,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoInvert" value="{VIDEO_INVERT_VALUE}" min="{VIDEO_INVERT_MIN}" max="{VIDEO_INVERT_MAX}" step="{VIDEO_INVERT_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoInvert_display">{VIDEO_INVERT_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoInvert_display">{VIDEO_INVERT_VALUE_DISPLAY}</span>{VIDEO_INVERT_UNITS}
                 </td>
             </tr>
             <tr>
@@ -613,8 +613,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoSaturation" value="{VIDEO_SATURATION_VALUE}" min="{VIDEO_SATURATION_MIN}" max="{VIDEO_SATURATION_MAX}" step="{VIDEO_SATURATION_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoSaturation_display">{VIDEO_SATURATION_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoSaturation_display">{VIDEO_SATURATION_VALUE_DISPLAY}</span>{VIDEO_SATURATION_UNITS}
                 </td>
             </tr>
             <tr>
@@ -634,8 +634,8 @@ function generate_status_features() {
                 <td style="width: 100%; padding-right: 5px;">
                     <input type="range" id="feature_videoSepia" value="{VIDEO_SEPIA_VALUE}" min="{VIDEO_SEPIA_MIN}" max="{VIDEO_SEPIA_MAX}" step="{VIDEO_SEPIA_STEP}" style="width: 100%;">
                 </td>
-                <td style="min-width: 50px;">
-                    <span id="feature_videoSepia_display">{VIDEO_SEPIA_VALUE_DISPLAY}</span>
+                <td style="min-width: 70px;">
+                    <span id="feature_videoSepia_display">{VIDEO_SEPIA_VALUE_DISPLAY}</span>{VIDEO_SEPIA_UNITS}
                 </td>
             </tr>
             <tr>
@@ -736,6 +736,7 @@ function generate_status_features() {
         'VIDEO_SPEED_RATE_MIN': cfg['videoSpeedRate']['min'],
         'VIDEO_SPEED_RATE_MAX': cfg['videoSpeedRate']['max'],
         'VIDEO_SPEED_RATE_STEP': cfg['videoSpeedRate']['step'],
+        'VIDEO_SPEED_RATE_UNITS': transform_units(cfg['videoSpeedRate']['units']),
 
         'SHOW_VIDEO_ZOOM': show_videoZoom,
         'VIDEO_ZOOM_TEXT': getLang('feature_videoZoom'),
@@ -744,6 +745,7 @@ function generate_status_features() {
         'VIDEO_ZOOM_MIN': cfg['videoZoom']['min'],
         'VIDEO_ZOOM_MAX': cfg['videoZoom']['max'],
         'VIDEO_ZOOM_STEP': cfg['videoZoom']['step'],
+        'VIDEO_ZOOM_UNITS': transform_units(cfg['videoZoom']['units']),
 
         'SHOW_VIDEO_BRIGHTNESS': show_videoBrightness,
         'VIDEO_BRIGHTNESS_TEXT': getLang('feature_videoBrightness'),
@@ -752,6 +754,7 @@ function generate_status_features() {
         'VIDEO_BRIGHTNESS_MIN': cfg['videoBrightness']['min'],
         'VIDEO_BRIGHTNESS_MAX': cfg['videoBrightness']['max'],
         'VIDEO_BRIGHTNESS_STEP': cfg['videoBrightness']['step'],
+        'VIDEO_BRIGHTNESS_UNITS': transform_units(cfg['videoBrightness']['units']),
 
         'SHOW_VIDEO_CONTRAST': show_videoContrast,
         'VIDEO_CONTRAST_TEXT': getLang('feature_videoContrast'),
@@ -760,6 +763,7 @@ function generate_status_features() {
         'VIDEO_CONTRAST_MIN': cfg['videoContrast']['min'],
         'VIDEO_CONTRAST_MAX': cfg['videoContrast']['max'],
         'VIDEO_CONTRAST_STEP': cfg['videoContrast']['step'],
+        'VIDEO_CONTRAST_UNITS': transform_units(cfg['videoContrast']['units']),
 
         'SHOW_VIDEO_GRAYSCALE': show_videoGrayscale,
         'VIDEO_GRAYSCALE_TEXT': getLang('feature_videoGrayscale'),
@@ -768,6 +772,7 @@ function generate_status_features() {
         'VIDEO_GRAYSCALE_MIN': cfg['videoGrayscale']['min'],
         'VIDEO_GRAYSCALE_MAX': cfg['videoGrayscale']['max'],
         'VIDEO_GRAYSCALE_STEP': cfg['videoGrayscale']['step'],
+        'VIDEO_GRAYSCALE_UNITS': transform_units(cfg['videoGrayscale']['units']),
 
         'SHOW_VIDEO_HUE': show_videoHue,
         'VIDEO_HUE_TEXT': getLang('feature_videoHue'),
@@ -776,6 +781,7 @@ function generate_status_features() {
         'VIDEO_HUE_MIN': cfg['videoHue']['min'],
         'VIDEO_HUE_MAX': cfg['videoHue']['max'],
         'VIDEO_HUE_STEP': cfg['videoHue']['step'],
+        'VIDEO_HUE_UNITS': transform_units(cfg['videoHue']['units']),
 
         'SHOW_VIDEO_INVERT': show_videoInvert,
         'VIDEO_INVERT_TEXT': getLang('feature_videoInvert'),
@@ -784,6 +790,7 @@ function generate_status_features() {
         'VIDEO_INVERT_MIN': cfg['videoInvert']['min'],
         'VIDEO_INVERT_MAX': cfg['videoInvert']['max'],
         'VIDEO_INVERT_STEP': cfg['videoInvert']['step'],
+        'VIDEO_INVERT_UNITS': transform_units(cfg['videoInvert']['units']),
 
         'SHOW_VIDEO_SATURATION': show_videoSaturation,
         'VIDEO_SATURATION_TEXT': getLang('feature_videoSaturation'),
@@ -792,6 +799,7 @@ function generate_status_features() {
         'VIDEO_SATURATION_MIN': cfg['videoSaturation']['min'],
         'VIDEO_SATURATION_MAX': cfg['videoSaturation']['max'],
         'VIDEO_SATURATION_STEP': cfg['videoSaturation']['step'],
+        'VIDEO_SATURATION_UNITS': transform_units(cfg['videoSaturation']['units']),
 
         'SHOW_VIDEO_SEPIA': show_videoSepia,
         'VIDEO_SEPIA_TEXT': getLang('feature_videoSepia'),
@@ -799,7 +807,8 @@ function generate_status_features() {
         'VIDEO_SEPIA_VALUE': videoSepia_temp,
         'VIDEO_SEPIA_MIN': cfg['videoSepia']['min'],
         'VIDEO_SEPIA_MAX': cfg['videoSepia']['max'],
-        'VIDEO_SEPIA_STEP': cfg['videoSepia']['step']
+        'VIDEO_SEPIA_STEP': cfg['videoSepia']['step'],
+        'VIDEO_SEPIA_UNITS': transform_units(cfg['videoSepia']['units'])
     };
     status_features = fillKeys(status_features, keys);
 
@@ -919,6 +928,7 @@ function element_handler() {
     try {
         create_status_objects();
         status_updater();
+        status_update_time = new Date();
     } catch (e) {
         error_detected = true;
         error_message = 'element_handler: ' + e.stack;
@@ -982,37 +992,38 @@ function status_updater() {
         }
         icon_class = icon_class + text_class_name;
     }
-    if (obj['controls_type'] == 'watch') {
-        if (obj['iconPlaceBeforeElm']) {
-            var bodyRect = document.body.getBoundingClientRect();
-            var elemRect = obj['iconPlaceBeforeElm'].getBoundingClientRect();
+    if (obj['iconPlaceBeforeElm']) {
+        var bodyRect = document.body.getBoundingClientRect();
+        var elemRect = obj['iconPlaceBeforeElm'].getBoundingClientRect();
 
-            if (bodyRect.right != 0 && elemRect.right != 0) {
-                bubble_offset_right = bodyRect.right - elemRect.right - 40;
-                if (bubble_offset_right < 10) {
-                    bubble_offset_right = 10;
-                }
+        if (bodyRect.right != 0 && elemRect.right != 0) {
+            bubble_offset_right = bodyRect.right - elemRect.right - 40;
+            if (bubble_offset_right < 10) {
+                bubble_offset_right = 10;
             }
+        }
+
+        if (obj['controls_type'] == 'watch') {
             if (elemRect.top != 0 && elemRect.bottom != 0) {
-                bubble_offset_bottom = elemRect.bottom - elemRect.top + 25;
+                bubble_offset_bottom = elemRect.bottom - elemRect.top + elemRect.width;
             }
 
             bubble_offset_right = bubble_offset_right + 'px';
             bubble_offset_top = 'auto';
             bubble_offset_bottom = bubble_offset_bottom + 'px';
-        } else {
-            // In case controls are hidden and there are no referenced objects to rely on, use old stored values
-            if (status_data_old.hasOwnProperty('bubble_offset_right')) {
-                bubble_offset_right = status_data_old['bubble_offset_right'];
-            }
-            if (status_data_old.hasOwnProperty('bubble_offset_bottom')) {
-                bubble_offset_bottom = status_data_old['bubble_offset_bottom'];
-            }
+        } else if (obj['controls_type'] == 'browse') {
+            bubble_offset_right = bubble_offset_right + 'px';
+            bubble_offset_top = (elemRect.top + elemRect.width) + 'px';
+            bubble_offset_bottom = 'auto';
         }
-    } else if (obj['controls_type'] == 'browse') {
-        bubble_offset_right = '5.5em';
-        bubble_offset_top = '2.8em';
-        bubble_offset_bottom = 'auto';
+    } else {
+        // In case controls are hidden and there are no referenced objects to rely on, use old stored values
+        if (status_data_old.hasOwnProperty('bubble_offset_right')) {
+            bubble_offset_right = status_data_old['bubble_offset_right'];
+        }
+        if (status_data_old.hasOwnProperty('bubble_offset_bottom')) {
+            bubble_offset_bottom = status_data_old['bubble_offset_bottom'];
+        }
     }
 
     status_data = {
@@ -1166,7 +1177,7 @@ function create_status_objects() {
                 remove_status_bubble();
 
                 bubble_container = document.createElement('div');
-                bubble_container.setAttribute('style','display: none;');
+                bubble_container.setAttribute('style','display: none; position: fixed;');
                 bubble_container.setAttribute('id','netflex_bubble_container');
                 bubble_container.setAttribute('controls',obj['controls_type']);
                 bubble_container.setAttribute('run-id',run_id);
@@ -1208,6 +1219,7 @@ function create_status_objects() {
 
                 icon_container = obj['iconTemplateElm'].cloneNode(true);
                 icon_container.removeChild(icon_container.children[0]);
+                icon_container.setAttribute('style','color: #00b642; stroke: #FFFFFF; transform-origin: center center;');
                 icon_container.setAttribute('id','netflex_icon_container');
                 icon_container.setAttribute('run-id',run_id);
 

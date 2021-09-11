@@ -499,6 +499,46 @@
         "message":"Off",
         "description":""
     },
+    "options_dependency":{
+        "message":"Dependency",
+        "description":""
+    },
+    "dependency_set":{
+        "message":"Set",
+        "description":""
+    },
+    "dependency_with_value":{
+        "message":"with value",
+        "description":""
+    },
+    "dependency_any_of":{
+        "message":"any of",
+        "description":""
+    },
+    "dependency_and":{
+        "message":"and",
+        "description":""
+    },
+    "dependency_or":{
+        "message":"or",
+        "description":""
+    },
+    "option_unit_deg":{
+        "message":"°",
+        "description":""
+    },
+    "option_unit_pct":{
+        "message":"%",
+        "description":""
+    },
+    "option_unit_sec":{
+        "message":"sec",
+        "description":""
+    },
+    "option_unit_ms":{
+        "message":"ms",
+        "description":""
+    },
     "changelog_fetch_failed":{
         "message":"Obtaining changelog failed. Try reloading extension.",
         "description":""
@@ -759,16 +799,24 @@
         "message":"Sets subtitle highlight style.<br><br>~ Hide subtitles - All subtitles will be hidden.<br>~ Disabled - Subtitles will not be highlighted by extension, but might be highlighted by Netflix™.<br>~ Shadow - Subtitles shadow will be darker and more visible around them, if Netflix™ provides subtitles with black background this will have no effect.<br>~ Background - Subtitles will receive background that will be 50% transparent, if Netflix™ provides subtitles with black background this will have no effect.",
         "description":""
     },
+    "cfg_showRatings_description":{
+        "message":"Turns on/off ratings display and collection. When turned off, already collected ratings will stay in local storage but will not be used.",
+        "description":""
+    },
     "cfg_showRatings_name":{
         "message":"Show ratings",
         "description":""
     },
-    "cfg_showRatings_description":{
-        "message":"Turns on/off ratings display and collection. Already collected ratings will stay in local storage but will not be used.",
-        "description":""
-    },
     "cfg_showRatings_notice":{
         "message":"Ratings might not work on Development or Test environments.",
+        "description":""
+    },
+    "cfg_ratingsSources_name":{
+        "message":"Ratings source",
+        "description":""
+    },
+    "cfg_ratingsSources_description":{
+        "message":"Decide which rating sources should be displayed. Some sources have lower availability then others.<br>~ IMDb - mostly available<br>~ Rotten Tomatoes - sometimes available<br>~ Metacritic - mostly unavailable",
         "description":""
     },
     "cfg_ratingsAnchors_name":{
@@ -1063,6 +1111,14 @@
         "message":"DevTools configuration load timer",
         "description":""
     },
+    "cfg_dependencyHighlightDelay_description":{
+        "message":"How long should we wait before highlight on dependency is removed.",
+        "description":""
+    },
+    "cfg_dependencyHighlightDelay_name":{
+        "message":"Dependency highlight remove delay",
+        "description":""
+    },
     "cfg_elementHandlerTimer_description":{
         "message":"How often should extension icon be updated. Changing this value may require extension reload.",
         "description":""
@@ -1285,6 +1341,18 @@
     },
     "hideSpoilersObjects_type_runner_thumbnail":{
         "message":"Runner thumbnails",
+        "description":""
+    },
+    "ratingsSources_type_imdb":{
+        "message":"IMDb",
+        "description":""
+    },
+    "ratingsSources_type_rt":{
+        "message":"Rotten Tomatoes",
+        "description":""
+    },
+    "ratingsSources_type_meta":{
+        "message":"Metacritic",
         "description":""
     },
     "ratingsTilePosition_type_top_left":{

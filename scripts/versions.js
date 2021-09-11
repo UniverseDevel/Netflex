@@ -435,6 +435,31 @@ function version_consistency_changes() {
             apply_version('7.0.0');
         }
 
+        // Before 7.0.1
+        if (applied_version_normalized < normalize_version('7.0.1', 4)) {
+            log('info', '', getLang('version_changes'), '7.0.1');
+
+            // Configuration variable videoSpeedRate value changed from percentage between 0.25 and 4 to percentage between 25-400
+            try {
+                log('info', '', getLang('versions_reset_data'), 'videoSpeedRate');
+                chrome.storage.local.get(['videoSpeedRate'], function(result) {
+                    if (result['videoSpeedRate'] !== undefined) {
+                        if (Number(result['videoSpeedRate']) <= 4) {
+                            var new_value = (Number(result['videoSpeedRate']) * 100);
+                            chrome.storage.local.set({ 'videoSpeedRate': new_value.toString() }, function() {
+                                videoSpeedRate_change = new_value;
+                                videoSpeedRate_temp = new_value;
+                                cfg['videoSpeedRate']['val'] = new_value;
+                            });
+                        }
+                    }
+                });
+                log('info', '', getLang('success'));
+            } catch (e) {log('error', '', getLang('failed'));}
+
+            apply_version('7.0.1');
+        }
+
         /* - Template, add new changes to the 'Perform necessary changes' part and adjust version number
         // Before 999999.999.999
         if (applied_version_normalized < normalize_version('999999.999.999', 4)) {

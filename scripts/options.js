@@ -143,30 +143,30 @@ function generate_options_data(load_tab) {
         for (var i = 0; i < conf_cat[key].length; i++) {
             log('debug', 'options_generation', '{0}: {1} - {2} ({3}, access: {4})', key, i, conf_cat[key][i], cfg[conf_cat[key][i]]['type'], cfg[conf_cat[key][i]]['access']);
 
-            var cfgkey = conf_cat[key][i];
+            var cfg_key = conf_cat[key][i];
 
-            var cfg_name = fillArgs('<span class="cfg_name">{0}</span>', getLang(fillArgs('cfg_{0}_name', cfgkey)));
+            var cfg_name = fillArgs('<span class="cfg_name" data-type="{0}">{1}</span>', cfg[cfg_key]['type'], getLang(fillArgs('cfg_{0}_name', cfg_key)));
 
             // Add values based on type
             var cfg_input_type = '';
             var cfg_input_value = '';
             var cfg_hidden_input = '';
             var cfg_form_element = '';
-            switch (cfg[cfgkey]['type']) {
+            switch (cfg[cfg_key]['type']) {
                 case 'number':
                     cfg_input_type = 'number';
-                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfgkey]['val']);
+                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>', cfg_input_type, cfgkey, cfg_input_value);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>', cfg_input_type, cfg_key, cfg_input_value);
                     break;
                 case 'range':
                     cfg_input_type = 'range';
-                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfgkey]['val']);
+                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
-                    var min_value = cfg[cfgkey]['min'];
-                    var max_value = cfg[cfgkey]['max'];
-                    var step_value = cfg[cfgkey]['step'];
-                    if (cfg[cfgkey]['category'] == 'debug') {
+                    var min_value = cfg[cfg_key]['min'];
+                    var max_value = cfg[cfg_key]['max'];
+                    var step_value = cfg[cfg_key]['step'];
+                    if (cfg[cfg_key]['category'] == 'debug') {
                         if (min_value === null) {
                             min_value = 1;
                         }
@@ -179,31 +179,31 @@ function generate_options_data(load_tab) {
                     }
 
                     if (min_value === null || max_value === null || step_value === null) {
-                        log('error', '', getLang('error_range_config'), cfgkey);
+                        log('error', '', getLang('error_range_config'), cfg_key);
                     }
 
-                    cfg_form_element = fillArgs('<table class="cfg_range_tab"><tr><td><input type="{0}" id="{1}" min="{2}" max="{3}" step="{4}" style="width: 95%;" {5}></td><td style="width: 15%;"><span id="{1}_current_val" class="cfg_current_value">{6}</span></td></tr></table>', cfg_input_type, cfgkey, min_value, max_value, step_value, cfg_input_value, cfg[cfgkey]['val']);
+                    cfg_form_element = fillArgs('<table class="cfg_range_tab"><tr><td><input type="{0}" id="{1}" name="{1}" min="{2}" max="{3}" step="{4}" style="width: 95%;" {5}></td><td style="width: 20%;"><span id="{1}_current_val" class="cfg_current_value">{6}</span>{7}</td></tr></table>', cfg_input_type, cfg_key, min_value, max_value, step_value, cfg_input_value, cfg[cfg_key]['val'], transform_units(cfg[cfg_key]['units']));
                     break;
                 case 'bool':
                     cfg_input_type = 'checkbox';
-                    cfg_input_value = fillArgs('{0}', ((cfg[cfgkey]['val']) ? ' checked' : ''));
+                    cfg_input_value = fillArgs('{0}', ((cfg[cfg_key]['val']) ? ' checked' : ''));
                     cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>{3}', cfg_input_type, cfgkey, cfg_input_value, cfg_input_face);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>{3}', cfg_input_type, cfg_key, cfg_input_value, cfg_input_face);
                     break;
                 case 'array':
                     cfg_input_type = 'checkbox';
-                    cfg_input_value = JSON.stringify(cfg[cfgkey]['val']);
+                    cfg_input_value = JSON.stringify(cfg[cfg_key]['val']);
                     cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
-                    cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value=\'{1}\'>', cfgkey, cfg_input_value);
+                    cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value=\'{1}\'>', cfg_key, cfg_input_value);
                     var list_items = [];
                     var index = 0;
-                    for (var l = 0; l < cfg[cfgkey]['list'].length; l++) {
+                    for (var l = 0; l < cfg[cfg_key]['list'].length; l++) {
                         var is_checked = '';
-                        if (cfg[cfgkey]['val'].includes(cfg[cfgkey]['list'][l])) {
+                        if (cfg[cfg_key]['val'].includes(cfg[cfg_key]['list'][l])) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label class="cfg_option"><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + cfg[cfgkey]['list'][l])));
+                        list_items.push(fillArgs('<label class="cfg_option"><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfg_key, index++, cfg[cfg_key]['list'][l], is_checked, cfg_input_face, getLang(cfg_key + '_type_' + cfg[cfg_key]['list'][l])));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -212,15 +212,15 @@ function generate_options_data(load_tab) {
                     cfg_input_type = 'radio';
                     cfg_input_value = '';
                     cfg_input_face = '<i class="far fa-circle unchecked"></i><i class="fas fa-check-circle checked"></i>';
-                    cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value="{1}">', cfgkey, cfg[cfgkey]['val']);
+                    cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" name="{0}" value="{1}">', cfg_key, cfg[cfg_key]['val']);
                     var list_items = [];
                     var index = 0;
-                    for (var l = 0; l < cfg[cfgkey]['list'].length; l++) {
+                    for (var l = 0; l < cfg[cfg_key]['list'].length; l++) {
                         var is_checked = '';
-                        if (cfg[cfgkey]['list'][l] == cfg[cfgkey]['val']) {
+                        if (cfg[cfg_key]['list'][l] == cfg[cfg_key]['val']) {
                             is_checked = ' checked';
                         }
-                        list_items.push(fillArgs('<label class="cfg_option"><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfgkey, index++, cfg[cfgkey]['list'][l], is_checked, cfg_input_face, getLang(cfgkey + '_type_' + transform_value(cfgkey, cfg[cfgkey]['list'][l]))));
+                        list_items.push(fillArgs('<label class="cfg_option"><input type="radio" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfg_key, index++, cfg[cfg_key]['list'][l], is_checked, cfg_input_face, getLang(cfg_key + '_type_' + transform_value(cfg_key, cfg[cfg_key]['list'][l]))));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
@@ -233,64 +233,98 @@ function generate_options_data(load_tab) {
                     //if (isFirefox) {
                         size_arg = ' size="5"';
                     //}
-                    cfg_form_element = fillArgs('<select id="{0}"{1}>{2}</select>', cfgkey, size_arg, generate_bindings(cfgkey));
+                    cfg_form_element = fillArgs('<select id="{0}" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
                     break;
                 case 'api':
                     cfg_input_type = 'text';
-                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfgkey]['val']);
+                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" {2}>', cfg_input_type, cfgkey, cfg_input_value);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" autocomplete="off" {2}>', cfg_input_type, cfg_key, cfg_input_value);
                     break;
             }
 
-            var cfg_form = fillArgs('<span class="cfg_form" data-type="{0}">{1}{2}</span>', cfg[cfgkey]['type'], cfg_hidden_input, cfg_form_element);
+            var cfg_form = fillArgs('<span class="cfg_form" data-type="{0}">{1}{2}</span>', cfg[cfg_key]['type'], cfg_hidden_input, cfg_form_element);
 
             var cfg_reset = '';
-            if (cfg[cfgkey]['type'] != 'binding') {
-                cfg_reset = fillArgs('<br><button id="{0}ResetButton" class="control button_default">{1}</button>', cfgkey, getLang('button_default'));
+            if (cfg[cfg_key]['type'] != 'binding') {
+                cfg_reset = fillArgs('<br><button id="{0}ResetButton" class="control button_default">{1}</button>', cfg_key, getLang('button_default'));
             }
 
             var cfg_presets = [];
-            if (cfg[cfgkey]['def'] !== null) {
-                var value = process_preset(cfgkey, cfg[cfgkey]['def']);
+            if (cfg[cfg_key]['def'] !== null) {
+                var value = process_preset(cfg_key, cfg[cfg_key]['def']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_default'), value));
             }
-            if (cfg[cfgkey]['min'] !== null) {
-                var value = process_preset(cfgkey, cfg[cfgkey]['min']);
+            if (cfg[cfg_key]['min'] !== null) {
+                var value = process_preset(cfg_key, cfg[cfg_key]['min']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_min'), value));
             }
-            if (cfg[cfgkey]['max'] !== null) {
-                var value = process_preset(cfgkey, cfg[cfgkey]['max']);
+            if (cfg[cfg_key]['max'] !== null) {
+                var value = process_preset(cfg_key, cfg[cfg_key]['max']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_max'), value));
             }
-            if (cfg[cfgkey]['off'] !== null && cfg[cfgkey]['type'] != 'bool') {
-                var value = process_preset(cfgkey, cfg[cfgkey]['off']);
+            if (cfg[cfg_key]['off'] !== null && cfg[cfg_key]['type'] != 'bool') {
+                var value = process_preset(cfg_key, cfg[cfg_key]['off']);
                 cfg_presets.push(fillArgs('{0}: {1}', getLang('options_off'), value));
             }
             if (cfg_presets.length > 0) {
-                cfg_presets = '[ ' + cfg_presets.join(' | ') + ' ]';
+                cfg_presets = '[' + cfg_presets.join(' | ') + ']';
+            }
+
+            var cfg_dependency = '';
+            if (cfg[cfg_key]['dependency']) {
+                var dependency_text = '';
+                var dependency_text_list = [];
+                var cfg_dependency_keys = Object.keys(cfg[cfg_key]['dependency']);
+                var cfg_dependency_values = Object.values(cfg[cfg_key]['dependency']);
+                for (var j = 0; j < cfg_dependency_keys.length; j++) {
+                    var cfg_dependency_key = cfg_dependency_keys[j];
+                    var cfg_dependency_value = cfg_dependency_values[j];
+
+                    var any_key_word = '';
+                    var preset_value_any = [];
+
+                    if (cfg_dependency_value !== undefined) {
+                        if (cfg_dependency_value.length > 0) {
+                            if (cfg_dependency_value.length > 1) {
+                                any_key_word = fillArgs('{0} ', getLang('dependency_any_of'));
+                            }
+                            for (var k = 0; k < cfg_dependency_value.length; k++) {
+                                preset_value_any[k] = process_preset(cfg_dependency_key, cfg_dependency_value[k]);
+                            }
+                            preset_value_any = preset_value_any.join(fillArgs('" {0} "', getLang('dependency_or')));
+
+                            dependency_text_list.push(fillArgs('"{0}" {1} {2} "{3}"', getLang(fillArgs('cfg_{0}_name', cfg_dependency_key)), getLang('dependency_with_value'), any_key_word, preset_value_any));
+                        }
+                    }
+                }
+                if (dependency_text_list.length > 0) {
+                    dependency_text = dependency_text_list.join(fillArgs(' {0} ', getLang('dependency_and')));
+                    cfg_dependency = fillArgs('<br><span id="cfg_{0}_dependency">[{1}: {2} {3}]</span>', cfg_key, getLang('options_dependency'), getLang('dependency_set'), dependency_text);
+                }
             }
 
             var cfg_notice = '';
-            if (disabled_features.includes(cfgkey)) {
+            if (disabled_features.includes(cfg_key)) {
                 cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang('netflix_changes'));
-            } else if (cfg[cfgkey]['notice']) {
-                cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang(fillArgs('cfg_{0}_notice', cfgkey)));
+            } else if (cfg[cfg_key]['notice']) {
+                cfg_notice = fillArgs('<span class="orange">{0}</span>', getLang(fillArgs('cfg_{0}_notice', cfg_key)));
             }
 
-            var cfg_desc = fillArgs('<span class="description">{0}</span>', getLang(fillArgs('cfg_{0}_description', cfgkey)));
+            var cfg_desc = fillArgs('<span class="description">{0}</span>', getLang(fillArgs('cfg_{0}_description', cfg_key)));
 
             var new_line = [
                 'bool',
             ];
-            var field_content = '<label style="{SHOW_CFG_ITEM}">{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></label>';
+            var field_content = '<label{SHOW_CFG_ITEM}>{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}{CFG_DEPENDENCY}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></label>';
             var field_keys = {
-                'SHOW_CFG_ITEM': ((cfg[conf_cat[key][i]]['access']) ? '' : 'display: none;'),
+                'SHOW_CFG_ITEM': ((cfg[conf_cat[key][i]]['access']) ? '' : ' style="display: none;"'),
                 'CFG_NAME': cfg_name,
-                'CFG_NEW_LINE': ((!new_line.includes(cfg[cfgkey]['type'])) ? '<br>' : ' '),
+                'CFG_NEW_LINE': ((!new_line.includes(cfg[cfg_key]['type'])) ? '<br>' : ' '),
                 'CFG_FORM': cfg_form,
                 'CFG_RESET': cfg_reset,
                 'CFG_PRESETS': cfg_presets,
+                'CFG_DEPENDENCY': cfg_dependency,
                 'CFG_NOTICE': cfg_notice,
                 'CFG_DESC': cfg_desc
             };
@@ -330,29 +364,33 @@ function generate_options_data(load_tab) {
             if (!cfg[conf_cat[key][i]]['access']) {
                 continue;
             }
-            var cfgkey = conf_cat[key][i];
-            switch (cfg[cfgkey]['type']) {
-                case 'number':
+            var cfg_key = conf_cat[key][i];
+            switch (cfg[cfg_key]['type']) {
                 case 'bool':
+                    document.getElementById(cfg_key).addEventListener('click', function(e) { logEvent('generate_options_data > bool > click'); if (check_dependency(this)) {e.preventDefault(); dependency_highlight(this); } });
+                    document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > bool > change'); if (!check_dependency(this)) {save_data();} });
+                    break;
+                case 'number':
                 case 'select':
                 case 'api':
                 case 'binding':
-                    document.getElementById(cfgkey).addEventListener('change', function() { logEvent('generate_options_data > number/bool/select/api/binding'); save_data(); });
+                    document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > number/select/api/binding'); if (!check_dependency(this)) {save_data();} else {e.preventDefault(); dependency_highlight(this);} });
                     break;
                 case 'range':
-                    document.getElementById(cfgkey).addEventListener('change', function() { logEvent('generate_options_data > range'); save_data(); });
-                    document.getElementById(cfgkey).addEventListener('input', function() { logEvent('generate_options_data > range'); update_current_value(this); });
+                    document.getElementById(cfg_key).addEventListener('mousedown', function(e) { logEvent('generate_options_data > range > mousedown'); if (check_dependency(this)) {e.preventDefault(); dependency_highlight(this);} });
+                    document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > range > change'); if (!check_dependency(this)) {save_data();} });
+                    document.getElementById(cfg_key).addEventListener('input', function(e) { logEvent('generate_options_data > range > input'); if (!check_dependency(this)) {update_current_value(this);} });
                     break;
                 case 'array':
-                    var elms = document.getElementsByName(cfgkey);
+                    var elms = document.getElementsByName(cfg_key);
                     for (var j = 0; j < elms.length; j++) {
-                        elms[j].addEventListener('click', function() { logEvent('generate_options_data > array'); array_change(this); });
+                        elms[j].addEventListener('click', function(e) { logEvent('generate_options_data > array'); if (!check_dependency(this)) {array_change(this);} else {e.preventDefault(); dependency_highlight(this);} });
                     }
                     break;
                 case 'option':
-                    var elms = document.getElementsByName(cfgkey);
+                    var elms = document.getElementsByName(cfg_key);
                     for (var j = 0; j < elms.length; j++) {
-                        elms[j].addEventListener('click', function() { logEvent('generate_options_data > option'); option_change(this); });
+                        elms[j].addEventListener('click', function(e) { logEvent('generate_options_data > option'); if (!check_dependency(this)) {option_change(this);} else {e.preventDefault(); dependency_highlight(this);} });
                     }
                     break;
             }
@@ -386,6 +424,70 @@ function generate_options_data(load_tab) {
     setStatus(getLang('cfg_loaded'),'green',1500);
 }
 
+function check_dependency(object) {
+    var cfg_key = object.name;
+
+    if (cfg[cfg_key]['dependency']) {
+        var cfg_dependency_keys = Object.keys(cfg[cfg_key]['dependency']);
+        var cfg_dependency_values = Object.values(cfg[cfg_key]['dependency']);
+        for (var j = 0; j < cfg_dependency_keys.length; j++) {
+            var cfg_dependency_key = cfg_dependency_keys[j];
+            var cfg_dependency_value = cfg_dependency_values[j];
+
+            var any_key_word = '';
+            var preset_value_any = [];
+
+            if (cfg_dependency_value !== undefined) {
+                if (cfg_dependency_value.length > 0) {
+                    switch (cfg[cfg_dependency_key]['type']) {
+                        case 'bool':
+                        case 'option':
+                            if (!cfg_dependency_value.includes(cfg[cfg_dependency_key]['val'])) {
+                                return true;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+function dependency_highlight(object) {
+    var cfg_key = object.name;
+
+    remove_highlight();
+
+    var elm = document.querySelector('#cfg_' + cfg_key + '_dependency');
+    if (elm) {
+        if (!isElmVisible(elm, document.querySelector('#extension_options_scrollable'))) {
+            elm.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        if (!elm.classList.contains('highlight_dependency')) {
+            elm.classList.add('highlight_dependency');
+        }
+        elm.setAttribute('highlight_timeout', new Date().addMilliseconds(cfg['dependencyHighlightDelay']['val'] + 1000));
+    }
+}
+
+function remove_highlight() {
+    var elms = document.querySelectorAll('.highlight_dependency');
+    for (var i = 0; i < elms.length; i++) {
+        var highlight_timeout = elms[i].getAttribute('highlight_timeout');
+        if (highlight_timeout) {
+            if (new Date(highlight_timeout) < new Date()) {
+                elms[i].removeAttribute('highlight_timeout');
+                elms[i].classList.remove('highlight_dependency');
+            }
+        } else {
+            elms[i].classList.remove('highlight_dependency');
+        }
+    }
+}
+
 function update_current_value(option) {
     addDOM(document.getElementById(option.id + '_current_val'), document.getElementById(option.id).value);
     // Apply current value before configuration is saved to preview changes
@@ -408,7 +510,7 @@ function process_preset(key, value) {
         value = getLang(key + '_type_' + value);
     }
 
-    return value;
+    return value + transform_units(cfg[key]['units']);
 }
 
 function transform_value(key, value) {
@@ -417,6 +519,24 @@ function transform_value(key, value) {
     }
 
     return value;
+}
+
+function transform_units(unit) {
+    var unit_text = '';
+
+    if (unit) {
+        var space = ' ';
+        switch (unit) {
+            case 'deg':
+            case 'pct':
+                space = '';
+                break;
+        }
+
+        unit_text = space + getLang('option_unit_' + unit);
+    }
+
+    return unit_text;
 }
 
 function option_change(object) {

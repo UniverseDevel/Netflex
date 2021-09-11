@@ -508,11 +508,12 @@ function generate_ratings_object(object, object_id) {
         el_main.setAttribute('class', 'extension_rating extension_rating_' + object_id + classes);
         el_main.setAttribute('netflex_expiration', JSON.stringify(new Date().addMinutes(1)).replace(/\"/gi, ''));
         el_main.setAttribute('netflex_change', JSON.stringify(new Date()).replace(/\"/gi, ''));
-        el_main.setAttribute('netflex_position', cfg['ratingsTilePosition']['val']);
-        el_main.setAttribute('netflex_size', cfg['ratingsTileSize']['val']);
-        el_main.setAttribute('netflex_align', cfg['ratingsTileTextAlign']['val']);
-        el_main.setAttribute('netflex_anchors', cfg['ratingsAnchors']['val']);
-        el_main.setAttribute('netflex_wiki_anchors', cfg['ratingsWikidataAnchors']['val']);
+        el_main.setAttribute('netflex_position', ((cfg['ratingsTilePosition']['access']) ? cfg['ratingsTilePosition']['val'] : disabled_flag));
+        el_main.setAttribute('netflex_size', ((cfg['ratingsTileSize']['access']) ? cfg['ratingsTileSize']['val'] : disabled_flag));
+        el_main.setAttribute('netflex_align', ((cfg['ratingsTileTextAlign']['access']) ? cfg['ratingsTileTextAlign']['val'] : disabled_flag));
+        el_main.setAttribute('netflex_anchors', ((cfg['ratingsAnchors']['access']) ? cfg['ratingsAnchors']['val'] : disabled_flag));
+        el_main.setAttribute('netflex_wiki_anchors', ((cfg['ratingsWikidataAnchors']['access']) ? cfg['ratingsWikidataAnchors']['val'] : disabled_flag));
+        el_main.setAttribute('netflex_ratings_sources', ((cfg['ratingsSources']['access']) ? JSON.stringify(cfg['ratingsSources']['val']) : disabled_flag));
         addCSS(el_main, rating_main_style);
 
         var el_content = document.createElement('span');
@@ -587,7 +588,7 @@ function handle_rating_values(object, object_id) {
             log('debug', 'ratings', ratingsDB[ratings_version][title_id]);
 
             // Generate data for IMDb ratings
-            if (ratingsDB[ratings_version][title_id]['ratings']['imdb'] != 'N/A') {
+            if (ratingsDB[ratings_version][title_id]['ratings']['imdb'] != 'N/A' && (cfg['ratingsSources']['val'].includes('imdb') || !cfg['ratingsSources']['access'])) {
                 anchor_start = '';
                 anchor_end = '';
                 if (ratingsDB[ratings_version][title_id]['ids']['imdb_id']) {
@@ -602,7 +603,7 @@ function handle_rating_values(object, object_id) {
                 ratings_shown++;
             }
             // Generate data for RottenTomatoes ratings
-            if (ratingsDB[ratings_version][title_id]['ratings']['rt'] != 'N/A') {
+            if (ratingsDB[ratings_version][title_id]['ratings']['rt'] != 'N/A' && (cfg['ratingsSources']['val'].includes('rt') || !cfg['ratingsSources']['access'])) {
                 anchor_start = '';
                 anchor_end = '';
                 if (ratingsDB[ratings_version][title_id]['ids']['rt_id']) {
@@ -617,7 +618,7 @@ function handle_rating_values(object, object_id) {
                 ratings_shown++;
             }
             // Generate data for Metacritic ratings
-            if (ratingsDB[ratings_version][title_id]['ratings']['meta'] != 'N/A') {
+            if (ratingsDB[ratings_version][title_id]['ratings']['meta'] != 'N/A' && (cfg['ratingsSources']['val'].includes('meta') || !cfg['ratingsSources']['access'])) {
                 anchor_start = '';
                 anchor_end = '';
                 if (ratingsDB[ratings_version][title_id]['ids']['meta_id']) {
@@ -957,13 +958,16 @@ function netflix_ratings() {
             var align = elms[i].getAttribute('netflex_align');
             var anchors = elms[i].getAttribute('netflex_anchors');
             var wiki_anchors = elms[i].getAttribute('netflex_wiki_anchors');
+            var ratings_sources = elms[i].getAttribute('netflex_ratings_sources');
+            var access = elms[i].getAttribute('netflex_access');
 
             if (   expiration_time < current_time
-                || cfg['ratingsTilePosition']['val'] != position
-                || cfg['ratingsTileSize']['val'] != size
-                || cfg['ratingsTileTextAlign']['val'] != align
-                || cfg['ratingsAnchors']['val'].toString() != anchors
-                || cfg['ratingsWikidataAnchors']['val'].toString() != wiki_anchors
+                || ((cfg['ratingsTilePosition']['access']) ? cfg['ratingsTilePosition']['val'] : disabled_flag) != position
+                || ((cfg['ratingsTileSize']['access']) ? cfg['ratingsTileSize']['val'] : disabled_flag) != size
+                || ((cfg['ratingsTileTextAlign']['access']) ? cfg['ratingsTileTextAlign']['val'] : disabled_flag) != align
+                || ((cfg['ratingsAnchors']['access']) ? cfg['ratingsAnchors']['val'].toString() : disabled_flag) != anchors
+                || ((cfg['ratingsWikidataAnchors']['access']) ? cfg['ratingsWikidataAnchors']['val'].toString() : disabled_flag) != wiki_anchors
+                || ((cfg['ratingsSources']['access']) ? JSON.stringify(cfg['ratingsSources']['val']) : disabled_flag) != ratings_sources
             ) {
                 removeDOM(elms[i]);
             }

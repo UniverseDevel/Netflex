@@ -30,8 +30,13 @@ function events_injector() {
         if (!check_error() && !check_upsell() && (check_watch() || check_browse() || check_latest() || check_title() || check_search())) {
             // Perform only when on specific pages
             if (check_watch() || check_browse() || check_latest() || check_title() || check_search()) {
-                // Update status icon just to be sure it is updated in case interval breaks
-                element_handler();
+                // If status update starts to lag behind interval it might be broken and we update it manually and restart the interval
+                var status_update_limit = new Date(status_update_time).addMilliseconds(cfg['elementHandlerTimer']['val']);
+                if (status_update_limit < new Date()) {
+                    inject_styles();
+                    element_handler();
+                    stop_worker('elements');
+                }
 
                 if (!workers['controls']) {
                     workers['controls'] = setInterval(mouse_simulation, cfg['controlsSwitchTimer']['val']);
@@ -608,6 +613,7 @@ function environment_update() {
 
         log('debug', 'environment', 'environment_update');
 
+        remove_highlight();
         checkIfOrphan();
         checkVisibility();
         checkProfile();
@@ -766,6 +772,7 @@ function environment_update() {
         debug_variables['assistant']['logo_icon_dev'] = logo_icon_dev;
         debug_variables['assistant']['logo_icon_sup'] = logo_icon_sup;
         debug_variables['assistant']['changelog_page'] = changelog_page;
+        debug_variables['assistant']['status_update_time'] = status_update_time;
         debug_variables['assistant']['status_data'] = status_data;
         debug_variables['assistant']['status_data_old'] = status_data_old;
         debug_variables['assistant']['forceReloadDifference'] = forceReloadDifference;
@@ -891,24 +898,29 @@ function add_stats_count(stat_key) {
 function inject_styles() {
     for (var style_name in styles_list) {
         if (!document.getElementById('netflix_extended_styles_' + style_name)) {
-            var cache_disabler = '';
-            if (!styles_list[style_name]['cache']) {
-                cache_disabler = '?_=' + run_id;
-            }
-            var style = document.createElement('link');
-            style.setAttribute('id', 'netflix_extended_styles_' + style_name);
-            style.setAttribute('href', styles_list[style_name]['src'] + cache_disabler);
-            style.setAttribute('rel', 'stylesheet');
-            style.setAttribute('type', 'text/css');
-            style.setAttribute('run_id', run_id);
-
-            netflix_head.appendChild(style);
+            addStyle(style_name);
         } else {
             if (document.getElementById('netflix_extended_styles_' + style_name).getAttribute('run_id') != run_id.toString()) {
                 removeDOM(document.getElementById('netflix_extended_styles_' + style_name));
+                addStyle(style_name)
             }
         }
     }
+}
+
+function addStyle(style_name) {
+    var cache_disabler = '';
+    if (!styles_list[style_name]['cache']) {
+        cache_disabler = '?_=' + run_id;
+    }
+    var style = document.createElement('link');
+    style.setAttribute('id', 'netflix_extended_styles_' + style_name);
+    style.setAttribute('href', styles_list[style_name]['src'] + cache_disabler);
+    style.setAttribute('rel', 'stylesheet');
+    style.setAttribute('type', 'text/css');
+    style.setAttribute('run_id', run_id);
+
+    netflix_head.appendChild(style);
 }
 
 function normalize_version(version, pads) {
@@ -1014,6 +1026,11 @@ function url_encode(value) {
         return '%' + c.charCodeAt(0).toString(16);
     });
 }
+
+Date.prototype.addMilliseconds = function(milliseconds) {
+    this.setMilliseconds(this.getMilliseconds() + milliseconds);
+    return this;
+};
 
 Date.prototype.addSeconds = function(seconds) {
     this.setSeconds(this.getSeconds() + seconds);
@@ -1326,6 +1343,57 @@ function addTimeFraction(counter, millies) {
     log('debug', 'fractions_counter', 'Time fractions - counter before: ' + counter + '; millies: ' + millies + '; counter after: ' + counter_after + '.');
     return counter_after;
 }
+
+function isElmVisible(elm, parent) {
+    var elRect = elm.getBoundingClientRect();
+    var parRect = parent.getBoundingClientRect();
+    elRect = {
+        left: elRect.left,
+        top: elRect.top,
+        right: elRect.right,
+        bottom: elRect.bottom,
+        width: elRect.width,
+        height: elRect.height,
+        x: elRect.x,
+        y: elRect.y,
+        visibleWidth: elRect.width,
+        visibleHeight: elRect.height,
+        isVisible: true,
+        isContained: true
+    };
+    parRect = {
+        left: parRect.left,
+        top: parRect.top,
+        right: parRect.right,
+        bottom: parRect.bottom,
+        width: parRect.width,
+        height: parRect.height,
+        x: elRect.x,
+        y: elRect.y,
+        visibleWidth: parRect.width,
+        visibleHeight: parRect.height
+    };
+
+    var visibility_score = 0;
+    if (parRect.height > elRect.height && parRect.width > elRect.width) {
+        // If child element is smaller compared to parent, it can be either not visible, partially visible or fully visible
+        if (parRect.top < elRect.top && parRect.bottom > elRect.top) {visibility_score++}
+        if (parRect.top < elRect.bottom && parRect.bottom > elRect.bottom) {visibility_score++}
+        if (parRect.left < elRect.left && parRect.right > elRect.left) {visibility_score++}
+        if (parRect.left < elRect.right && parRect.right > elRect.right) {visibility_score++}
+    } else {
+        // If child element is larger compared to parent, it can be either not visible or partially visible
+        if (elRect.top < parRect.top && elRect.bottom > parRect.top) {visibility_score++}
+        if (elRect.top < parRect.bottom && elRect.bottom > parRect.bottom) {visibility_score++}
+        if (elRect.left < parRect.left && elRect.right > parRect.left) {visibility_score++}
+        if (elRect.left < parRect.right && elRect.right > parRect.right) {visibility_score++}
+    }
+
+    if (visibility_score == 4) {
+        return true;
+    }
+    return false;
+};
 
 function str2bool(value, default_value) {
     try {

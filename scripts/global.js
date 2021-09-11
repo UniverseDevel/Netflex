@@ -510,7 +510,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },'skipIntros' : {
             'type' : 'bool',
@@ -525,7 +527,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'skipRecaps' : {
@@ -541,22 +545,7 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
-            'permissions' : null,
-            'notice' : false
-        },
-        'skipInterrupter' : {
-            'type' : 'bool',
-            'category' : 'assistant',
-            'access' : true,
-            'order' : cfg_order['assistant']++,
-            'val' : true,
-            'def' : true,
-            'min' : null,
-            'max' : null,
-            'step' : null,
-            'off' : false,
-            'list': [],
-            'callback' : null,
+            'units' : null,
             'permissions' : null,
             'notice' : false
         },
@@ -577,8 +566,52 @@ function init_configuration() {
                 'roll'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : true
+        },
+        'skipInterrupter' : {
+            'type' : 'bool',
+            'category' : 'assistant',
+            'access' : true,
+            'order' : cfg_order['assistant']++,
+            'val' : true,
+            'def' : true,
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : false,
+            'list': [],
+            'callback' : null,
+            'units' : null,
+            'permissions' : null,
+            'dependency' : null,
+            'notice' : false
+        },
+        'highlightSubtitles' : {
+            'type' : 'option',
+            'category' : 'assistant',
+            'access' : true,
+            'order' : cfg_order['assistant']++,
+            'val' : 'disabled',
+            'def' : 'disabled',
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : 'disabled',
+            'list': [
+                'hidden',
+                'disabled',
+                'shadow',
+                'background'
+            ],
+            'callback' : null,
+            'units' : null,
+            'units' : null,
+            'permissions' : null,
+            'dependency' : null,
+            'notice' : false
         },
         'trailerVideoStop' : {
             'type' : 'bool',
@@ -593,7 +626,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'hideDisliked' : {
@@ -609,7 +644,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'wheelVolume' : {
@@ -625,7 +662,9 @@ function init_configuration() {
             'off' : 0,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'hideSpoilers' : {
@@ -641,7 +680,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'revealSpoilers' : {
@@ -657,7 +698,11 @@ function init_configuration() {
             'off' : -1,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : {
+                'hideSpoilers' : [ true ]
+            },
             'notice' : true
         },
         'spoilersBlurAmount' : {
@@ -673,7 +718,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'hideSpoilers' : [ true ]
+            },
             'notice' : false
         },
         'hideSpoilersObjects' : {
@@ -697,28 +746,11 @@ function init_configuration() {
                 'runner_thumbnail'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
-            'notice' : false
-        },
-        'highlightSubtitles' : {
-            'type' : 'option',
-            'category' : 'assistant',
-            'access' : true,
-            'order' : cfg_order['assistant']++,
-            'val' : 'disabled',
-            'def' : 'disabled',
-            'min' : null,
-            'max' : null,
-            'step' : null,
-            'off' : 'disabled',
-            'list': [
-                'hidden',
-                'disabled',
-                'shadow',
-                'background'
-            ],
-            'callback' : null,
-            'permissions' : null,
+            'dependency' : {
+                'hideSpoilers' : [ true ]
+            },
             'notice' : false
         },
         'pauseOnBlur' : {
@@ -738,7 +770,9 @@ function init_configuration() {
                 'high'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'playOnFocus' : {
@@ -754,7 +788,11 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'pauseOnBlur' : [ 'low', 'high' ]
+            },
             'notice' : false
         },
         'hideStatusIcon' : {
@@ -770,7 +808,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'nextTitleDelayLimit' : {
@@ -786,7 +826,9 @@ function init_configuration() {
             'off' : -1,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'nextEpisodeStopMovies' : {
@@ -802,7 +844,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'nextEpisodeStopSeries' : {
@@ -818,7 +862,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'autoDisableKids' : {
@@ -834,7 +880,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'showRatings' : {
@@ -850,6 +898,7 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : {
                 permissions: [],
                 origins: [
@@ -858,6 +907,38 @@ function init_configuration() {
                 ]
             },
             'notice' : ((/*isSimulated || */!isProd) ? true : false)
+        },
+        'ratingsSources' : {
+            'type' : 'array',
+            'category' : 'ratings',
+            'access' : true,
+            'order' : cfg_order['ratings']++,
+            'val' : [
+                'imdb',
+                'rt',
+                'meta'
+            ],
+            'def' : [
+                'imdb',
+                'rt',
+                'meta'
+            ],
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [
+                'imdb',
+                'rt',
+                'meta'
+            ],
+            'callback' : null,
+            'units' : null,
+            'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
+            'notice' : false
         },
         'ratingsAnchors' : {
             'type' : 'bool',
@@ -872,7 +953,11 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
             'notice' : false
         },
         'ratingsWikidataAnchors' : {
@@ -888,7 +973,11 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
             'notice' : true
         },
         'ratingsTileSize' : {
@@ -904,7 +993,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'px',
             'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
             'notice' : false
         },
         'ratingsTilePosition' : {
@@ -930,7 +1023,11 @@ function init_configuration() {
                 'bottom_right'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
             'notice' : false
         },
         'ratingsTileTextAlign' : {
@@ -951,7 +1048,11 @@ function init_configuration() {
                 'same_as_position'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'showRatings' : [ true ]
+            },
             'notice' : false
         },
         'enableVideoFeatures' : {
@@ -971,7 +1072,9 @@ function init_configuration() {
                     reset_videoSpeedRate();
                 }
              },
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : true
         },
         'videoSpeedRate' : {
@@ -979,15 +1082,19 @@ function init_configuration() {
             'category' : 'video',
             'access' : true,
             'order' : cfg_order['video']++,
-            'val' : 1,
-            'def' : 1,
-            'min' : 0.25,
-            'max' : 4,
-            'step' : 0.01,
+            'val' : 100,
+            'def' : 100,
+            'min' : 25,
+            'max' : 400,
+            'step' : 1,
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : true
         },
         'videoAspectRatio' : {
@@ -1007,7 +1114,11 @@ function init_configuration() {
                 'manual'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoZoom' : {
@@ -1023,7 +1134,12 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ],
+                'videoAspectRatio' : [ 'manual' ]
+            },
             'notice' : false
         },
         'videoBrightness' : {
@@ -1039,7 +1155,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoContrast' : {
@@ -1055,7 +1175,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoGrayscale' : {
@@ -1071,7 +1195,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoHue' : {
@@ -1087,7 +1215,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'deg',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoInvert' : {
@@ -1103,7 +1235,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoSaturation' : {
@@ -1119,7 +1255,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'videoSepia' : {
@@ -1135,7 +1275,11 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'pct',
             'permissions' : null,
+            'dependency' : {
+                'enableVideoFeatures' : [ true ]
+            },
             'notice' : false
         },
         'timeFromLoadLimit' : {
@@ -1151,7 +1295,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'loadingTimeLimit' : {
@@ -1167,7 +1313,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'stuckTimeLimit' : {
@@ -1183,7 +1331,9 @@ function init_configuration() {
             'off' : -1,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'forceReloadDelay' : {
@@ -1199,7 +1349,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'sec',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'toggleAssistantKey' : {
@@ -1215,7 +1367,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'hideSubtitlesKey' : {
@@ -1231,7 +1385,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'exitPlayerKey' : {
@@ -1247,7 +1403,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'prevEpisodeKey' : {
@@ -1263,7 +1421,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'nextEpisodeKey' : {
@@ -1279,7 +1439,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'randomMovieKey' : {
@@ -1295,7 +1457,9 @@ function init_configuration() {
             'off' : 'DISABLED',
             'list': keybinds,
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'keepHistory' : {
@@ -1311,7 +1475,9 @@ function init_configuration() {
             'off' : 1,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'omdbApi' : {
@@ -1327,7 +1493,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'logLevel' : {
@@ -1350,7 +1518,9 @@ function init_configuration() {
                 '99' // None
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'debug' : {
@@ -1389,7 +1559,11 @@ function init_configuration() {
                 'background'
             ],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : {
+                'logLevel' : [ '0' ]
+            },
             'notice' : false
         },
         'simulateProduction' : {
@@ -1405,7 +1579,9 @@ function init_configuration() {
             'off' : false,
             'list': [],
             'callback' : null,
+            'units' : null,
             'permissions' : null,
+            'dependency' : null,
             'notice' : true
         },
         //-- CORE TIMERS START
@@ -1422,7 +1598,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'injectorTimer' : {
@@ -1438,7 +1616,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'pageReloadTimer' : {
@@ -1454,7 +1634,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'errorExtensionReloadDelay' : {
@@ -1470,7 +1652,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'environmentUpdateTimer' : {
@@ -1486,7 +1670,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'keyEventProcessingDelay' : {
@@ -1502,7 +1688,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'netflixAssistantTimer' : {
@@ -1518,7 +1706,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'netflixRatingsTimer' : {
@@ -1534,7 +1724,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'elementHandlerTimer' : {
@@ -1550,7 +1742,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'bubbleHideDelay' : {
@@ -1566,7 +1760,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'titleEndActionsDelay' : {
@@ -1582,7 +1778,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'controlsSwitchTimer' : {
@@ -1598,7 +1796,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'debugControlsSwitchTimer' : {
@@ -1614,7 +1814,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'skippingPreventionTimer' : {
@@ -1630,7 +1832,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'playPauseButtonDelay' : {
@@ -1646,7 +1850,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'devToolsRefreshTimer' : {
@@ -1662,7 +1868,9 @@ function init_configuration() {
             'off' : null,
             'list': [],
             'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
             'notice' : false
         },
         'devToolsConfigLoadTimer' : {
@@ -1677,8 +1885,28 @@ function init_configuration() {
             'step' : null,
             'off' : null,
             'list': [],
-             'callback' : null,
+            'callback' : null,
+            'units' : 'ms',
             'permissions' : null,
+            'dependency' : null,
+            'notice' : false
+        },
+        'dependencyHighlightDelay' : {
+            'type' : 'range',
+            'category' : 'debug',
+            'access' : true,
+            'order' : cfg_order['debug']++,
+            'val' : 3000,
+            'def' : 3000,
+            'min' : 1000,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [],
+            'callback' : null,
+            'units' : 'ms',
+            'permissions' : null,
+            'dependency' : null,
             'notice' : false
         }
         //-- CORE TIMERS END

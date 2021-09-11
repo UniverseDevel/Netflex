@@ -1,7 +1,7 @@
 /* STATUS BUBBLE */
 
 #netflex_bubble_container {
-    position: fixed;
+    position: fixed !important;
     z-index: 100;
     color: var(--netflex_txt_color, #FFFFFF) !important;
     background-color: var(--netflex_bg_color, rgba(38,38,38,.85)) !important;
@@ -23,7 +23,7 @@
     stroke-width: 80px;
     color: var(--netflex_stat_color, #00b642) !important;
     margin-top: 4px;
-    transform-origin: center center;
+    transform-origin: center center !important;
 }
 
 #netflex_icon_status[controls="browse"] {
@@ -45,7 +45,7 @@
     height: 3.8rem;
 }
 
-#extension_logo {
+#netflex_bubble_container[controls="watch"] #extension_logo {
     cursor: pointer;
 }
 
@@ -238,6 +238,9 @@
 	margin-right: 5px;
 	margin-bottom: 5px;
 	display: inline-block;
+}
+
+#extension_options_scrollable .cfg_name[data-type="bool"] {
 	cursor: pointer;
 }
 
@@ -264,6 +267,19 @@
 
 #extension_options_scrollable .cfg_current_value {
 	font-size: 15px;
+}
+
+@keyframes fadingShade {
+    0%   { background-color: transparent; }
+    49%  { background-color: #e70000; }
+    60%  { background-color: #e70000; }
+    99%  { background-color: #e70000; }
+    100% { background-color: transparent; }
+}
+#extension_options_scrollable .highlight_dependency {
+    animation-name: fadingShade;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
 }
 
 #extension_options_scrollable .cfg_notice {

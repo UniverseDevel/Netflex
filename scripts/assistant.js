@@ -238,7 +238,7 @@ function handle_video_features() {
             if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
                 if (enableAssistant) {
                     video.setAttribute('netflex_video_features', 'on');
-                    videoSpeedRate = video.playbackRate;
+                    videoSpeedRate = video.playbackRate * 100;
 
                     // Video speed rate feature
                     if (cfg['videoSpeedRate']['access']) {
@@ -248,7 +248,7 @@ function handle_video_features() {
                             videoSpeedRate_change = cfg['videoSpeedRate']['val'];
                         }
                         if (videoSpeedRate != videoSpeedRate_temp) {
-                            video.playbackRate = videoSpeedRate_temp;
+                            video.playbackRate = (videoSpeedRate_temp / 100).toFixed(2);
                             videoSpeedRate = videoSpeedRate_temp;
                         }
                     }
@@ -386,8 +386,8 @@ function reset_videoSpeedRate() {
     if (video) {
         if (cfg['videoSpeedRate']['access']) {
             videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
-            video.playbackRate = 1;
-            videoSpeedRate = 1;
+            video.playbackRate = 100;
+            videoSpeedRate = 100;
             log('debug', 'assistant_loop', 'RESET');
         }
     }
@@ -730,14 +730,15 @@ function netflix_assistant() {
                         var elapsed_time = remaining_time.parentNode.cloneNode(true);
                         elapsed_time.setAttribute('id','netflex_elapsed_time');
                         elapsed_time.children[0].setAttribute('data-uia','controls-time-elapsed');
-                        addCSS(elapsed_time, { 'margin': '0 2.5em 0 0;' });
+                        addCSS(elapsed_time, { 'padding-left': '0em !important', 'padding-right': '1em !important' });
 
-                        try {progress_bar.parentNode.insertBefore(elapsed_time, progress_bar.parentNode.children[0]);} catch (e) {}
+                        try {progress_bar.parentNode.parentNode.insertBefore(elapsed_time, progress_bar.parentNode.parentNode.children[0]);} catch (e) {}
                     }
 
                     // Refresh value or add event that will
                     if (document.querySelector('[data-uia="controls-time-elapsed"]') && video) {
                         addDOM(document.querySelector('[data-uia="controls-time-elapsed"]'), convertToInterval(video.currentTime));
+                        window.dispatchEvent(new Event('resize')); // Prevent progressbar size to overgrow
                     }
                 } else {
                     if (document.querySelector('#netflex_elapsed_time')) {
@@ -976,10 +977,6 @@ function play_random() {
 }
 
 function bind_events() {
-    document.resize = function(evt) {
-        element_handler();
-    };
-
     document.onkeyup = function(evt) {
         key_event_handler(evt);
     };
@@ -1002,7 +999,6 @@ function bind_events() {
 }
 
 function unbind_events() {
-    document.resize = null;
     document.onkeyup = null;
     window.onwheel = null;
     window.onblur = null;

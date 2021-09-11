@@ -117,6 +117,7 @@ var logo_icon_dev = chrome.runtime.getURL('images/netflex_dev.png');
 var logo_icon_sup = chrome.runtime.getURL('images/netflex_sup.png');
 var changelog_page = chrome.runtime.getURL('CHANGELOG');
 
+var status_update_time = new Date(1970, 0, 1, 0, 0, 0);
 var status_data = {};
 var status_data_old = {};
 
@@ -241,6 +242,7 @@ var visibleWND = true;
 var hiddenCFG = false;
 var pausedByExtension = false;
 
+var disabled_flag = '##DISABLED##';
 var enableProactiveRatings = false; // WARNING: This will eat trough OMDB API key limit like crazy
 var ratingsDB = {};
 var ratings_limit_reached = false;
