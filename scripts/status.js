@@ -1232,6 +1232,9 @@ function create_status_objects() {
 
                 addDOM(icon_container, '<div id="netflex_icon_body"><i id="netflex_icon_status" controls="' + obj['controls_type'] + '" class="fas fa-circle netflex_icon_status"></i></div>');
                 obj['iconPlaceBeforeElm'].parentNode.insertBefore(icon_container, obj['iconPlaceBeforeElm']);
+
+                icon_container.addEventListener('mousemove', function() { logEvent('create_status_objects > netflex_icon_container > move'); if (status_bubble_opened) {stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container');} });
+                icon_container.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); if (status_bubble_opened) {workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']);} });
             } else {
                 if (icon_container) {
                     if (icon_container.getAttribute('run-id')) {
@@ -1247,8 +1250,8 @@ function create_status_objects() {
                     if (icon_element) {
                         if (!icon_element.getAttribute('events')) {
                             icon_element.addEventListener('click', function(e) { if (e.button == 0) {logEvent('create_status_objects > extension_status'); toggle_assistant();} });
-                            icon_element.addEventListener('mouseenter', function() { logEvent('create_status_objects > netflex_icon_container > enter'); stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container'); });
-                            icon_element.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']); });
+                            icon_element.addEventListener('mouseenter', function() { logEvent('create_status_objects > netflex_icon > enter'); stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container'); });
+                            icon_element.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon > leave'); workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']); });
                             icon_element.setAttribute('events','listening')
                         }
                     }

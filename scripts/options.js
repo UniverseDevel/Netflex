@@ -316,7 +316,7 @@ function generate_options_data(load_tab) {
             var new_line = [
                 'bool',
             ];
-            var field_content = '<label{SHOW_CFG_ITEM}>{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}{CFG_DEPENDENCY}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></label>';
+            var field_content = '<span{SHOW_CFG_ITEM} class="cfg_content">{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}{CFG_DEPENDENCY}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></span>';
             var field_keys = {
                 'SHOW_CFG_ITEM': ((cfg[conf_cat[key][i]]['access']) ? '' : ' style="display: none;"'),
                 'CFG_NAME': cfg_name,

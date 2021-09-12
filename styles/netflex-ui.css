@@ -216,11 +216,11 @@
 	font-style: italic;
 }
 
-#extension_options_scrollable label {
+#extension_options_scrollable .cfg_content {
 	font-size: 14px;
 }
 
-#extension_options_scrollable label .cfg_option {
+#extension_options_scrollable .cfg_option {
 	cursor: pointer;
 }
 

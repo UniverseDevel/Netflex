@@ -539,6 +539,10 @@
         "message":"ms",
         "description":""
     },
+    "option_unit_px":{
+        "message":"px",
+        "description":""
+    },
     "changelog_fetch_failed":{
         "message":"Obtaining changelog failed. Try reloading extension.",
         "description":""
