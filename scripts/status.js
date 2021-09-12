@@ -1234,7 +1234,8 @@ function create_status_objects() {
                 obj['iconPlaceBeforeElm'].parentNode.insertBefore(icon_container, obj['iconPlaceBeforeElm']);
 
                 icon_container.addEventListener('mousemove', function() { logEvent('create_status_objects > netflex_icon_container > move'); if (status_bubble_opened) {stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container');} });
-                icon_container.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); if (status_bubble_opened) {workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']);} });
+                // TODO fix when this even should actually be triggered
+                //icon_container.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); if (status_bubble_opened) {workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']);} });
             } else {
                 if (icon_container) {
                     if (icon_container.getAttribute('run-id')) {
