@@ -337,37 +337,48 @@
 	margin-bottom: 5px;
 }
 
+#extension_features_scrollable a,
 #extension_options_scrollable a {
 	color: #00b642;
 }
 
+#netflex_bubble_container[profile="general"] #extension_features_scrollable a:hover,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable a:hover {
 	color: #ffffff;
 }
 
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable a:hover,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable a:hover {
 	color: #000000;
 }
 
+#netflex_bubble_container[profile="general"] #extension_features_scrollable input,
+#netflex_bubble_container[profile="general"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable input,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable select {
-	background: transparent;
+	background-color: transparent;
 	color: #ffffff;
     cursor: pointer;
 }
 
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable input,
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable input,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
-	background: transparent;
+	background-color: transparent;
 	color: #000000;
     cursor: pointer;
 }
 
+#netflex_bubble_container[profile="general"] #extension_features_scrollable input[type="text"],
+#netflex_bubble_container[profile="general"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"],
 #netflex_bubble_container[profile="general"] #extension_options_scrollable select {
 	border: 1px solid #ffffff;
 }
 
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type="text"],
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="text"],
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
 	border: 1px solid #000000;
@@ -379,6 +390,7 @@
 
 #extension_features_scrollable input[type="checkbox"],
 #extension_options_scrollable input[type="checkbox"],
+#extension_features_scrollable input[type="radio"],
 #extension_options_scrollable input[type="radio"] {
     display: none;
 }
@@ -417,94 +429,99 @@
     display: inline-block;
 }
 
+#extension_features_scrollable input[type="radio"]:checked ~ .checked,
 #extension_options_scrollable input[type="radio"]:checked ~ .checked {
     display: inline-block;
 }
 
+#extension_features_scrollable input[type="radio"]:checked ~ .unchecked,
 #extension_options_scrollable input[type="radio"]:checked ~ .unchecked {
     display: none;
 }
 
+#extension_features_scrollable input[type="radio"]:not(:checked) ~ .checked,
 #extension_options_scrollable input[type="radio"]:not(:checked) ~ .checked {
     display: none;
 }
 
+#extension_features_scrollable input[type="radio"]:not(:checked) ~ .unchecked,
 #extension_options_scrollable input[type="radio"]:not(:checked) ~ .unchecked {
     display: inline-block;
 }
 
-#extension_features_scrollable input[type=range],
-#extension_options_scrollable input[type=range] {
+#extension_features_scrollable input[type="range"],
+#extension_options_scrollable input[type="range"] {
     -webkit-appearance: none;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-#extension_features_scrollable input[type=range]:focus,
-#extension_options_scrollable input[type=range]:focus {
+#extension_features_scrollable input[type="range"]:focus,
+#extension_options_scrollable input[type="range"]:focus {
     outline: none;
     border: none;
 }
 
-#extension_features_scrollable input[type=range]::-webkit-slider-runnable-track,
-#extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
+#extension_features_scrollable input[type="range"]::-webkit-slider-runnable-track,
+#extension_options_scrollable input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     height: 5px;
     border: none;
     border-radius: 3px;
 }
 
-#netflex_bubble_container[profile="general"] #extension_features_scrollable input[type=range]::-webkit-slider-runnable-track,
-#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
-    background: #ffffff;
+#netflex_bubble_container[profile="general"] #extension_features_scrollable input[type="range"]::-webkit-slider-runnable-track,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="range"]::-webkit-slider-runnable-track {
+    background-color: #ffffff;
 }
 
-#netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type=range]::-webkit-slider-runnable-track,
-#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
-    background: #000000;
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type="range"]::-webkit-slider-runnable-track,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="range"]::-webkit-slider-runnable-track {
+    background-color: #000000;
 }
 
-#extension_features_scrollable input[type=range]::-webkit-slider-thumb,
-#extension_options_scrollable input[type=range]::-webkit-slider-thumb {
+#extension_features_scrollable input[type="range"]::-webkit-slider-thumb,
+#extension_options_scrollable input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     height: 15px;
     width: 15px;
     border-radius: 50%;
-    background: #00b642;
+    background-color: #00b642;
     margin-top: -5px;
 }
 
-#extension_features_scrollable input[type=range]::-moz-range-track,
-#extension_options_scrollable input[type=range]::-moz-range-track {
+#extension_features_scrollable input[type="range"]::-moz-range-track,
+#extension_options_scrollable input[type="range"]::-moz-range-track {
     height: 5px;
     border: none;
     border-radius: 3px;
+    /**/
 }
 
-#netflex_bubble_container[profile="general"] #extension_features_scrollable input[type=range]::-moz-range-track,
-#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type=range]::-moz-range-track {
-    background: #ffffff;
+#netflex_bubble_container[profile="general"] #extension_features_scrollable input[type="range"]::-moz-range-track,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="range"]::-moz-range-track {
+    background-color: #ffffff;
 }
 
-#netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type=range]::-moz-range-track,
-#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type=range]::-moz-range-track {
-    background: #000000;
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type="range"]::-moz-range-track,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="range"]::-moz-range-track {
+    background-color: #000000;
 }
 
-#extension_features_scrollable input[type=range]::-moz-range-thumb,
-#extension_options_scrollable input[type=range]::-moz-range-thumb {
+#extension_features_scrollable input[type="range"]::-moz-range-thumb,
+#extension_options_scrollable input[type="range"]::-moz-range-thumb {
     border: none;
     height: 13px;
     width: 13px;
     border-radius: 50%;
-    background: #00b642;
+    background-color: #00b642;
     /*margin-top: -5px;*/
 }
 
 /* // No solution like this for Chrome
 
-#extension_features_scrollable input[type=range]::-moz-range-progress,
-#extension_options_scrollable input[type=range]::-moz-range-progress {
-    background: #00b642;
+#extension_features_scrollable input[type="range"]::-moz-range-progress,
+#extension_options_scrollable input[type="range"]::-moz-range-progress {
+    background-color: #00b642;
 }*/
