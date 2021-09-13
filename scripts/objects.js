@@ -99,7 +99,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'video_interrupter':
-            obj = document.querySelector('.interrupter-actions');
+            obj = document.querySelector('[data-uia="interrupt-autoplay-continue"], .interrupter-actions');
             if (obj) { return obj; }
             break;
         case 'buttons_tile_close':
