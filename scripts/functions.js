@@ -646,8 +646,8 @@ function environment_update() {
             }
 
             if (check_watch()) {
-                // Check proactively if configuration for hideStatusIcon did not change as this configuration can be
-                // turned off on browser page and this has to be reflected on watch page immediately.
+                // Check proactively if configuration for hideStatusIcon and allowKidsConfig did not change as this
+                // configuration can be turned off on browser page and this has to be reflected on watch page immediately.
                 chrome.storage.local.get(['hideStatusIcon'], function(result) {
                     if (result['hideStatusIcon'] !== undefined) {
                         var cfg_value = false;
@@ -659,6 +659,23 @@ function environment_update() {
 
                         if (cfg_value != cfg['hideStatusIcon']['val']) {
                             cfg['hideStatusIcon']['val'] = cfg_value;
+                        }
+                    }
+                });
+                chrome.storage.local.get(['allowKidsConfig'], function(result) {
+                    if (result['allowKidsConfig'] !== undefined) {
+                        var cfg_value = false;
+                        if (typeof result['allowKidsConfig'] == 'boolean') {
+                            cfg_value = result['allowKidsConfig'];
+                        } else {
+                            cfg_value = ((result['allowKidsConfig'] == 'true') ? true : false);
+                        }
+
+                        if (cfg_value != cfg['allowKidsConfig']['val']) {
+                            cfg['allowKidsConfig']['val'] = cfg_value;
+                            if (!cfg['allowKidsConfig']['val'] && (check_kids() || check_kids_profile())) {
+                                remove_status_objects();
+                            }
                         }
                     }
                 });

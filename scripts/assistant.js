@@ -248,6 +248,12 @@ function handle_video_features() {
                             videoSpeedRate_change = cfg['videoSpeedRate']['val'];
                         }
                         if (videoSpeedRate != videoSpeedRate_temp) {
+                            // Going below or above min/max values means something is wrong and we should prefer to use default value
+                            if (videoSpeedRate_temp < cfg['videoSpeedRate']['min'] || videoSpeedRate_temp > cfg['videoSpeedRate']['max']) {
+                                videoSpeedRate_temp = cfg['videoSpeedRate']['def'];
+                                videoSpeedRate_change = cfg['videoSpeedRate']['def'];
+                                cfg['videoSpeedRate']['val'] = cfg['videoSpeedRate']['def'];
+                            }
                             video.playbackRate = (videoSpeedRate_temp / 100).toFixed(2);
                             videoSpeedRate = videoSpeedRate_temp;
                         }

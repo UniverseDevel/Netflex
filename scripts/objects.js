@@ -76,7 +76,7 @@ function object_handler(object_category, related_object) {
                     [ '', '.tp-image, [data-uia="trick-play-image"]', 'runner_thumbnail' ], // Runner thumbnail
                     [ '', '.playable-title', 'episode_name' ], // Episode title when loading player
                     [ '', '.thumbnail-image, [data-uia="episode-preview-thumbnail"], [data-uia="episode-pane-item-preview-open"] > div', 'episode_picture' ], // Watch episode thumbnails
-                    [ '', '.title, [data-uia="episode-preview-title"], [data-uia="episode-pane-item-number"]', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
+                    [ '', '.title, [data-uia="episode-preview-title"], [data-uia="episode-pane-item-number"], [data-uia="episode-pane-item"] > div:nth-child(2) > span', 'episode_name' ], // Next episode name and episode list names, skip if parent element contains class player-title-evidence
                     [ '', '.player-loading-background-image', 'episode_picture' ], // Episode picture while video loading
                 ]
             };

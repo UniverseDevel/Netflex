@@ -871,7 +871,7 @@ function init_configuration() {
         'allowKidsConfig' : {
             'type' : 'bool',
             'category' : 'kids',
-            'access' : false,
+            'access' : true,
             'order' : cfg_order['kids']++,
             'val' : true,
             'def' : true,
@@ -880,7 +880,12 @@ function init_configuration() {
             'step' : null,
             'off' : false,
             'list': [],
-            'callback' : null,
+            'callback' : function(value_new, value_old) {
+                if (!value_new && value_old && (check_kids() || check_kids_profile())) {
+                    status_data_old = {};
+                    remove_status_objects();
+                }
+            },
             'units' : null,
             'permissions' : null,
             'dependency' : null,
