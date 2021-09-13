@@ -316,9 +316,18 @@ function generate_options_data(load_tab) {
             var new_line = [
                 'bool',
             ];
-            var field_content = '<span{SHOW_CFG_ITEM} class="cfg_content">{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_RESET}<br>{CFG_PRESETS}{CFG_DEPENDENCY}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></span>';
+            var label_start = '';
+            var label_end = '';
+            if (cfg[cfg_key]['type'] == 'bool') {
+                label_start = '<label>';
+                label_end = '</label>';
+            }
+            var field_content = '<span{SHOW_CFG_ITEM} class="cfg_content">{CFG_LABEL_START}{CFG_NAME}{CFG_NEW_LINE}{CFG_FORM}{CFG_LABEL_END}{CFG_RESET}<br>{CFG_PRESETS}{CFG_DEPENDENCY}<br><br>{CFG_DESC}<br>{CFG_NOTICE}<hr style="height: 1px;"></span>';
             var field_keys = {
                 'SHOW_CFG_ITEM': ((cfg[conf_cat[key][i]]['access']) ? '' : ' style="display: none;"'),
+                'CFG_LABEL_START': label_start,
+                'CFG_LABEL_END': label_end,
+                'CFG_NAME': cfg_name,
                 'CFG_NAME': cfg_name,
                 'CFG_NEW_LINE': ((!new_line.includes(cfg[cfg_key]['type'])) ? '<br>' : ' '),
                 'CFG_FORM': cfg_form,

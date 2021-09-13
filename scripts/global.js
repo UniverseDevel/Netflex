@@ -867,6 +867,24 @@ function init_configuration() {
             'dependency' : null,
             'notice' : false
         },
+        'allowKidsConfig' : {
+            'type' : 'bool',
+            'category' : 'assistant',
+            'access' : false, // TODO: active check on kids profile and if unchecked/check propagate change immediately (even close options)
+            'order' : cfg_order['assistant']++,
+            'val' : true,
+            'def' : true,
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : false,
+            'list': [],
+            'callback' : null,
+            'units' : null,
+            'permissions' : null,
+            'dependency' : null,
+            'notice' : false
+        },
         'autoDisableKids' : {
             'type' : 'bool',
             'category' : 'assistant',

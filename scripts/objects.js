@@ -233,12 +233,12 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'player_controls_elements':
-            obj = document.querySelector('.PlayerControls--control-element');
-            if (obj) { return obj; }
+            obj = document.querySelectorAll('.PlayerControls--control-element');
+            if (obj[0]) { return obj; }
             break;
         case 'navigation_menu_elements':
-            obj = document.querySelector('.nav-element');
-            if (obj) { return obj; }
+            obj = document.querySelectorAll('.nav-element');
+            if (obj[0]) { return obj; }
             break;
         case 'player_controls':
             obj = document.querySelector('.PlayerControlsNeo__button-control-row');

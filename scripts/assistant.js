@@ -386,7 +386,7 @@ function reset_videoSpeedRate() {
     if (video) {
         if (cfg['videoSpeedRate']['access']) {
             videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
-            video.playbackRate = 100;
+            video.playbackRate = 1;
             videoSpeedRate = 100;
             log('debug', 'assistant_loop', 'RESET');
         }
@@ -457,7 +457,9 @@ function netflix_assistant() {
             // Remove elapsed time objects
             if (document.querySelector('#netflex_elapsed_time')) {
                 removeDOM(document.querySelector('#netflex_elapsed_time'));
+                window.dispatchEvent(new Event('resize')); // Fix progressbar size
             }
+
         } else {
             // Check if title is series or not
             if (object_handler('button_episodes_list', null)) {

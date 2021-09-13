@@ -3,8 +3,6 @@
 #netflex_bubble_container {
     position: fixed !important;
     z-index: 100;
-    color: var(--netflex_txt_color, #FFFFFF) !important;
-    background-color: var(--netflex_bg_color, rgba(38,38,38,.85)) !important;
     padding: 0.8em;
     width: 500px;
     border-radius: 0.5em;
@@ -18,35 +16,31 @@
     color: #e70000 !important;
 }
 
+#netflex_bubble_container[controls="watch"] #extension_logo {
+    cursor: pointer;
+}
+
+#netflex_bubble_container[profile="general"] {
+    color: #FFFFFF;
+    background-color: rgba(38,38,38,0.85);
+}
+
+#netflex_bubble_container[profile="kids"] {
+    color: #000000;
+    background-color: rgba(255,255,255,0.85);
+}
+
 #netflex_icon_status {
     stroke: var(--netflex_bord_color, #FFFFFF) !important;
     stroke-width: 80px;
     color: var(--netflex_stat_color, #00b642) !important;
-    margin-top: 4px;
     transform-origin: center center !important;
-}
-
-#netflex_icon_status[controls="browse"] {
-    position: relative;
-    top: 30%;
-    left: 40%;
 }
 
 #netflex_icon_status:hover {
     cursor: pointer;
     transition: transform .25s cubic-bezier(.5,0,.1,1);
     transform: scale(1.2);
-}
-
-#netflex_icon_body {
-    min-width: 3.8rem;
-    width: 3.8rem;
-    min-height: 3.8rem;
-    height: 3.8rem;
-}
-
-#netflex_bubble_container[controls="watch"] #extension_logo {
-    cursor: pointer;
 }
 
 #extension_news_integrated .news_content {
@@ -93,8 +87,15 @@
 	margin: 0px;
 	overflow: hidden;
 	font-size: 12px;
-	color: #ffffff;
 	background-color: transparent;
+}
+
+#netflex_bubble_container[profile="general"] #extension_options_scrollable {
+	color: #ffffff;
+}
+
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable {
+	color: #000000;
 }
 
 #extension_options_scrollable .sidebar {
@@ -212,8 +213,15 @@
 }
 
 #extension_options_scrollable .description {
-	color: #CCCCCC;
 	font-style: italic;
+}
+
+#netflex_bubble_container[profile="general"] .description {
+	color: #CCCCCC;
+}
+
+#netflex_bubble_container[profile="kids"] .description {
+	color: #676767;
 }
 
 #extension_options_scrollable .cfg_content {
@@ -333,20 +341,36 @@
 	color: #00b642;
 }
 
-#extension_options_scrollable a:hover {
+#netflex_bubble_container[profile="general"] #extension_options_scrollable a:hover {
 	color: #ffffff;
 }
 
-#extension_options_scrollable input,
-#extension_options_scrollable select {
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable a:hover {
+	color: #000000;
+}
+
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable select {
 	background: transparent;
 	color: #ffffff;
     cursor: pointer;
 }
 
-#extension_options_scrollable input[type="text"],
-#extension_options_scrollable select {
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
+	background: transparent;
+	color: #000000;
+    cursor: pointer;
+}
+
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"],
+#netflex_bubble_container[profile="general"] #extension_options_scrollable select {
 	border: 1px solid #ffffff;
+}
+
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="text"],
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
+	border: 1px solid #000000;
 }
 
 #extension_options_scrollable select option {
@@ -416,9 +440,16 @@
 #extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     height: 5px;
-    background: #ffffff;
     border: none;
     border-radius: 3px;
+}
+
+#netflex_bubble_container[profile="general"] input[type=range]::-webkit-slider-runnable-track {
+    background: #ffffff;
+}
+
+#netflex_bubble_container[profile="kids"] input[type=range]::-webkit-slider-runnable-track {
+    background: #000000;
 }
 
 #extension_options_scrollable input[type=range]::-webkit-slider-thumb {
@@ -433,9 +464,16 @@
 
 #extension_options_scrollable input[type=range]::-moz-range-track {
     height: 5px;
-    background: #ffffff;
     border: none;
     border-radius: 3px;
+}
+
+#netflex_bubble_container[profile="general"] input[type=range]::-moz-range-track {
+    background: #ffffff;
+}
+
+#netflex_bubble_container[profile="kids"] input[type=range]::-moz-range-track {
+    background: #000000;
 }
 
 #extension_options_scrollable input[type=range]::-moz-range-thumb {

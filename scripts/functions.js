@@ -618,7 +618,6 @@ function environment_update() {
         checkVisibility();
         checkProfile();
         checkNews();
-        reset_status_data();
         url = window.location.href;
         origin = window.location.origin;
         try {ancestorOrigins = window.location.ancestorOrigins[0];} catch (e) {}

@@ -130,7 +130,7 @@ function generate_status_data() {
                 <table style="position: absolute; right: 0px; white-space: nowrap;">
                     <tr>
                         <td><a href="javascript:void(0);" id="extension_news" class="{NEWS_UNREAD_CLASS}" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_NEWS_ICON}"><span id="extension_unread_news_count">{UNREAD_NEWS_COUNT}</span><i id="extension_news_icon" class="fas fa-newspaper" title="{NEWS}"></i></a></td>
-                        <td><a href="javascript:void(0);" id="extension_options" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_OPTIONS_ICON}"><i id="extension_options_icon" class="fas fa-cog" title="{OPTIONS}"></i></a></td>
+                        <td><a href="javascript:void(0);" id="extension_options" style="color: #00b642; margin-left: 6px; cursor: pointer;{SHOW_OPTIONS_ICON}"><i id="extension_options_icon" class="fas fa-cog" title="{OPTIONS}"></i></a></td>
                     </tr>
                 </table>
             </span>
@@ -148,9 +148,9 @@ function generate_status_data() {
                 - {DONATE} {DONATION_LINKS}
             </span>
             <span style="position: relative; top: 0.1em; float: right;">
-                <table style="position: absolute; right: 0px; white-space: nowrap;">
+                <table style="right: 0px; white-space: nowrap;">
                     <tr>
-                        <td><a href="javascript:void(0);" id="extension_features" style="color: #00b642; margin-left: 6px; cursor: pointer; {SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a></td>
+                        <td><a href="javascript:void(0);" id="extension_features" style="color: #00b642; margin-left: 6px; cursor: pointer;{SHOW_OPTIONS_ICON}"><i class="fas fa-plus" title="{FEATURES}"></i></a></td>
                     </tr>
                 </table>
             </span>
@@ -199,7 +199,7 @@ function generate_status_data() {
         'NEWS_UNREAD_CLASS': ((unread_news_count == 0) ? '' : ' unread'),
         'NEWS_CONTENT': ((!isOrphan) ? generate_news() : ''),
         'OPTIONS': getLang('options'),
-        'SHOW_OPTIONS_ICON': ((!isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
+        'SHOW_OPTIONS_ICON': ((!isOrphan) ? ((cfg['allowKidsConfig']['val'] && cfg['allowKidsConfig']['access'] && (check_kids() || check_kids_profile())) ? '' : ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;')) : 'display: none;' ),
         'OPTIONS_CONTENT': ((!isOrphan) ? generate_options() : ''),
         'FEATURES': getLang('features'),
         'FEATURES_CONTENT': generate_status_features()
@@ -891,14 +891,6 @@ function reset_feature_value(feature_default) {
     elm.dispatchEvent(evt);
 }
 
-function reset_status_data() {
-    for (var key in status_data_old) {
-        if (status_data_old.hasOwnProperty(key) && key != 'netflix_profile' && !key.includes('_offset_')) {
-            delete status_data_old[key];
-        }
-    }
-}
-
 function remove_status_objects() {
     remove_status_icon();
     remove_status_bubble();
@@ -909,8 +901,6 @@ function remove_status_icon() {
     var icon_container = document.getElementById('netflex_icon_container');
     if (icon_container) {
         removeDOM(icon_container);
-
-        reset_status_data();
     }
 }
 
@@ -919,8 +909,6 @@ function remove_status_bubble() {
     var bubble_container = document.getElementById('netflex_bubble_container');
     if (bubble_container) {
         removeDOM(bubble_container);
-
-        reset_status_data();
     }
 }
 
@@ -939,24 +927,20 @@ function status_updater() {
     debug_overflow_entry('status_updater', 11);
 
     // Defaults
-    var netflix_profile = 'general';
+    var netflix_status_profile = 'general';
     var icon_class = '';
+    var icon_body_class = '';
     var icon_status_color = '#00b642'; // green
     var icon_border_color = '#FFFFFF';
     var bubble_status_text = getLang('status_text_ok');
-    var bubble_text_color = '#FFFFFF';
-    var bubble_background_color = 'rgba(38,38,38,.85)';
     var bubble_offset_right = 'auto';
     var bubble_offset_top = 'auto';
     var bubble_offset_bottom = 'auto';
 
     // Determine profile
-    //checkProfile();
     if (check_kids() || check_kids_profile()) {
-        netflix_profile = 'kids';
+        netflix_status_profile = 'kids';
         icon_border_color = '#EBEBEB';
-        bubble_text_color = '#000000';
-        bubble_background_color = 'rgba(255,255,255,.85)';
     }
 
     // Determine status
@@ -991,21 +975,36 @@ function status_updater() {
             text_class_name = ' ' + text_class.className.replace('small','').replace('medium','').replace('large','').trim();
         }
         icon_class = icon_class + text_class_name;
+
+        if (obj['controls_type'] == 'watch' && obj['iconTemplateElm'].querySelector('[role="presentation"]')) {
+            icon_body_class = obj['iconTemplateElm'].querySelector('[role="presentation"]').className;
+        }
     }
     if (obj['iconPlaceBeforeElm']) {
-        var bodyRect = document.body.getBoundingClientRect();
         var elemRect = obj['iconPlaceBeforeElm'].getBoundingClientRect();
 
-        if (bodyRect.right != 0 && elemRect.right != 0) {
-            bubble_offset_right = bodyRect.right - elemRect.right - 40;
-            if (bubble_offset_right < 10) {
-                bubble_offset_right = 10;
+        var elm = object_handler('player_video_container', null);
+        if (elm && obj['controls_type'] == 'watch') {
+            var bodyRect = elm.getBoundingClientRect();
+            if (bodyRect.right != 0 && elemRect.right != 0) {
+                bubble_offset_right = bodyRect.right - elemRect.right - 40;
+                if (bubble_offset_right < 10) {
+                    bubble_offset_right = 10;
+                }
+            }
+        } else {
+            var bodyRect = document.body.getBoundingClientRect();
+            if (bodyRect.right != 0 && elemRect.right != 0) {
+                bubble_offset_right = bodyRect.right - elemRect.right - 40;
+                if (bubble_offset_right < 10) {
+                    bubble_offset_right = 10;
+                }
             }
         }
 
         if (obj['controls_type'] == 'watch') {
             if (elemRect.top != 0 && elemRect.bottom != 0) {
-                bubble_offset_bottom = elemRect.bottom - elemRect.top + elemRect.width;
+                bubble_offset_bottom = bodyRect.bottom - elemRect.bottom + elemRect.height;
             }
 
             bubble_offset_right = bubble_offset_right + 'px';
@@ -1013,7 +1012,7 @@ function status_updater() {
             bubble_offset_bottom = bubble_offset_bottom + 'px';
         } else if (obj['controls_type'] == 'browse') {
             bubble_offset_right = bubble_offset_right + 'px';
-            bubble_offset_top = (elemRect.top + elemRect.width) + 'px';
+            bubble_offset_top = (elemRect.top + elemRect.height) + 'px';
             bubble_offset_bottom = 'auto';
         }
     } else {
@@ -1027,14 +1026,13 @@ function status_updater() {
     }
 
     status_data = {
-        'netflix_profile': netflix_profile,
+        'netflix_status_profile': netflix_status_profile,
         'controls': obj['controls_type'],
         'icon_class': icon_class,
+        'icon_body_class': icon_body_class,
         'icon_status_color': icon_status_color,
         'icon_border_color': icon_border_color,
         'bubble_status_text': bubble_status_text,
-        'bubble_text_color': bubble_text_color,
-        'bubble_background_color': bubble_background_color,
         'bubble_offset_right': bubble_offset_right,
         'bubble_offset_top': bubble_offset_top,
         'bubble_offset_bottom': bubble_offset_bottom
@@ -1044,115 +1042,142 @@ function status_updater() {
 }
 
 function update_status_objects() {
-    if (JSON.stringify(status_data) != JSON.stringify(status_data_old)) {
-        for (var key in status_data) {
-            if (status_data.hasOwnProperty(key)) {
-                var old_value = undefined;
-                if (status_data_old.hasOwnProperty(key)) {
-                    old_value = status_data_old[key];
-                }
+    var updated_keys = [];
+    for (var key in status_data) {
+        if (status_data.hasOwnProperty(key)) {
+            var old_value = undefined;
+            if (status_data_old.hasOwnProperty(key)) {
+                old_value = status_data_old[key];
+            }
 
-                if (status_data[key] != old_value) {
-                    switch (key) {
-                        // ICON
-                        case 'icon_class':
-                            // If icon status color changed, update it
-                            var elm = document.getElementById('netflex_icon_container');
-                            if (elm) {
-                                elm.className = status_data[key];
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'icon_status_color':
-                            // If icon status color changed, update it
-                            var elm = document.getElementById('netflex_icon_status');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_stat_color', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'icon_border_color':
-                            // If icon border color changed, update it
-                            var elm = document.getElementById('netflex_icon_status');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_bord_color', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        // BUBBLE
-                        case 'bubble_status_text':
-                            // If status text changed, update it
-                            var elm = document.getElementById('netflex_status_text');
-                            if (elm) {
-                                addDOM(elm, status_data[key]);
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'bubble_text_color':
-                            // If bubble text color changed, update it
-                            var elm = document.getElementById('netflex_bubble_container');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_txt_color', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'bubble_background_color':
-                            // If bubble background color changed, update it
-                            var elm = document.getElementById('netflex_bubble_container');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_bg_color', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'bubble_offset_right':
-                            // If bubble offset right changed, update it
-                            var elm = document.getElementById('netflex_bubble_container');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_off_right', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'bubble_offset_top':
-                            // If bubble offset top changed, update it
-                            var elm = document.getElementById('netflex_bubble_container');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_off_top', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        case 'bubble_offset_bottom':
-                            // If bubble offset bottom changed, update it
-                            var elm = document.getElementById('netflex_bubble_container');
-                            if (elm) {
-                                elm.style.setProperty('--netflex_off_bottom', status_data[key], '');
-                                status_data_old[key] = status_data[key];
-                            }
-                            break;
-                        // OTHER
-                        case 'netflix_profile':
-                            // If profile changes we should recreate status objects
+            switch (key) {
+                // ICON
+                case 'icon_class':
+                    // If icon status class changed, update it
+                    var elm = document.getElementById('netflex_icon_container');
+                    if (elm) {
+                        if (status_data[key] != elm.className) {
+                            elm.className = status_data[key];
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'icon_body_class':
+                    // If icon status body class changed, update it
+                    var elm = document.getElementById('netflex_icon_body');
+                    if (elm) {
+                        if (status_data[key] != elm.className) {
+                            elm.className = status_data[key];
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'icon_status_color':
+                    // If icon status color changed, update it
+                    var elm = document.getElementById('netflex_icon_status');
+                    if (elm) {
+                        if (status_data[key] != elm.style.getPropertyValue('--netflex_stat_color')) {
+                            elm.style.setProperty('--netflex_stat_color', status_data[key], '');
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'icon_border_color':
+                    // If icon border color changed, update it
+                    var elm = document.getElementById('netflex_icon_status');
+                    if (elm) {
+                        if (status_data[key] != elm.style.getPropertyValue('--netflex_bord_color')) {
+                            elm.style.setProperty('--netflex_bord_color', status_data[key], '');
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                // BUBBLE
+                case 'bubble_status_text':
+                    // If status text changed, update it
+                    var elm = document.getElementById('netflex_status_text');
+                    if (elm) {
+                        if (status_data[key] != elm.innerHTML) {
+                            addDOM(elm, status_data[key]);
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'bubble_offset_right':
+                    // If bubble offset right changed, update it
+                    var elm = document.getElementById('netflex_bubble_container');
+                    if (elm) {
+                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_right')) {
+                            elm.style.setProperty('--netflex_off_right', status_data[key], '');
+                            status_data_old[key] = status_data[key];
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'bubble_offset_top':
+                    // If bubble offset top changed, update it
+                    var elm = document.getElementById('netflex_bubble_container');
+                    if (elm) {
+                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_top')) {
+                            elm.style.setProperty('--netflex_off_top', status_data[key], '');
+                            status_data_old[key] = status_data[key];
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                case 'bubble_offset_bottom':
+                    // If bubble offset bottom changed, update it
+                    var elm = document.getElementById('netflex_bubble_container');
+                    if (elm) {
+                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_bottom')) {
+                            elm.style.setProperty('--netflex_off_bottom', status_data[key], '');
+                            status_data_old[key] = status_data[key];
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                // OTHER
+                case 'netflix_status_profile':
+                    // If profile changes we should recreate status objects
+                    var elm = document.getElementById('netflex_bubble_container');
+                    if (elm) {
+                        if (status_data[key] != elm.getAttribute('profile')) {
+                            elm.setAttribute('profile',status_data[key]);
                             remove_status_objects();
                             status_data_old[key] = status_data[key];
-                            break;
-                        case 'controls':
-                            // If profile changes we should recreate status objects
-                            var elm_bubble = document.getElementById('netflex_bubble_container');
-                            if (elm_bubble) {
-                                elm_bubble.setAttribute('controls',status_data[key]);
-                            }
-                            var elm_icon = document.getElementById('netflex_icon_status');
-                            if (elm_icon) {
-                                elm_icon.setAttribute('controls',status_data[key]);
-                            }
-                            status_data_old[key] = status_data[key];
-                            break;
-                        default:
-                            log('info', '', 'Unknown: "' + key + '" => "' + status_data[key] + '"');
-                            break;
+                            updated_keys.push(key);
+                        }
                     }
-                }
+                    break;
+                case 'controls':
+                    // If controls changes we should update information about it
+                    var elm_bubble = document.getElementById('netflex_bubble_container');
+                    if (elm_bubble) {
+                        if (status_data[key] != elm_bubble.getAttribute('controls')) {
+                            elm_bubble.setAttribute('controls',status_data[key]);
+                            updated_keys.push(key);
+                        }
+                    }
+                    var elm_icon = document.getElementById('netflex_icon_status');
+                    if (elm_icon) {
+                        if (status_data[key] != elm_icon.getAttribute('controls')) {
+                            elm_icon.setAttribute('controls',status_data[key]);
+                            updated_keys.push(key);
+                        }
+                    }
+                    break;
+                default:
+                    log('info', '', 'Unknown: "' + key + '" => "' + status_data[key] + '"');
+                    break;
             }
         }
+    }
+
+    if (updated_keys.length > 0) {
+        log('debug', 'environment', updated_keys);
     }
 }
 
@@ -1179,6 +1204,7 @@ function create_status_objects() {
                 bubble_container = document.createElement('div');
                 bubble_container.setAttribute('style','display: none; position: fixed;');
                 bubble_container.setAttribute('id','netflex_bubble_container');
+                bubble_container.setAttribute('profile',netflix_profile);
                 bubble_container.setAttribute('controls',obj['controls_type']);
                 bubble_container.setAttribute('run-id',run_id);
                 addDOM(bubble_container, generate_status_data());
@@ -1197,7 +1223,7 @@ function create_status_objects() {
 
                 document.getElementById('extension_features').addEventListener('click', function() { logEvent('create_status_objects > extension_features'); extension_features(); });
 
-                document.getElementById('extension_logo').addEventListener('click', function() { if (check_watch()) {logEvent('create_status_objects > extension_logo'); create_fireworks_mark();} });
+                document.getElementById('extension_logo').addEventListener('click', function() { if (check_watch()) {logEvent('create_status_objects > extension_logo'); create_fireworks_mark(); stop_worker('close_status_content'); switch_simulation(false, 'netflex_bubble_container');} });
 
                 create_features_events();
             } else {
@@ -1218,10 +1244,18 @@ function create_status_objects() {
                 remove_status_icon();
 
                 icon_container = obj['iconTemplateElm'].cloneNode(true);
-                icon_container.removeChild(icon_container.children[0]);
+                try {icon_container.querySelector('svg, a').parentNode.removeChild(icon_container.querySelector('svg, a'));} catch (e) {}
                 icon_container.setAttribute('style','color: #00b642; stroke: #FFFFFF; transform-origin: center center;');
                 icon_container.setAttribute('id','netflex_icon_container');
                 icon_container.setAttribute('run-id',run_id);
+
+                if (obj['controls_type'] == 'watch') {
+                    try {
+                        icon_container.children[0].removeAttribute('aria-label');
+                        icon_container.children[0].removeAttribute('data-uia');
+                        icon_container.children[0].children[0].setAttribute('id','netflex_icon_body');
+                    } catch (e) {}
+                }
 
                 var text_class_name = '';
                 var text_class = document.querySelector('[data-uia="video-title"]');
@@ -1230,12 +1264,34 @@ function create_status_objects() {
                 }
                 icon_container.className = icon_container.className + text_class_name;
 
-                addDOM(icon_container, '<div id="netflex_icon_body"><i id="netflex_icon_status" controls="' + obj['controls_type'] + '" class="fas fa-circle netflex_icon_status"></i></div>');
+                var insert_container = icon_container;
+                if (obj['controls_type'] == 'watch') {
+                    if (icon_container.children[0]) {
+                        if (icon_container.children[0].children[0]) {
+                            insert_container = icon_container.children[0].children[0];
+                        }
+                    }
+                }
+                addDOM(insert_container, '<i id="netflex_icon_status" controls="' + obj['controls_type'] + '" class="fas fa-circle"></i>');
                 obj['iconPlaceBeforeElm'].parentNode.insertBefore(icon_container, obj['iconPlaceBeforeElm']);
 
-                icon_container.addEventListener('mousemove', function() { logEvent('create_status_objects > netflex_icon_container > move'); if (status_bubble_opened) {stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container');} });
-                // TODO fix when this even should actually be triggered
-                //icon_container.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); if (status_bubble_opened) {workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']);} });
+                icon_container.addEventListener('mouseenter', function() { logEvent('create_status_objects > netflex_icon_container > enter'); stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container'); });
+                icon_container.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon_container > leave'); workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']); });
+
+                // Set closing events for other buttons
+                if (icon_container.parentNode.children) {
+                    var elms = icon_container.parentNode.children;
+                    for (var i = 0; i < elms.length; i++) {
+                        var elm_id = elms[i].id;
+                        if (elm_id != 'netflex_icon_container') {
+                            var attr = elms[i].getAttribute('netflex_event_set');
+                            if (elms[i].id !== 'extension_status_content' && elms[i].id !== 'extension_status_button' && attr !== 'true') {
+                                elms[i].addEventListener('mouseenter', function() { logEvent('status_updater > player_controls_elements/navigation_menu_elements'); stop_worker('close_status_content'); switch_simulation(false, 'netflex_bubble_container'); });
+                                elms[i].setAttribute('netflex_event_set', 'true');
+                            }
+                        }
+                    }
+                }
             } else {
                 if (icon_container) {
                     if (icon_container.getAttribute('run-id')) {
@@ -1251,8 +1307,8 @@ function create_status_objects() {
                     if (icon_element) {
                         if (!icon_element.getAttribute('events')) {
                             icon_element.addEventListener('click', function(e) { if (e.button == 0) {logEvent('create_status_objects > extension_status'); toggle_assistant();} });
-                            icon_element.addEventListener('mouseenter', function() { logEvent('create_status_objects > netflex_icon > enter'); stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container'); });
-                            icon_element.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon > leave'); workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']); });
+                            //icon_element.addEventListener('mouseenter', function() { logEvent('create_status_objects > netflex_icon > enter'); stop_worker('close_status_content'); switch_simulation(true, 'netflex_bubble_container'); });
+                            //icon_element.addEventListener('mouseleave', function() { logEvent('create_status_objects > netflex_icon > leave'); workers['close_status_content'] = setTimeout(function() { switch_simulation(false, 'netflex_bubble_container'); }, cfg['bubbleHideDelay']['val']); });
                             icon_element.setAttribute('events','listening')
                         }
                     }

@@ -763,6 +763,14 @@
         "message":"Turns on/off and sets how much a mouse wheel scroll changes playback volume.",
         "description":""
     },
+    "cfg_allowKidsConfig_name":{
+        "message":"Allow Kids configuration",
+        "description":""
+    },
+    "cfg_allowKidsConfig_description":{
+        "message":"Turns on/off configuration menu on Kids profile.",
+        "description":""
+    },
     "cfg_autoDisableKids_name":{
         "message":"Disable extension on Kids profile",
         "description":""
