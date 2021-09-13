@@ -123,7 +123,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_report_problem':
-            obj = document.querySelector('.button-nfplayerReportAProblem');
+            obj = document.querySelector('.button-nfplayerReportAProblem, [data-uia="control-question"]');
             if (obj) { return obj; }
             break;
         case 'input_search':
