@@ -769,13 +769,13 @@ function netflix_assistant() {
                                 log('output', '', getLang('skipping_intro'));
                                 add_stats_count('stat_skipIntros');
                                 doClick(skip_button);
-                                removeDOM(skip_button);
+                                try {removeDOM(skip_button);} catch (e) {}
                             } else if (loc_skip_recap.includes(button_text) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
                                 skipping = true;
                                 log('output', '', getLang('skipping_recap'));
                                 add_stats_count('stat_skipRecaps');
                                 doClick(skip_button);
-                                removeDOM(skip_button);
+                                try {removeDOM(skip_button);} catch (e) {}
                             }
 
                             // Video sometimes pauses when skipping, this should workaround the issue
@@ -805,7 +805,9 @@ function netflix_assistant() {
                                     }
                                 }
                             }
-                        } catch (e) { }
+                        } catch (e) {
+                            log('error', '', e.stack);
+                        }
                     }
                 }
 
