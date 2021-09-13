@@ -784,6 +784,7 @@ function generate_options_content() {
 
         // Fill in fields with text based on locale
         setText('menu_assistant', 'menu_assistant');
+        setText('menu_kids', 'menu_kids');
         setText('menu_ratings', 'menu_ratings');
         setText('menu_video', 'menu_video');
         setText('menu_timers', 'menu_timers');
@@ -805,6 +806,7 @@ function generate_options_content() {
         document.getElementById('button_debug').addEventListener('click', function() { logEvent('button_debug'); show_debug_menu(); });
 
         document.getElementById('button_tab_assistant').addEventListener('click', function() { logEvent('button_tab_assistant'); tab_select('tab_assistant'); });
+        document.getElementById('button_tab_kids').addEventListener('click', function() { logEvent('button_tab_kids'); tab_select('tab_kids'); });
         document.getElementById('button_tab_ratings').addEventListener('click', function() { logEvent('button_tab_ratings'); tab_select('tab_ratings'); });
         document.getElementById('button_tab_video').addEventListener('click', function() { logEvent('button_tab_video'); tab_select('tab_video'); });
         document.getElementById('button_tab_timers').addEventListener('click', function() { logEvent('button_tab_timers'); tab_select('tab_timers'); });

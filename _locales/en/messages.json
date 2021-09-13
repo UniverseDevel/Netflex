@@ -551,6 +551,10 @@
         "message":"Assistant",
         "description":""
     },
+    "menu_kids":{
+        "message":"Kids",
+        "description":""
+    },
     "menu_ratings":{
         "message":"Ratings",
         "description":""

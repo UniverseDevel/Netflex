@@ -484,6 +484,7 @@ var keybinds = [
 function init_configuration() {
     var cfg_order = {};
     cfg_order['assistant'] = 0;
+    cfg_order['kids'] = 0;
     cfg_order['ratings'] = 0;
     cfg_order['video'] = 0;
     cfg_order['timers'] = 0;
@@ -869,9 +870,9 @@ function init_configuration() {
         },
         'allowKidsConfig' : {
             'type' : 'bool',
-            'category' : 'assistant',
+            'category' : 'kids',
             'access' : false,
-            'order' : cfg_order['assistant']++,
+            'order' : cfg_order['kids']++,
             'val' : true,
             'def' : true,
             'min' : null,
@@ -887,9 +888,9 @@ function init_configuration() {
         },
         'autoDisableKids' : {
             'type' : 'bool',
-            'category' : 'assistant',
+            'category' : 'kids',
             'access' : true,
-            'order' : cfg_order['assistant']++,
+            'order' : cfg_order['kids']++,
             'val' : false,
             'def' : false,
             'min' : null,

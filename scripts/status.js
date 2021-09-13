@@ -385,6 +385,7 @@ function generate_options() {
 
             <nav class="sidebar block">
                 <button class="option item active menu_assistant" id="button_tab_assistant" style="display: none;"></button>
+                <button class="option item menu_kids" id="button_tab_kids" style="display: none;"></button>
                 <button class="option item menu_ratings" id="button_tab_ratings" style="display: none;"></button>
                 <button class="option item menu_video" id="button_tab_video" style="display: none;"></button>
                 <button class="option item menu_timers" id="button_tab_timers" style="display: none;"></button>
