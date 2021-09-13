@@ -446,7 +446,7 @@ function generate_status_features() {
         <table border="0" style="border: 0; margin: 0; padding: 0; width: 100%;{SHOW_TEMP_HIDE_SUBTITLES}">
             <tr>
                 <td>
-                    <label>{TEMP_HIDE_SUBTITLES_TEXT} <input type="checkbox" id="feature_tempHideSubtitles" {TEMP_HIDE_SUBTITLES}></label>
+                    <label style="cursor:pointer;">{TEMP_HIDE_SUBTITLES_TEXT} <input type="checkbox" id="feature_tempHideSubtitles" {TEMP_HIDE_SUBTITLES}><i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i></label>
                 </td>
             </tr>
             <tr>
@@ -1245,7 +1245,7 @@ function create_status_objects() {
 
                 icon_container = obj['iconTemplateElm'].cloneNode(true);
                 try {icon_container.querySelector('svg, a').parentNode.removeChild(icon_container.querySelector('svg, a'));} catch (e) {}
-                icon_container.setAttribute('style','color: #00b642; stroke: #FFFFFF; transform-origin: center center;');
+                icon_container.setAttribute('style','color: #00b642; stroke: #FFFFFF; stroke-width: 80px; transform-origin: center center;');
                 icon_container.setAttribute('id','netflex_icon_container');
                 icon_container.setAttribute('run-id',run_id);
 

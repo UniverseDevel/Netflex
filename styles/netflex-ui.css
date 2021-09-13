@@ -377,35 +377,42 @@
 	background-color: transparent;
 }
 
+#extension_features_scrollable input[type="checkbox"],
 #extension_options_scrollable input[type="checkbox"],
 #extension_options_scrollable input[type="radio"] {
     display: none;
 }
 
+#extension_features_scrollable .checked,
 #extension_options_scrollable .checked {
     color: #00b642;
     background-color: transparent;
     cursor: pointer;
 }
 
+#extension_features_scrollable .unchecked,
 #extension_options_scrollable .unchecked {
     color: #00b642;
     background-color: transparent;
     cursor: pointer;
 }
 
+#extension_features_scrollable input[type="checkbox"]:checked ~ .checked,
 #extension_options_scrollable input[type="checkbox"]:checked ~ .checked {
     display: inline-block;
 }
 
+#extension_features_scrollable input[type="checkbox"]:checked ~ .unchecked,
 #extension_options_scrollable input[type="checkbox"]:checked ~ .unchecked {
     display: none;
 }
 
+#extension_features_scrollable input[type="checkbox"]:not(:checked) ~ .checked,
 #extension_options_scrollable input[type="checkbox"]:not(:checked) ~ .checked {
     display: none;
 }
 
+#extension_features_scrollable input[type="checkbox"]:not(:checked) ~ .unchecked,
 #extension_options_scrollable input[type="checkbox"]:not(:checked) ~ .unchecked {
     display: inline-block;
 }
@@ -426,17 +433,20 @@
     display: inline-block;
 }
 
+#extension_features_scrollable input[type=range],
 #extension_options_scrollable input[type=range] {
     -webkit-appearance: none;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
+#extension_features_scrollable input[type=range]:focus,
 #extension_options_scrollable input[type=range]:focus {
     outline: none;
     border: none;
 }
 
+#extension_features_scrollable input[type=range]::-webkit-slider-runnable-track,
 #extension_options_scrollable input[type=range]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     height: 5px;
@@ -444,14 +454,17 @@
     border-radius: 3px;
 }
 
-#netflex_bubble_container[profile="general"] input[type=range]::-webkit-slider-runnable-track {
+#extension_features_scrollable[profile="general"] input[type=range]::-webkit-slider-runnable-track,
+#extension_options_scrollable[profile="general"] input[type=range]::-webkit-slider-runnable-track {
     background: #ffffff;
 }
 
-#netflex_bubble_container[profile="kids"] input[type=range]::-webkit-slider-runnable-track {
+#extension_features_scrollable[profile="kids"] input[type=range]::-webkit-slider-runnable-track,
+#extension_options_scrollable[profile="kids"] input[type=range]::-webkit-slider-runnable-track {
     background: #000000;
 }
 
+#extension_features_scrollable input[type=range]::-webkit-slider-thumb,
 #extension_options_scrollable input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
@@ -462,20 +475,24 @@
     margin-top: -5px;
 }
 
+#extension_features_scrollable input[type=range]::-moz-range-track,
 #extension_options_scrollable input[type=range]::-moz-range-track {
     height: 5px;
     border: none;
     border-radius: 3px;
 }
 
-#netflex_bubble_container[profile="general"] input[type=range]::-moz-range-track {
+#extension_features_scrollable[profile="general"] input[type=range]::-moz-range-track,
+#extension_options_scrollable[profile="general"] input[type=range]::-moz-range-track {
     background: #ffffff;
 }
 
-#netflex_bubble_container[profile="kids"] input[type=range]::-moz-range-track {
+#extension_features_scrollable[profile="kids"] input[type=range]::-moz-range-track,
+#extension_options_scrollable[profile="kids"] input[type=range]::-moz-range-track {
     background: #000000;
 }
 
+#extension_features_scrollable input[type=range]::-moz-range-thumb,
 #extension_options_scrollable input[type=range]::-moz-range-thumb {
     border: none;
     height: 13px;
@@ -487,6 +504,7 @@
 
 /* // No solution like this for Chrome
 
+#extension_features_scrollable input[type=range]::-moz-range-progress,
 #extension_options_scrollable input[type=range]::-moz-range-progress {
     background: #00b642;
 }*/

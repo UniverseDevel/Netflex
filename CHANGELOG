@@ -126,3 +126,6 @@ Known issues:
     - Remove unused objects as with recent changes there is minimal backwards compatibility
     - So far no way how to keep player UI up when extension is in use, this is why independent bubble from icon was implemented
       and even thought this implementation is better and more flexible, disappearing UI looks bad
+
+
+ // TODO: allowKidsConfig - active check on kids profile and if unchecked/check propagate change immediately (even close options)

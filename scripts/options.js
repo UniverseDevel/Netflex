@@ -430,7 +430,7 @@ function generate_options_data(load_tab) {
     tab_select(load_tab);
     toggle_objects(false);
 
-    setStatus(getLang('cfg_loaded'),'green',1500);
+    //setStatus(getLang('cfg_loaded'),'green',1500);
 }
 
 function check_dependency(object) {
