@@ -898,7 +898,7 @@ function remove_status_objects() {
 }
 
 function remove_status_icon() {
-    debug_overflow_entry('remove_status_icon', 3);
+    debug_overflow_entry('remove_status_icon', 11);
     var icon_container = document.getElementById('netflex_icon_container');
     if (icon_container) {
         removeDOM(icon_container);
@@ -906,7 +906,7 @@ function remove_status_icon() {
 }
 
 function remove_status_bubble() {
-    debug_overflow_entry('remove_status_bubble', 3);
+    debug_overflow_entry('remove_status_bubble', 11);
     var bubble_container = document.getElementById('netflex_bubble_container');
     if (bubble_container) {
         removeDOM(bubble_container);
