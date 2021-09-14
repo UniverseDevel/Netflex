@@ -539,6 +539,30 @@ function netflix_assistant() {
                         oldLink = window.location.href;
                     }
                 }
+
+                // Add elapsed video time
+                if (cfg['showElapsedTime']['val'] && cfg['showElapsedTime']['access']) {
+                    var progress_bar = object_handler('progress_bar', null);
+                    var remaining_time = object_handler('remaining_time', null);
+                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar && remaining_time) {
+                        var elapsed_time = remaining_time.cloneNode(true);
+                        elapsed_time.setAttribute('id','netflex_elapsed_time');
+                        elapsed_time.children[0].setAttribute('data-uia','controls-time-elapsed');
+                        addCSS(elapsed_time, { 'margin-right': '0em !important', 'margin-left': '1em !important' });
+
+                        try {progress_bar.parentNode.insertBefore(elapsed_time, progress_bar);} catch (e) {}
+                    }
+
+                    // Refresh value or add event that will
+                    if (document.querySelector('[data-uia="controls-time-elapsed"]') && document.querySelector('.scrubber-head')) {
+                        addDOM(document.querySelector('[data-uia="controls-time-elapsed"]'), convertToInterval(document.querySelector('.scrubber-head').getAttribute('aria-valuenow')));
+                        window.dispatchEvent(new Event('resize')); // Prevent progressbar size to overgrow
+                    }
+                } else {
+                    if (document.querySelector('#netflex_elapsed_time')) {
+                        removeDOM(document.querySelector('#netflex_elapsed_time'));
+                    }
+                }
             }
 
             // Features on watch page
@@ -677,7 +701,7 @@ function netflix_assistant() {
                             // Pause video
                             try {
                                 add_stats_count('stat_pauseOnBlur');
-                                //doClick(object_handler('button_pause', null));
+                                try {doClick(object_handler('button_pause', null));} catch (e) {}
                                 video.pause();
                                 log('output', '', getLang('lost_focus_pause'));
                                 pausedByExtension = true;
@@ -689,7 +713,7 @@ function netflix_assistant() {
                             // Autostart video
                             try {
                                 add_stats_count('stat_playOnFocus');
-                                //doClick(object_handler('button_play', null));
+                                try {doClick(object_handler('button_play', null));} catch (e) {}
                                 video.play();
                                 log('output', '', getLang('gained_focus_play'));
                                 pausedByExtension = false;
@@ -769,13 +793,11 @@ function netflix_assistant() {
                                 log('output', '', getLang('skipping_intro'));
                                 add_stats_count('stat_skipIntros');
                                 doClick(skip_button);
-                                try {removeDOM(skip_button);} catch (e) {}
                             } else if (loc_skip_recap.includes(button_text) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
                                 skipping = true;
                                 log('output', '', getLang('skipping_recap'));
                                 add_stats_count('stat_skipRecaps');
                                 doClick(skip_button);
-                                try {removeDOM(skip_button);} catch (e) {}
                             }
 
                             // Video sometimes pauses when skipping, this should workaround the issue
@@ -787,19 +809,15 @@ function netflix_assistant() {
                                     if (video.paused) {
                                         video.play();
                                         // Prevent event handlers to be messed up after skipping intro/recap
-                                        object_handler('player_hit_zone', null).style.display = 'none';
                                         try {doClick(object_handler('button_pause', null));} catch (e) {}
                                         try {doClick(object_handler('button_play', null));} catch (e) {}
-                                        object_handler('player_hit_zone', null).style.display = 'flex';
                                         // Just to make sure we will return into correct state, even if something goes wrong before
                                         setTimeout(function() {try {doClick(object_handler('button_play', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
                                     } else {
                                         video.pause();
                                         // Prevent event handlers to be messed up after skipping intro/recap
-                                        object_handler('player_hit_zone', null).style.display = 'none';
                                         try {doClick(object_handler('button_play', null));} catch (e) {}
                                         try {doClick(object_handler('button_pause', null));} catch (e) {}
-                                        object_handler('player_hit_zone', null).style.display = 'flex';
                                         // Just to make sure we will return into correct state, even if something goes wrong before
                                         setTimeout(function() {try {doClick(object_handler('button_pause', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
                                     }

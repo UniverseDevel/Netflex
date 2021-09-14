@@ -83,7 +83,7 @@ function object_handler(object_category, related_object) {
             return obj;
             break;
         case 'progress_bar':
-            obj = document.querySelector('.PlayerControlsNeo__progress-container, [data-uia="timeline"]');
+            obj = document.querySelector('.PlayerControls--control-element.progress-control, [data-uia="timeline"]');
             if (obj) { return obj; }
             break;
         case 'button_next_episode':
@@ -135,11 +135,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_pause':
-            obj = document.querySelector('.button-nfplayerPause, [data-uia="control-play-pause-play"][aria-label="Pause"]');
-            if (obj) { return obj; }
-            break;
-        case 'player_hit_zone':
-            obj = document.querySelector('.controls-full-hit-zone');
+            obj = document.querySelector('.button-nfplayerPause, [data-uia="control-play-pause-play"][aria-label="Pause"], [data-uia="control-play-pause-pause"][aria-label="Pause"]');
             if (obj) { return obj; }
             break;
         case 'button_skip':
@@ -209,7 +205,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'remaining_time':
-            obj = document.querySelector('[data-uia="controls-time-remaining"]');
+            obj = document.querySelector('[data-uia="controls-time-remaining"], .PlayerControls--control-element.time-remaining.text-control');
             if (obj) { return obj; }
             break;
         case 'movie_title':
@@ -230,22 +226,6 @@ function object_handler(object_category, related_object) {
             break;
         case 'navigation_menu_kids':
             obj = document.querySelector('.show-kids, .nav-element:nth-of-type(2)');
-            if (obj) { return obj; }
-            break;
-        case 'player_controls_elements':
-            obj = document.querySelectorAll('.PlayerControls--control-element');
-            if (obj[0]) { return obj; }
-            break;
-        case 'navigation_menu_elements':
-            obj = document.querySelectorAll('.nav-element');
-            if (obj[0]) { return obj; }
-            break;
-        case 'player_controls':
-            obj = document.querySelector('.PlayerControlsNeo__button-control-row');
-            if (obj) { return obj; }
-            break;
-        case 'navigation_menu':
-            obj = document.querySelector('.secondary-navigation');
             if (obj) { return obj; }
             break;
         case 'player_episode_list':
