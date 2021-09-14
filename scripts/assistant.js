@@ -542,8 +542,8 @@ function netflix_assistant() {
 
                 // Add elapsed video time
                 if (cfg['showElapsedTime']['val'] && cfg['showElapsedTime']['access']) {
-                    var progress_bar = object_handler('progress_bar', null);
-                    var remaining_time = object_handler('remaining_time', null);
+                    var progress_bar = object_handler('progress_bar_cast', null);
+                    var remaining_time = object_handler('remaining_time_cast', null);
                     if (!document.querySelector('#netflex_elapsed_time') && progress_bar && remaining_time) {
                         var elapsed_time = remaining_time.cloneNode(true);
                         elapsed_time.setAttribute('id','netflex_elapsed_time');

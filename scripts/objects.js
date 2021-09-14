@@ -83,7 +83,11 @@ function object_handler(object_category, related_object) {
             return obj;
             break;
         case 'progress_bar':
-            obj = document.querySelector('.PlayerControls--control-element.progress-control, [data-uia="timeline"]');
+            obj = document.querySelector('.PlayerControlsNeo__progress-container, [data-uia="timeline"]');
+            if (obj) { return obj; }
+            break;
+        case 'progress_bar_cast':
+            obj = document.querySelector('.PlayerControls--control-element.progress-control');
             if (obj) { return obj; }
             break;
         case 'button_next_episode':
@@ -205,7 +209,11 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'remaining_time':
-            obj = document.querySelector('[data-uia="controls-time-remaining"], .PlayerControls--control-element.time-remaining.text-control');
+            obj = document.querySelector('[data-uia="controls-time-remaining"]');
+            if (obj) { return obj; }
+            break;
+        case 'remaining_time_cast':
+            obj = document.querySelector('.PlayerControls--control-element.time-remaining.text-control');
             if (obj) { return obj; }
             break;
         case 'movie_title':
