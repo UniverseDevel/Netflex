@@ -229,6 +229,7 @@ function save_configuration(callback) {
                 document.getElementById(key).checked = value;
                 break;
             case 'text':
+            case 'color':
                 // Get current value from options
                 value = document.getElementById(key).value;
                 // Insert validated value into options
@@ -1569,17 +1570,19 @@ function init_configuration() {
             },
             'notice' : false
         },
+        // Type "color" can be used, but Firefox supports it in most wrong possible way and it doesnt work.
+        // In case they fix it, change to cfg_highlightSubtitles_description is needed as well.
         'subtitlesColor' : {
             'type' : 'text',
             'category' : 'subtitles',
             'access' : true,
             'order' : cfg_order['subtitles']++,
-            'val' : 'original',
-            'def' : 'original',
+            'val' : '#ffffff',
+            'def' : '#ffffff',
             'min' : null,
             'max' : null,
             'step' : null,
-            'off' : 'original',
+            'off' : '#ffffff',
             'list': [],
             'callback' : null,
             'units' : null,

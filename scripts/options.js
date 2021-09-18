@@ -160,6 +160,11 @@ function generate_options_data(load_tab) {
                     cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
                     cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>', cfg_input_type, cfg_key, cfg_input_value);
+                case 'color':
+                    cfg_input_type = 'color';
+                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
+                    cfg_hidden_input = '';
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>', cfg_input_type, cfg_key, cfg_input_value);
                     break;
                 case 'range':
                     cfg_input_type = 'range';
@@ -396,9 +401,9 @@ function generate_options_data(load_tab) {
                 case 'select':
                 case 'api':
                 case 'text':
-                case 'select':
+                case 'color':
                 case 'binding':
-                    document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > number/select/api/binding'); if (!check_dependency(this)) {save_data();} else {e.preventDefault(); dependency_highlight(this);} });
+                    document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > number/select/api/text/color/binding'); if (!check_dependency(this)) {save_data();} else {e.preventDefault(); dependency_highlight(this);} });
                     break;
                 case 'range':
                     document.getElementById(cfg_key).addEventListener('mousedown', function(e) { logEvent('generate_options_data > range > mousedown'); if (check_dependency(this)) {e.preventDefault(); dependency_highlight(this);} });
@@ -664,6 +669,7 @@ function reset_option_data(object) {
         case 'text':
         case 'api':
         case 'select':
+        case 'color':
             document.getElementById(obj_name).value = cfg[obj_name]['def'];
             break;
         case 'bool':

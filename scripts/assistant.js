@@ -294,8 +294,8 @@ function handle_subtitles_features() {
             }
 
             // Apply subtitles font
-            if (cfg['subtitlesFont']['val'] != cfg['subtitlesFont']['off'] && cfg['subtitlesFont']['access']) {
-                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'] + '"', '');
+            if (cfg['subtitlesFont']['val'].toLowerCase() != cfg['subtitlesFont']['off'].toLowerCase() && cfg['subtitlesFont']['access']) {
+                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'].toLowerCase() + '"', '');
 
                 if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
                     subtitles_block.setAttribute('netflex_sub_font', 'on');
