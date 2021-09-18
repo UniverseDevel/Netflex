@@ -50,7 +50,7 @@ Video player features:
 - If all skip features are turned off, Netflix™ will ask every few episodes if you are still watching, this will be automatically skipped (can be changed in the configuration)
 - Extension keeps 100 unique entries as history in local browser storage (can be changed in the configuration)
 - If configured, video will automatically pause, if not in focus and can also automatically start, if focus is regained
-- If configured, highlight shadow around subtitles to stand out more with possibility to remove subtitles as well
+- If configured, highlight shadow around subtitles to stand out more with possibility to remove subtitles, change subtitles size, color and font as well
 - If configured, video features like playback speed can be enabled and changed permanently or temporarily while extension is running
   (Video playback speed, Video aspect ratio (21:9), Video zoom)
 

@@ -25,9 +25,7 @@ function tab_select(tab_id) {
     }
     document.getElementById(tab_id).style.display = 'block';
     document.getElementById('button_' + tab_id).classList.add('active');
-    if (tab_id == 'tab_bindings') {
-        focus_bindings();
-    }
+    focus_select_forms();
 
     if (options_tab_selected != tab_id) {
         document.getElementsByClassName('content')[0].scrollTo(0, 0);
@@ -36,10 +34,11 @@ function tab_select(tab_id) {
     options_tab_selected = tab_id;
 }
 
-function focus_bindings() {
+function focus_select_forms() {
     for (var key in cfg) {
         if (cfg[key]['access']) {
             switch (cfg[key]['type']) {
+                case 'select':
                 case 'binding':
                     document.getElementById(key).value = document.getElementById(key).value;
                     break;
@@ -134,6 +133,9 @@ function generate_options_data(load_tab) {
             case 'video':
                 fields.push(fillArgs('<span><button id="button_reset_video" class="control marginTop5px button_reset_video">{0}</button><hr style="height: 1px;"></span>', getLang('button_reset_video')));
                 break;
+            case 'subtitles':
+                fields.push(fillArgs('<span><button id="button_reset_subtitles" class="control marginTop5px button_reset_subtitles">{0}</button><hr style="height: 1px;"></span>', getLang('button_reset_subtitles')));
+                break;
             case 'bindings':
                 fields.push(fillArgs('<span><button id="button_reset_bindings" class="control marginTop5px button_reset_bindings">{0}</button><hr style="height: 1px;"></span>', getLang('button_reset_bindings')));
                 break;
@@ -225,6 +227,16 @@ function generate_options_data(load_tab) {
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
                     break;
+                case 'select':
+                    cfg_input_type = 'select';
+                    cfg_input_value = '';
+                    cfg_hidden_input = '';
+                    var size_arg = '';
+                    //if (isFirefox) {
+                        size_arg = ' size="5"';
+                    //}
+                    cfg_form_element = fillArgs('<select id="{0}" style="width:350px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_select_options(cfg_key));
+                    break;
                 case 'binding':
                     cfg_input_type = 'binding';
                     cfg_input_value = '';
@@ -233,8 +245,9 @@ function generate_options_data(load_tab) {
                     //if (isFirefox) {
                         size_arg = ' size="5"';
                     //}
-                    cfg_form_element = fillArgs('<select id="{0}" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
+                    cfg_form_element = fillArgs('<select id="{0}" style="width:350px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
                     break;
+                case 'text':
                 case 'api':
                     cfg_input_type = 'text';
                     cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
@@ -382,6 +395,8 @@ function generate_options_data(load_tab) {
                 case 'number':
                 case 'select':
                 case 'api':
+                case 'text':
+                case 'select':
                 case 'binding':
                     document.getElementById(cfg_key).addEventListener('change', function(e) { logEvent('generate_options_data > number/select/api/binding'); if (!check_dependency(this)) {save_data();} else {e.preventDefault(); dependency_highlight(this);} });
                     break;
@@ -423,6 +438,7 @@ function generate_options_data(load_tab) {
     }
 
     document.getElementById('button_reset_video').addEventListener('click', function() { logEvent('generate_options_data > button_reset_video'); reset_data_cat('video'); });
+    document.getElementById('button_reset_subtitles').addEventListener('click', function() { logEvent('generate_options_data > button_reset_subtitles'); reset_data_cat('subtitles'); });
     document.getElementById('button_reset_bindings').addEventListener('click', function() { logEvent('generate_options_data > button_reset_bindings'); reset_data_cat('bindings'); });
     document.getElementById('button_reset_debug').addEventListener('click', function() { logEvent('generate_options_data > button_reset_debug'); reset_data_cat('debug'); });
     Array.from(document.getElementsByClassName('button_default')).forEach(item => { item.addEventListener('click', function() { logEvent('generate_options_data > button_default'); reset_option_data(this); }); });
@@ -575,6 +591,31 @@ function update_hidden_element(type, name, value) {
     save_data();
 }
 
+function generate_select_options(selected) {
+    // Generate select options
+    var options = '';
+    for (var i = 0; i < cfg[selected]['list'].length; i++) {
+        var option_value = cfg[selected]['list'][i];
+        var isSelected = '';
+        var cfg_value = cfg[selected]['val'];
+        if (cfg_value == option_value) {
+            isSelected = ' selected class="active"';
+        }
+        var option_style = '';
+        if (selected == 'subtitlesFont') {
+            option_style = fillArgs(' style="font-family: \'{0}\';"', option_value);
+        }
+        var keyname_text = option_value;
+        if (keyname_text == 'ORIGINAL') {
+            keyname_text = '== ORIGINAL ==';
+            option_style = '';
+        }
+        options += fillArgs('<option value="{0}"{1}{2}>{3}</option>', option_value, option_style, isSelected, keyname_text);
+    }
+
+    return options;
+}
+
 function generate_bindings(selected) {
     // Load already used keys
     var exceptions = [];
@@ -602,7 +643,7 @@ function generate_bindings(selected) {
             if (keyname_text == 'DISABLED') {
                 keyname_text = '== DISABLED ==';
             }
-            options += fillArgs('<option value="{1}"{2}>{3}</option>', selected, keyname, isSelected, keyname_text);
+            options += fillArgs('<option value="{0}"{1}>{2}</option>', keyname, isSelected, keyname_text);
         }
     }
 
@@ -622,6 +663,7 @@ function reset_option_data(object) {
         case 'range':
         case 'text':
         case 'api':
+        case 'select':
             document.getElementById(obj_name).value = cfg[obj_name]['def'];
             break;
         case 'bool':
@@ -787,6 +829,7 @@ function generate_options_content() {
         setText('menu_kids', 'menu_kids');
         setText('menu_ratings', 'menu_ratings');
         setText('menu_video', 'menu_video');
+        setText('menu_subtitles', 'menu_subtitles');
         setText('menu_timers', 'menu_timers');
         setText('menu_bindings', 'menu_bindings');
         setText('menu_storage', 'menu_storage');
@@ -809,6 +852,7 @@ function generate_options_content() {
         document.getElementById('button_tab_kids').addEventListener('click', function() { logEvent('button_tab_kids'); tab_select('tab_kids'); });
         document.getElementById('button_tab_ratings').addEventListener('click', function() { logEvent('button_tab_ratings'); tab_select('tab_ratings'); });
         document.getElementById('button_tab_video').addEventListener('click', function() { logEvent('button_tab_video'); tab_select('tab_video'); });
+        document.getElementById('button_tab_subtitles').addEventListener('click', function() { logEvent('button_tab_subtitles'); tab_select('tab_subtitles'); });
         document.getElementById('button_tab_timers').addEventListener('click', function() { logEvent('button_tab_timers'); tab_select('tab_timers'); });
         document.getElementById('button_tab_bindings').addEventListener('click', function() { logEvent('button_tab_bindings'); tab_select('tab_bindings'); });
         document.getElementById('button_tab_storage').addEventListener('click', function() { logEvent('button_tab_storage'); tab_select('tab_storage'); });

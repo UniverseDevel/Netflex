@@ -460,6 +460,29 @@ function version_consistency_changes() {
             apply_version('7.0.1');
         }
 
+        // Before 7.0.2
+        if (applied_version_normalized < normalize_version('7.0.2', 4)) {
+            log('info', '', getLang('version_changes'), '7.0.2');
+
+            // Configuration variable highlightSubtitles value changed from disabled to original
+            try {
+                log('info', '', getLang('versions_reset_data'), 'highlightSubtitles');
+                chrome.storage.local.get(['highlightSubtitles'], function(result) {
+                    if (result['highlightSubtitles'] !== undefined) {
+                        if (result['highlightSubtitles'] == 'disabled') {
+                            cfg['highlightSubtitles']['val'] = 'original';
+                            chrome.storage.local.set({ 'highlightSubtitles': 'original' }, function() {
+                                cfg['highlightSubtitles']['val'] = 'original';
+                            });
+                        }
+                    }
+                });
+                log('info', '', getLang('success'));
+            } catch (e) {log('error', '', getLang('failed'));}
+
+            apply_version('7.0.2');
+        }
+
         /* - Template, add new changes to the 'Perform necessary changes' part and adjust version number
         // Before 999999.999.999
         if (applied_version_normalized < normalize_version('999999.999.999', 4)) {

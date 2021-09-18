@@ -563,6 +563,10 @@
         "message":"Video",
         "description":""
     },
+    "menu_subtitles":{
+        "message":"Subtitles",
+        "description":""
+    },
     "menu_timers":{
         "message":"Timers",
         "description":""
@@ -807,14 +811,6 @@
         "message":"Turns on/off hiding of status icon while playing title. If enabled, this would hide extension status icon and pop-up bubble from video player, but will remain available on browse pages to have an ability to disable this setting.",
         "description":""
     },
-    "cfg_highlightSubtitles_name":{
-        "message":"Highlight subtitles",
-        "description":""
-    },
-    "cfg_highlightSubtitles_description":{
-        "message":"Sets subtitle highlight style.<br><br>~ Hide subtitles - All subtitles will be hidden.<br>~ Disabled - Subtitles will not be highlighted by extension, but might be highlighted by Netflix™.<br>~ Shadow - Subtitles shadow will be darker and more visible around them, if Netflix™ provides subtitles with black background this will have no effect.<br>~ Background - Subtitles will receive background that will be 50% transparent, if Netflix™ provides subtitles with black background this will have no effect.",
-        "description":""
-    },
     "cfg_showRatings_description":{
         "message":"Turns on/off ratings display and collection. When turned off, already collected ratings will stay in local storage but will not be used.",
         "description":""
@@ -973,6 +969,38 @@
     },
     "cfg_videoSepia_description":{
         "message":"Sets video sepia effect at which will every title play. This can be temporarily overwritten by status bubble controls.",
+        "description":""
+    },
+    "cfg_highlightSubtitles_name":{
+        "message":"Highlight subtitles",
+        "description":""
+    },
+    "cfg_highlightSubtitles_description":{
+        "message":"Sets subtitles highlight style.<br><br>~ Hide subtitles - All subtitles will be hidden.<br>~ Original - Subtitles will not be highlighted by extension, but might be highlighted by Netflix™.<br>~ Shadow - Subtitles shadow will be darker and more visible around them, if Netflix™ provides subtitles with black background this will have no effect.<br>~ Background - Subtitles will receive background that will be 50% transparent, if Netflix™ provides subtitles with black background this will have no effect.",
+        "description":""
+    },
+    "cfg_subtitlesSize_name":{
+        "message":"Subtitles size",
+        "description":""
+    },
+    "cfg_subtitlesSize_description":{
+        "message":"Sets subtitles size.",
+        "description":""
+    },
+    "cfg_subtitlesColor_name":{
+        "message":"Subtitles color",
+        "description":""
+    },
+    "cfg_subtitlesColor_description":{
+        "message":"Sets subtitles color. You can use common english color names (red, white, blue, yellow, etc...) or you can use Hex color codes starting with #. Hex color codes can be looked up here: <a href='https://www.color-hex.com/' target='_blank'>https://www.color-hex.com/</a>. Any invalid value will result in white color.",
+        "description":""
+    },
+    "cfg_subtitlesFont_name":{
+        "message":"Subtitles font",
+        "description":""
+    },
+    "cfg_subtitlesFont_description":{
+        "message":"Sets subtitles font.",
         "description":""
     },
     "cfg_timeFromLoadLimit_name":{
@@ -1235,6 +1263,10 @@
         "message":"Reset all debug options to default",
         "description":""
     },
+    "button_reset_subtitles":{
+        "message":"Reset all subtitles options to default",
+        "description":""
+    },
     "button_reset_bindings":{
         "message":"Reset all key binding options to default",
         "description":""
@@ -1331,8 +1363,8 @@
         "message":"Hide subtitles",
         "description":""
     },
-    "highlightSubtitles_type_disabled":{
-        "message":"Disabled",
+    "highlightSubtitles_type_original":{
+        "message":"Original",
         "description":""
     },
     "highlightSubtitles_type_shadow":{

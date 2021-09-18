@@ -7,9 +7,9 @@
     width: 500px;
     border-radius: 0.5em;
     font-size: 16px;
-    right: var(--netflex_off_right, auto) !important;
-    top: var(--netflex_off_top, auto) !important;
-    bottom: var(--netflex_off_bottom, auto) !important;
+    right: var(--netflex_bubble_off_right, auto) !important;
+    top: var(--netflex_bubble_off_top, auto) !important;
+    bottom: var(--netflex_bubble_off_bottom, auto) !important;
 }
 
 #netflex_bubble_container .unread {
@@ -31,9 +31,9 @@
 }
 
 #netflex_icon_status {
-    stroke: var(--netflex_bord_color, #FFFFFF) !important;
+    stroke: var(--netflex_icon_bord_color, #FFFFFF) !important;
     stroke-width: 80px;
-    color: var(--netflex_stat_color, #00b642) !important;
+    color: var(--netflex_icon_stat_color, #00b642) !important;
     transform-origin: center center !important;
 }
 

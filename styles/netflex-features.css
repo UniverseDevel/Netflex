@@ -2,6 +2,22 @@
 	display: none !important;
 }
 
+.player-timedtext[netflex_sub_size="on"] .player-timedtext-text-container {
+    font-size: 21px;
+}
+
+.player-timedtext[netflex_sub_size="on"] .player-timedtext-text-container span {
+    font-size: var(--netflex_subtitles_size, initial) !important;
+}
+
+.player-timedtext[netflex_sub_color="on"] .player-timedtext-text-container span {
+    color: var(--netflex_subtitles_color, #ffffff) !important;
+}
+
+.player-timedtext[netflex_sub_font="on"] .player-timedtext-text-container span {
+    font-family: var(--netflex_subtitles_font, inherit) !important;
+}
+
 .player-timedtext[netflex_highlighted="shadow"] .player-timedtext-text-container span {
     text-shadow: #000000 -2px 0px, #000000 0px 2px, #000000 2px 0px, #000000 0px -2px !important;
 }
@@ -26,11 +42,11 @@ div[data-uia="video-canvas"] video[netflex_video_features="on"][netflex_aspect_r
 
 .VideoContainer video[netflex_video_features="on"][netflex_aspect_ratio="manual"],
 div[data-uia="video-canvas"] video[netflex_video_features="on"][netflex_aspect_ratio="manual"] {
-    width: var(--netflex_zoom, 100%) !important;
-    height: var(--netflex_zoom, 100%) !important;
+    width: var(--netflex_video_zoom, 100%) !important;
+    height: var(--netflex_video_zoom, 100%) !important;
 }
 
 .VideoContainer video[netflex_video_features="on"],
 div[data-uia="video-canvas"] video[netflex_video_features="on"] {
-    filter: var(--netflex_filter, none) !important;
+    filter: var(--netflex_video_filter, none) !important;
 }

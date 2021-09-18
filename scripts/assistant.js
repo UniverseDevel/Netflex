@@ -228,13 +228,121 @@ function unreveal_synopsis(obj) {
     obj.setAttribute('netflex_blur', 'shown');
 }
 
+function handle_subtitles_features() {
+    try {var subtitles_block = object_handler('player_subtitles', null);} catch (e) {}
+
+    if (subtitles_block) {
+        if (check_watch()) {
+            if (enableAssistant) {
+                // Apply subtitles highlight
+                if (cfg['highlightSubtitles']['access'] && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off']) || hideSubtitles_temp)) {
+                    if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
+                        // Hide subtitles
+                        if (!subtitles_block.classList.contains('visually-hidden')) {
+                            add_stats_count('stat_highlightSubtitles');
+                            subtitles_block.classList.add('visually-hidden');
+                        }
+                    } else {
+                        // Show subtitles
+                        if (subtitles_block.classList.contains('visually-hidden')) {
+                            subtitles_block.classList.remove('visually-hidden');
+                        }
+
+                        // Handle subtitles style
+                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
+                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
+                        }
+                    }
+                } else {
+                    if (!hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
+                        // Show subtitles
+                        if (subtitles_block.classList.contains('visually-hidden')) {
+                            subtitles_block.classList.remove('visually-hidden');
+                        }
+
+                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                        }
+                    }
+                }
+
+                // Apply subtitles size
+                if (cfg['subtitlesSize']['val'] != cfg['subtitlesSize']['off'] && cfg['subtitlesSize']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_size', cfg['subtitlesSize']['val'] + '%', '');
+
+                    if (subtitles_block.getAttribute('netflex_sub_size') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_size', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_size');
+                    if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_size', 'off');
+                    }
+                }
+
+                // Apply subtitles color
+                if (cfg['subtitlesColor']['val'] != cfg['subtitlesColor']['off'] && cfg['subtitlesColor']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_color', cfg['subtitlesColor']['val'], '');
+
+                    if (subtitles_block.getAttribute('netflex_sub_color') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_color', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_color');
+                    if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_color', 'off');
+                    }
+                }
+
+                // Apply subtitles font
+                if (cfg['subtitlesFont']['val'] != cfg['subtitlesFont']['off'] && cfg['subtitlesFont']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'] + '"', '');
+
+                    if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_font', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_font');
+                    if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_font', 'off');
+                    }
+                }
+            } else {
+                // Show subtitles if hidden
+                if (subtitles_block.classList.contains('visually-hidden')) {
+                    subtitles_block.classList.remove('visually-hidden');
+                }
+
+                if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                    subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                }
+
+                // Reset subtitles size
+                if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_size', 'off');
+                }
+
+                // Reset subtitles color
+                if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_color', 'off');
+                }
+
+                // Reset subtitles font
+                if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_font', 'off');
+                }
+            }
+        }
+    }
+}
+
 function handle_video_features() {
-    // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
-    // when other extension might be changing them as well
     try {var video = object_handler('player_video', null);} catch (e) {}
 
     if (video) {
         if (check_watch()) {
+            // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
+            // when other extension might be changing them as well
             if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
                 if (enableAssistant) {
                     video.setAttribute('netflex_video_features', 'on');
@@ -273,7 +381,7 @@ function handle_video_features() {
                                 videoZoom_temp = cfg['videoZoom']['val'];
                                 videoZoom_change = cfg['videoZoom']['val'];
                             }
-                            video.style.setProperty('--netflex_zoom', videoZoom_temp + '%', '');
+                            video.style.setProperty('--netflex_video_zoom', videoZoom_temp + '%', '');
                         }
                     }
 
@@ -362,7 +470,7 @@ function handle_video_features() {
                     if (filter == '') {
                         filter = 'none';
                     }
-                    video.style.setProperty('--netflex_filter', filter, '');
+                    video.style.setProperty('--netflex_video_filter', filter, '');
                 } else {
                     reset_videoSpeedRate();
                     video.removeAttribute('netflex_video_features');
@@ -419,6 +527,9 @@ function netflix_assistant() {
     // Adjust video display settings
     handle_video_features();
 
+    // Adjust subtitles settings
+    handle_subtitles_features();
+
     var location_changed = false
     if (full_url != full_url_old) {
         full_url_old = full_url;
@@ -449,15 +560,6 @@ function netflix_assistant() {
                         }
                     }
                 }
-            }
-
-            // Show subtitles if hidden
-            var subtitles_block = object_handler('player_subtitles', null);
-            if (subtitles_block) {
-                if (subtitles_block.classList.contains('visually-hidden')) {
-                    subtitles_block.classList.remove('visually-hidden');
-                }
-                subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
             }
 
             // Remove elapsed time objects
@@ -723,34 +825,6 @@ function netflix_assistant() {
                         if (!video.paused) {
                             pausedByExtension = false;
                         }
-                    }
-                }
-
-                // Apply subtitles configuration
-                var subtitles_block = object_handler('player_subtitles', null);
-                if (subtitles_block && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off'] && cfg['highlightSubtitles']['access']) || (hideSubtitles_temp && cfg['hideSubtitlesKey']['access']))) {
-                    if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
-                        // Hide subtitles
-                        if (!subtitles_block.classList.contains('visually-hidden')) {
-                            add_stats_count('stat_highlightSubtitles');
-                            subtitles_block.classList.add('visually-hidden');
-                        }
-                    } else {
-                        // Show subtitles
-                        if (subtitles_block.classList.contains('visually-hidden')) {
-                            subtitles_block.classList.remove('visually-hidden');
-                        }
-
-                        // Handle subtitles style
-                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
-                    }
-                } else {
-                    if (subtitles_block && !hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
-                        // Show subtitles
-                        if (subtitles_block.classList.contains('visually-hidden')) {
-                            subtitles_block.classList.remove('visually-hidden');
-                        }
-                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
                     }
                 }
 

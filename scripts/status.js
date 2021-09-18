@@ -388,6 +388,7 @@ function generate_options() {
                 <button class="option item menu_kids" id="button_tab_kids" style="display: none;"></button>
                 <button class="option item menu_ratings" id="button_tab_ratings" style="display: none;"></button>
                 <button class="option item menu_video" id="button_tab_video" style="display: none;"></button>
+                <button class="option item menu_subtitles" id="button_tab_subtitles" style="display: none;"></button>
                 <button class="option item menu_timers" id="button_tab_timers" style="display: none;"></button>
                 <button class="option item menu_bindings" id="button_tab_bindings" style="display: none;"></button>
                 <button class="option item menu_storage" id="button_tab_storage" style="display: none;"></button>
@@ -1077,8 +1078,8 @@ function update_status_objects() {
                     // If icon status color changed, update it
                     var elm = document.getElementById('netflex_icon_status');
                     if (elm) {
-                        if (status_data[key] != elm.style.getPropertyValue('--netflex_stat_color')) {
-                            elm.style.setProperty('--netflex_stat_color', status_data[key], '');
+                        if (status_data[key] != elm.style.getPropertyValue('--netflex_icon_stat_color')) {
+                            elm.style.setProperty('--netflex_icon_stat_color', status_data[key], '');
                             updated_keys.push(key);
                         }
                     }
@@ -1087,8 +1088,8 @@ function update_status_objects() {
                     // If icon border color changed, update it
                     var elm = document.getElementById('netflex_icon_status');
                     if (elm) {
-                        if (status_data[key] != elm.style.getPropertyValue('--netflex_bord_color')) {
-                            elm.style.setProperty('--netflex_bord_color', status_data[key], '');
+                        if (status_data[key] != elm.style.getPropertyValue('--netflex_icon_bord_color')) {
+                            elm.style.setProperty('--netflex_icon_bord_color', status_data[key], '');
                             updated_keys.push(key);
                         }
                     }
@@ -1109,8 +1110,8 @@ function update_status_objects() {
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
                         if (status_data[key] != old_value) {
-                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_right')) {
-                            elm.style.setProperty('--netflex_off_right', status_data[key], '');
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_right')) {
+                            elm.style.setProperty('--netflex_bubble_off_right', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
                         }
@@ -1121,8 +1122,8 @@ function update_status_objects() {
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
                         if (status_data[key] != old_value) {
-                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_top')) {
-                            elm.style.setProperty('--netflex_off_top', status_data[key], '');
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_top')) {
+                            elm.style.setProperty('--netflex_bubble_off_top', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
                         }
@@ -1133,8 +1134,8 @@ function update_status_objects() {
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
                         if (status_data[key] != old_value) {
-                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_off_bottom')) {
-                            elm.style.setProperty('--netflex_off_bottom', status_data[key], '');
+                        //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_bottom')) {
+                            elm.style.setProperty('--netflex_bubble_off_bottom', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
                         }
