@@ -235,7 +235,7 @@ function generate_options_data(load_tab) {
                     //if (isFirefox) {
                         size_arg = ' size="5"';
                     //}
-                    cfg_form_element = fillArgs('<select id="{0}" style="width:350px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_select_options(cfg_key));
+                    cfg_form_element = fillArgs('<select id="{0}" style="width:300px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_select_options(cfg_key));
                     break;
                 case 'binding':
                     cfg_input_type = 'binding';
@@ -245,7 +245,7 @@ function generate_options_data(load_tab) {
                     //if (isFirefox) {
                         size_arg = ' size="5"';
                     //}
-                    cfg_form_element = fillArgs('<select id="{0}" style="width:350px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
+                    cfg_form_element = fillArgs('<select id="{0}" style="width:300px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
                     break;
                 case 'text':
                 case 'api':

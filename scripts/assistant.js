@@ -232,105 +232,103 @@ function handle_subtitles_features() {
     try {var subtitles_block = object_handler('player_subtitles', null);} catch (e) {}
 
     if (subtitles_block) {
-        if (check_watch()) {
-            if (enableAssistant) {
-                // Apply subtitles highlight
-                if (cfg['highlightSubtitles']['access'] && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off']) || hideSubtitles_temp)) {
-                    if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
-                        // Hide subtitles
-                        if (!subtitles_block.classList.contains('visually-hidden')) {
-                            add_stats_count('stat_highlightSubtitles');
-                            subtitles_block.classList.add('visually-hidden');
-                        }
-                    } else {
-                        // Show subtitles
-                        if (subtitles_block.classList.contains('visually-hidden')) {
-                            subtitles_block.classList.remove('visually-hidden');
-                        }
-
-                        // Handle subtitles style
-                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
-                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
-                        }
+        if (enableAssistant && check_watch()) {
+            // Apply subtitles highlight
+            if (cfg['highlightSubtitles']['access'] && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off']) || hideSubtitles_temp)) {
+                if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
+                    // Hide subtitles
+                    if (!subtitles_block.classList.contains('visually-hidden')) {
+                        add_stats_count('stat_highlightSubtitles');
+                        subtitles_block.classList.add('visually-hidden');
                     }
                 } else {
-                    if (!hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
-                        // Show subtitles
-                        if (subtitles_block.classList.contains('visually-hidden')) {
-                            subtitles_block.classList.remove('visually-hidden');
-                        }
-
-                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
-                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
-                        }
+                    // Show subtitles
+                    if (subtitles_block.classList.contains('visually-hidden')) {
+                        subtitles_block.classList.remove('visually-hidden');
                     }
-                }
 
-                // Apply subtitles size
-                if (cfg['subtitlesSize']['val'] != cfg['subtitlesSize']['off'] && cfg['subtitlesSize']['access']) {
-                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_size', cfg['subtitlesSize']['val'] + '%', '');
-
-                    if (subtitles_block.getAttribute('netflex_sub_size') != 'on') {
-                        subtitles_block.setAttribute('netflex_sub_size', 'on');
-                    }
-                } else {
-                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_size');
-                    if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
-                        subtitles_block.setAttribute('netflex_sub_size', 'off');
-                    }
-                }
-
-                // Apply subtitles color
-                if (cfg['subtitlesColor']['val'] != cfg['subtitlesColor']['off'] && cfg['subtitlesColor']['access']) {
-                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_color', cfg['subtitlesColor']['val'], '');
-
-                    if (subtitles_block.getAttribute('netflex_sub_color') != 'on') {
-                        subtitles_block.setAttribute('netflex_sub_color', 'on');
-                    }
-                } else {
-                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_color');
-                    if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
-                        subtitles_block.setAttribute('netflex_sub_color', 'off');
-                    }
-                }
-
-                // Apply subtitles font
-                if (cfg['subtitlesFont']['val'] != cfg['subtitlesFont']['off'] && cfg['subtitlesFont']['access']) {
-                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'] + '"', '');
-
-                    if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
-                        subtitles_block.setAttribute('netflex_sub_font', 'on');
-                    }
-                } else {
-                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_font');
-                    if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
-                        subtitles_block.setAttribute('netflex_sub_font', 'off');
+                    // Handle subtitles style
+                    if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
+                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
                     }
                 }
             } else {
-                // Show subtitles if hidden
-                if (subtitles_block.classList.contains('visually-hidden')) {
-                    subtitles_block.classList.remove('visually-hidden');
-                }
+                if (!hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
+                    // Show subtitles
+                    if (subtitles_block.classList.contains('visually-hidden')) {
+                        subtitles_block.classList.remove('visually-hidden');
+                    }
 
-                if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
-                    subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                    if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                    }
                 }
+            }
 
-                // Reset subtitles size
+            // Apply subtitles size
+            if (cfg['subtitlesSize']['val'] != cfg['subtitlesSize']['off'] && cfg['subtitlesSize']['access']) {
+                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_size', cfg['subtitlesSize']['val'] + '%', '');
+
+                if (subtitles_block.getAttribute('netflex_sub_size') != 'on') {
+                    subtitles_block.setAttribute('netflex_sub_size', 'on');
+                }
+            } else {
+                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_size');
                 if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
                     subtitles_block.setAttribute('netflex_sub_size', 'off');
                 }
+            }
 
-                // Reset subtitles color
+            // Apply subtitles color
+            if (cfg['subtitlesColor']['val'] != cfg['subtitlesColor']['off'] && cfg['subtitlesColor']['access']) {
+                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_color', cfg['subtitlesColor']['val'], '');
+
+                if (subtitles_block.getAttribute('netflex_sub_color') != 'on') {
+                    subtitles_block.setAttribute('netflex_sub_color', 'on');
+                }
+            } else {
+                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_color');
                 if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
                     subtitles_block.setAttribute('netflex_sub_color', 'off');
                 }
+            }
 
-                // Reset subtitles font
+            // Apply subtitles font
+            if (cfg['subtitlesFont']['val'] != cfg['subtitlesFont']['off'] && cfg['subtitlesFont']['access']) {
+                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'] + '"', '');
+
+                if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
+                    subtitles_block.setAttribute('netflex_sub_font', 'on');
+                }
+            } else {
+                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_font');
                 if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
                     subtitles_block.setAttribute('netflex_sub_font', 'off');
                 }
+            }
+        } else {
+            // Show subtitles if hidden
+            if (subtitles_block.classList.contains('visually-hidden')) {
+                subtitles_block.classList.remove('visually-hidden');
+            }
+
+            if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+            }
+
+            // Reset subtitles size
+            if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
+                subtitles_block.setAttribute('netflex_sub_size', 'off');
+            }
+
+            // Reset subtitles color
+            if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
+                subtitles_block.setAttribute('netflex_sub_color', 'off');
+            }
+
+            // Reset subtitles font
+            if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
+                subtitles_block.setAttribute('netflex_sub_font', 'off');
             }
         }
     }
@@ -340,142 +338,138 @@ function handle_video_features() {
     try {var video = object_handler('player_video', null);} catch (e) {}
 
     if (video) {
-        if (check_watch()) {
-            // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
-            // when other extension might be changing them as well
-            if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
-                if (enableAssistant) {
-                    video.setAttribute('netflex_video_features', 'on');
-                    videoSpeedRate = video.playbackRate * 100;
+        // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
+        // when other extension might be changing them as well
+        if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
+            if (enableAssistant && check_watch()) {
+                video.setAttribute('netflex_video_features', 'on');
+                videoSpeedRate = video.playbackRate * 100;
 
-                    // Video speed rate feature
-                    if (cfg['videoSpeedRate']['access']) {
-                        if (videoSpeedRate_change != cfg['videoSpeedRate']['val']) {
-                            updateFeaturesControls('videoSpeedRate');
-                            videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
-                            videoSpeedRate_change = cfg['videoSpeedRate']['val'];
-                        }
-                        if (videoSpeedRate != videoSpeedRate_temp) {
-                            // Going below or above min/max values means something is wrong and we should prefer to use default value
-                            if (videoSpeedRate_temp < cfg['videoSpeedRate']['min'] || videoSpeedRate_temp > cfg['videoSpeedRate']['max']) {
-                                videoSpeedRate_temp = cfg['videoSpeedRate']['def'];
-                                videoSpeedRate_change = cfg['videoSpeedRate']['def'];
-                                cfg['videoSpeedRate']['val'] = cfg['videoSpeedRate']['def'];
-                            }
-                            video.playbackRate = (videoSpeedRate_temp / 100).toFixed(2);
-                            videoSpeedRate = videoSpeedRate_temp;
-                        }
+                // Video speed rate feature
+                if (cfg['videoSpeedRate']['access']) {
+                    if (videoSpeedRate_change != cfg['videoSpeedRate']['val']) {
+                        updateFeaturesControls('videoSpeedRate');
+                        videoSpeedRate_temp = cfg['videoSpeedRate']['val'];
+                        videoSpeedRate_change = cfg['videoSpeedRate']['val'];
                     }
-
-                    // Video aspect ratio and zoom
-                    if (cfg['videoAspectRatio']['access']) {
-                        if (cfg['videoAspectRatio']['val'] != 'original') {
-                            video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
-                        } else {
-                            video.removeAttribute('netflex_aspect_ratio');
+                    if (videoSpeedRate != videoSpeedRate_temp) {
+                        // Going below or above min/max values means something is wrong and we should prefer to use default value
+                        if (videoSpeedRate_temp < cfg['videoSpeedRate']['min'] || videoSpeedRate_temp > cfg['videoSpeedRate']['max']) {
+                            videoSpeedRate_temp = cfg['videoSpeedRate']['def'];
+                            videoSpeedRate_change = cfg['videoSpeedRate']['def'];
+                            cfg['videoSpeedRate']['val'] = cfg['videoSpeedRate']['def'];
                         }
-
-                        if (cfg['videoZoom']['access']) {
-                            if (videoZoom_change != cfg['videoZoom']['val']) {
-                                updateFeaturesControls('videoZoom');
-                                videoZoom_temp = cfg['videoZoom']['val'];
-                                videoZoom_change = cfg['videoZoom']['val'];
-                            }
-                            video.style.setProperty('--netflex_video_zoom', videoZoom_temp + '%', '');
-                        }
+                        video.playbackRate = (videoSpeedRate_temp / 100).toFixed(2);
+                        videoSpeedRate = videoSpeedRate_temp;
                     }
-
-                    // Filter video features
-                    var filter_values = [];
-
-                    if (cfg['videoBrightness']['access']) {
-                        if (videoBrightness_change != cfg['videoBrightness']['val']) {
-                            updateFeaturesControls('videoBrightness');
-                            videoBrightness_temp = cfg['videoBrightness']['val'];
-                            videoBrightness_change = cfg['videoBrightness']['val'];
-                        }
-                        if (videoBrightness_temp != cfg['videoBrightness']['def']) {
-                            filter_values.push('brightness(' + videoBrightness_temp + '%)');
-                        }
-                    }
-
-                    if (cfg['videoContrast']['access']) {
-                        if (videoContrast_change != cfg['videoContrast']['val']) {
-                            updateFeaturesControls('videoContrast');
-                            videoContrast_temp = cfg['videoContrast']['val'];
-                            videoContrast_change = cfg['videoContrast']['val'];
-                        }
-                        if (videoContrast_temp != cfg['videoContrast']['def']) {
-                            filter_values.push('contrast(' + videoContrast_temp + '%)');
-                        }
-                    }
-
-                    if (cfg['videoGrayscale']['access']) {
-                        if (videoGrayscale_change != cfg['videoGrayscale']['val']) {
-                            updateFeaturesControls('videoGrayscale');
-                            videoGrayscale_temp = cfg['videoGrayscale']['val'];
-                            videoGrayscale_change = cfg['videoGrayscale']['val'];
-                        }
-                        if (videoGrayscale_temp != cfg['videoGrayscale']['def']) {
-                            filter_values.push('grayscale(' + videoGrayscale_temp + '%)');
-                        }
-                    }
-
-                    if (cfg['videoHue']['access']) {
-                        if (videoHue_change != cfg['videoHue']['val']) {
-                            updateFeaturesControls('videoHue');
-                            videoHue_temp = cfg['videoHue']['val'];
-                            videoHue_change = cfg['videoHue']['val'];
-                        }
-                        if (videoHue_temp != cfg['videoHue']['def']) {
-                            filter_values.push('hue-rotate(' + videoHue_temp + 'deg)');
-                        }
-                    }
-
-                    if (cfg['videoInvert']['access']) {
-                        if (videoInvert_change != cfg['videoInvert']['val']) {
-                            updateFeaturesControls('videoInvert');
-                            videoInvert_temp = cfg['videoInvert']['val'];
-                            videoInvert_change = cfg['videoInvert']['val'];
-                        }
-                        if (videoInvert_temp != cfg['videoInvert']['def']) {
-                            filter_values.push('invert(' + videoInvert_temp + '%)');
-                        }
-                    }
-
-                    if (cfg['videoSaturation']['access']) {
-                        if (videoSaturation_change != cfg['videoSaturation']['val']) {
-                            updateFeaturesControls('videoSaturation');
-                            videoSaturation_temp = cfg['videoSaturation']['val'];
-                            videoSaturation_change = cfg['videoSaturation']['val'];
-                        }
-                        if (videoSaturation_temp != cfg['videoSaturation']['def']) {
-                            filter_values.push('saturate(' + videoSaturation_temp + '%)');
-                        }
-                    }
-
-                    if (cfg['videoSepia']['access']) {
-                        if (videoSepia_change != cfg['videoSepia']['val']) {
-                            updateFeaturesControls('videoSepia');
-                            videoSepia_temp = cfg['videoSepia']['val'];
-                            videoSepia_change = cfg['videoSepia']['val'];
-                        }
-                        if (videoSepia_temp != cfg['videoSepia']['def']) {
-                            filter_values.push('sepia(' + videoSepia_temp + '%)');
-                        }
-                    }
-
-                    // Change filter
-                    var filter = filter_values.join(' ');
-                    if (filter == '') {
-                        filter = 'none';
-                    }
-                    video.style.setProperty('--netflex_video_filter', filter, '');
-                } else {
-                    reset_videoSpeedRate();
-                    video.removeAttribute('netflex_video_features');
                 }
+
+                // Video aspect ratio and zoom
+                if (cfg['videoAspectRatio']['access']) {
+                    if (cfg['videoAspectRatio']['val'] != 'original') {
+                        video.setAttribute('netflex_aspect_ratio', cfg['videoAspectRatio']['val']);
+                    } else {
+                        video.removeAttribute('netflex_aspect_ratio');
+                    }
+
+                    if (cfg['videoZoom']['access']) {
+                        if (videoZoom_change != cfg['videoZoom']['val']) {
+                            updateFeaturesControls('videoZoom');
+                            videoZoom_temp = cfg['videoZoom']['val'];
+                            videoZoom_change = cfg['videoZoom']['val'];
+                        }
+                        video.style.setProperty('--netflex_video_zoom', videoZoom_temp + '%', '');
+                    }
+                }
+
+                // Filter video features
+                var filter_values = [];
+
+                if (cfg['videoBrightness']['access']) {
+                    if (videoBrightness_change != cfg['videoBrightness']['val']) {
+                        updateFeaturesControls('videoBrightness');
+                        videoBrightness_temp = cfg['videoBrightness']['val'];
+                        videoBrightness_change = cfg['videoBrightness']['val'];
+                    }
+                    if (videoBrightness_temp != cfg['videoBrightness']['def']) {
+                        filter_values.push('brightness(' + videoBrightness_temp + '%)');
+                    }
+                }
+
+                if (cfg['videoContrast']['access']) {
+                    if (videoContrast_change != cfg['videoContrast']['val']) {
+                        updateFeaturesControls('videoContrast');
+                        videoContrast_temp = cfg['videoContrast']['val'];
+                        videoContrast_change = cfg['videoContrast']['val'];
+                    }
+                    if (videoContrast_temp != cfg['videoContrast']['def']) {
+                        filter_values.push('contrast(' + videoContrast_temp + '%)');
+                    }
+                }
+
+                if (cfg['videoGrayscale']['access']) {
+                    if (videoGrayscale_change != cfg['videoGrayscale']['val']) {
+                        updateFeaturesControls('videoGrayscale');
+                        videoGrayscale_temp = cfg['videoGrayscale']['val'];
+                        videoGrayscale_change = cfg['videoGrayscale']['val'];
+                    }
+                    if (videoGrayscale_temp != cfg['videoGrayscale']['def']) {
+                        filter_values.push('grayscale(' + videoGrayscale_temp + '%)');
+                    }
+                }
+
+                if (cfg['videoHue']['access']) {
+                    if (videoHue_change != cfg['videoHue']['val']) {
+                        updateFeaturesControls('videoHue');
+                        videoHue_temp = cfg['videoHue']['val'];
+                        videoHue_change = cfg['videoHue']['val'];
+                    }
+                    if (videoHue_temp != cfg['videoHue']['def']) {
+                        filter_values.push('hue-rotate(' + videoHue_temp + 'deg)');
+                    }
+                }
+
+                if (cfg['videoInvert']['access']) {
+                    if (videoInvert_change != cfg['videoInvert']['val']) {
+                        updateFeaturesControls('videoInvert');
+                        videoInvert_temp = cfg['videoInvert']['val'];
+                        videoInvert_change = cfg['videoInvert']['val'];
+                    }
+                    if (videoInvert_temp != cfg['videoInvert']['def']) {
+                        filter_values.push('invert(' + videoInvert_temp + '%)');
+                    }
+                }
+
+                if (cfg['videoSaturation']['access']) {
+                    if (videoSaturation_change != cfg['videoSaturation']['val']) {
+                        updateFeaturesControls('videoSaturation');
+                        videoSaturation_temp = cfg['videoSaturation']['val'];
+                        videoSaturation_change = cfg['videoSaturation']['val'];
+                    }
+                    if (videoSaturation_temp != cfg['videoSaturation']['def']) {
+                        filter_values.push('saturate(' + videoSaturation_temp + '%)');
+                    }
+                }
+
+                if (cfg['videoSepia']['access']) {
+                    if (videoSepia_change != cfg['videoSepia']['val']) {
+                        updateFeaturesControls('videoSepia');
+                        videoSepia_temp = cfg['videoSepia']['val'];
+                        videoSepia_change = cfg['videoSepia']['val'];
+                    }
+                    if (videoSepia_temp != cfg['videoSepia']['def']) {
+                        filter_values.push('sepia(' + videoSepia_temp + '%)');
+                    }
+                }
+
+                // Change filter
+                var filter = filter_values.join(' ');
+                if (filter == '') {
+                    filter = 'none';
+                }
+                video.style.setProperty('--netflex_video_filter', filter, '');
             } else {
+                reset_videoSpeedRate();
                 video.removeAttribute('netflex_video_features');
             }
         } else {
