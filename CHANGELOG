@@ -99,7 +99,7 @@
 7.0.0    - 2021.09.09 - Added support for new Netflix player UI, unfortunately without backwards compatibility. Bugfixes. Added way how to call an action when configuration changes per configuration item. Added option to roll credits before skipping to next episode. Style fixes at configuration UI to make it consistent with extension colors and styles. Fixed potential problem when multiple episodes could be skipped. Added way how to show changes from configuration before they are save (ex. live video features applying). Improved extension performance. Added implementation for news that is currently disabled for production environments. Multiple preparations for manifest v3 and few consolidations. Preparation for optional permissions, which will be unused for now as Firefox handles them in way it might not work with this extension.
 7.0.1    - 2021.09.13 - Bugfixes. Added option to disable showing specific ratings sources. Added dependency system into configuration that clearly states which configuration is dependent on other configuration and its value, this is also shown in options and is enforced with highlighting dependency if conditions are not met. Added units to values in configuration so values are better understood. Added option to enable or disable configuration options on Kids profile, Kids options were moved to their own section.
 7.0.2    - 2021.09.18 - Bugfixes. Added elapsed time to Chromecast screen. Added more options for styling subtitles. Updated DOMPurify library.
-7.1.0    - 2021.09.20 - Bugfixes. Assistant features refactoring.
+7.1.0    - 2021.09.20 - Bugfixes. Assistant features refactoring. Updated DOMPurify library.
 
 TODO:
 
