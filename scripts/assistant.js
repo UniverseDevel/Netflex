@@ -435,6 +435,7 @@ function handle_subtitles_features() {
 
                         // Handle subtitles style
                         if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
+                            add_stats_count('stat_highlightSubtitles');
                             subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
                         }
                     }
@@ -592,6 +593,7 @@ function handle_elapsed_time_feature() {
                         addCSS(elapsed_time, { 'margin-right': '0em !important', 'margin-left': '1em !important' });
 
                         try {progress_bar_cast.parentNode.insertBefore(elapsed_time, progress_bar_cast);} catch (e) {}
+                        add_stats_count('stat_showElapsedTime');
                     }
 
                     // Refresh value or add event that will
@@ -610,6 +612,7 @@ function handle_elapsed_time_feature() {
                         addCSS(elapsed_time, { 'padding-left': '0em !important', 'padding-right': '1em !important' });
 
                         try {progress_bar.parentNode.parentNode.insertBefore(elapsed_time, progress_bar.parentNode.parentNode.children[0]);} catch (e) {}
+                        add_stats_count('stat_showElapsedTime');
                     }
 
                     // Refresh value or add event that will
@@ -794,7 +797,7 @@ function handle_pause_on_blur_feature() {
                     }
                 } else {
                     // Check if video is visible and paused by extension and is configured to autostart
-                    if (!hiddenCFG && video.paused && pausedByExtension && cfg['playOnFocus']['val']) {
+                    if (!hiddenCFG && video.paused && pausedByExtension && cfg['playOnFocus']['val'] && cfg['playOnFocus']['access']) {
                         // Autostart video
                         try {
                             add_stats_count('stat_playOnFocus');

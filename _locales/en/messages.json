@@ -1759,6 +1759,10 @@
         "message":"Stopped on different title (movies)",
         "description":""
     },
+    "stat_showElapsedTime":{
+        "message":"Elapsed time shown",
+        "description":""
+    },
     "stat_pauseOnBlur":{
         "message":"Paused on blur",
         "description":""
