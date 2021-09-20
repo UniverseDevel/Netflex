@@ -122,10 +122,12 @@ try {
                             generated_content += getLang('error_message') + ' (generateVariables) ' + e.message + '<br>';
                         }
                     } else {
+                        log('error', '', 'Tab error (mismatch)');
                         log('error', '', tabs_error);
                         generated_content = tabs_error;
                     }
                 } else {
+                    log('error', '', 'Tab error (unavailable)');
                     log('error', '', tabs_error);
                     generated_content = tabs_error;
                 }
@@ -136,7 +138,7 @@ try {
             addDOM(document.getElementById('data_output'), generated_content);
             addDOM(document.getElementById('last_refresh'), new Date().toISOString().replace('T', ' ').replace('.', ' ').replace('Z', ''));
         } catch (e) {
-            log('error', '', e.message);
+            log('error', '', 'Generate content failed: ' + e.message);
         }
 
         setTimeout(generateContent, cfg['devToolsRefreshTimer']['val']);

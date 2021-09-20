@@ -182,9 +182,7 @@ var news_update_interval = 60; // Minutes
 var news_update_running = false;
 var news_force_update = false;
 
-var video = null;
 var video_id = '';
-var is_series = false;
 var currentVideo = '';
 var currentEpisode = '';
 var nextVideo = '';
@@ -196,6 +194,7 @@ var currentEpisode_2 = '';
 var nextVideo_1 = '';
 var nextVideo_2 = '';
 var nextVideo_3 = '';
+var is_interrupted = false;
 
 var status_bubble_opened = false;
 var news_opened = false;

@@ -2321,7 +2321,7 @@ function log(type, access, message, ...args) {
                 try {
                     message_processed = fillArgs(message_processed, ...args);
                 } catch (e) {
-                    log('error', '', e.message, type);
+                    log('error', '', 'Logging error: ' + e.message, type);
                 }
             } else {
                 datatype = 'object';
@@ -2392,6 +2392,7 @@ function log(type, access, message, ...args) {
                         console.error('%c' + getLang('error_message') + message_processed, error_style);
                     } else {
                         console.log(message_processed);
+                        console.log('Caller: ' + arguments.callee.caller.toString());
                     }
                     //throw new Error(getLang('error_message') + message_processed);
                 }
@@ -2406,5 +2407,5 @@ function log(type, access, message, ...args) {
     }
 }
 
-// To shut Firefox up, keep it a last line (result is non-structured-clonable data message)
+// To shut Firefox up, keep it a last line (result is non-structured-cloneable data message)
 undefined;

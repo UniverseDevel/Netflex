@@ -1,4 +1,6 @@
-function get_title_names() {
+function find_title_names() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+
     // Names on Chromecast page
     if (check_cast()) {
         // Get current title name from all known sources
@@ -84,125 +86,143 @@ function get_title_names() {
     if (nextVideo != nextVideo_tmp) {
         nextVideo = nextVideo_tmp;
     }
+
+    // Get current video ID
+    if ((window.path + '?').split('?')[0] != video_id && video) {
+        video_id = (window.path + '?').split('?')[0];
+    }
 }
 
-function hide_synopsis() {
-    // List of synopsis objects
-    var synopsis_obj = object_handler('synopsis', null);
+function handle_disable_on_kids_feature() {
+    try {var manual_override = document.getElementById('extension_manual_override');} catch (e) {}
 
-    if (enableAssistant && cfg['hideSpoilers']['access']) {
-        for (var key in synopsis_obj) {
-            if (synopsis_obj.hasOwnProperty(key)) {
-                if (key == 'tiles' && !check_browse() && !check_latest() && !check_cast() && !check_search() && !check_title()) {
-                    continue;
-                }
-                if (key == 'cast' && !check_cast()) {
-                    continue;
-                }
-                if (key == 'watch' && !check_watch()) {
-                    continue;
-                }
+    if (!manual_override) { // Check objects
+        if (cfg['autoDisableKids']['access'] && (check_kids() || check_kids_profile())) { // Check access and page
+            if (cfg['autoDisableKids']['val']) { // Check state and if enabled (if cfg is bool)
+                enableAssistant = false;
+            }
+        }
+    }
+}
 
-                for (var i = 0; i < synopsis_obj[key].length; i++) {
-                    try {
-                        var syn_class_parent = synopsis_obj[key][i][0];
-                        var syn_class_name = synopsis_obj[key][i][1];
-                        var syn_class_type = synopsis_obj[key][i][2];
-                        var should_be_blurred_type = true;
+function handle_synopsis_features() {
+    try {var synopsis_obj = object_handler('synopsis', null);} catch (e) {}
 
-                        if (!cfg['hideSpoilersObjects']['val'].includes(syn_class_type)) {
-                            should_be_blurred_type = false;
+    if (synopsis_obj) { // Check objects
+        if (cfg['hideSpoilers']['access']) { // Check access
+            if (enableAssistant) { // Check state, page and if enabled (if cfg is bool)
+                for (var key in synopsis_obj) {
+                    if (synopsis_obj.hasOwnProperty(key)) {
+                        if (key == 'tiles' && !check_browse() && !check_latest() && !check_cast() && !check_search() && !check_title()) {
+                            continue;
+                        }
+                        if (key == 'cast' && !check_cast()) {
+                            continue;
+                        }
+                        if (key == 'watch' && !check_watch()) {
+                            continue;
                         }
 
-                        var descriptions_list = [];
-                        if (syn_class_parent == '') {
-                            descriptions_list = document.querySelectorAll(syn_class_name);
-                        } else {
-                            var parent_list = document.querySelectorAll(syn_class_parent);
-                            for (var j = 0; j < parent_list.length; j++) {
-                                Array.prototype.push.apply(descriptions_list, parent_list[j].querySelectorAll(syn_class_name));
+                        for (var i = 0; i < synopsis_obj[key].length; i++) {
+                            var syn_class_parent = synopsis_obj[key][i][0];
+                            var syn_class_name = synopsis_obj[key][i][1];
+                            var syn_class_type = synopsis_obj[key][i][2];
+                            var should_be_blurred_type = true;
+
+                            if (!cfg['hideSpoilersObjects']['val'].includes(syn_class_type)) {
+                                should_be_blurred_type = false;
                             }
-                        }
 
-                        if (descriptions_list[0]) {
-                            for (var j = 0; j < descriptions_list.length; j++) {
-                                var should_be_blurred = true;
-                                var elm = descriptions_list[j];
+                            var descriptions_list = [];
+                            if (syn_class_parent == '') {
+                                descriptions_list = document.querySelectorAll(syn_class_name);
+                            } else {
+                                var parent_list = document.querySelectorAll(syn_class_parent);
+                                for (var j = 0; j < parent_list.length; j++) {
+                                    Array.prototype.push.apply(descriptions_list, parent_list[j].querySelectorAll(syn_class_name));
+                                }
+                            }
 
-                                // Special cases
-                                if (elm.classList.contains('title-name-container')) {
-                                    if (is_series) {
-                                        if (elm.children.length > 1) {
-                                            elm = elm.children[elm.children.length - 1];
+                            if (descriptions_list[0]) {
+                                for (var j = 0; j < descriptions_list.length; j++) {
+                                    var should_be_blurred = true;
+                                    var elm = descriptions_list[j];
+
+                                    // Special cases
+                                    if (elm.classList.contains('title-name-container')) {
+                                        if (check_series()) {
+                                            if (elm.children.length > 1) {
+                                                elm = elm.children[elm.children.length - 1];
+                                            } else {
+                                                should_be_blurred = false;
+                                            }
                                         } else {
                                             should_be_blurred = false;
                                         }
-                                    } else {
+                                    }
+                                    if (elm.classList.contains('title')) {
+                                        if (elm.parentNode.classList.contains('player-title-evidence') || elm.parentNode.classList.contains('nfp-season-preview')) {
+                                            should_be_blurred = false;
+                                        }
+                                    }
+                                    if (elm.parentNode.classList.contains('titleCard-imageWrapper')) {
+                                        if (elm.parentNode.parentNode.classList.contains('more-like-this-item')) {
+                                            should_be_blurred = false;
+                                        }
+                                    }
+                                    if (elm.getAttribute('data-uia') == 'episode-pane-item-number') {
+                                        elm = elm.nextSibling;
+                                    }
+
+                                    // Check if type should be blurred or not
+                                    if (!should_be_blurred_type) {
                                         should_be_blurred = false;
                                     }
-                                }
-                                if (elm.classList.contains('title')) {
-                                    if (elm.parentNode.classList.contains('player-title-evidence') || elm.parentNode.classList.contains('nfp-season-preview')) {
-                                        should_be_blurred = false;
-                                    }
-                                }
-                                if (elm.parentNode.classList.contains('titleCard-imageWrapper')) {
-                                    if (elm.parentNode.parentNode.classList.contains('more-like-this-item')) {
-                                        should_be_blurred = false;
-                                    }
-                                }
-                                if (elm.getAttribute('data-uia') == 'episode-pane-item-number') {
-                                    elm = elm.nextSibling;
-                                }
 
-                                // Check if type should be blurred or not
-                                if (!should_be_blurred_type) {
-                                    should_be_blurred = false;
-                                }
-
-                                // Initialize attribute
-                                if (!elm.getAttribute('netflex_blur')) {
-                                    elm.setAttribute('netflex_blur', 'shown');
-                                }
-                                // Handle styles
-                                if (cfg['hideSpoilers']['val'] && should_be_blurred) {
-                                    var filter = '';
-                                    var filter_value = 'blur(5px)';
-
-                                    try {filter = elm.style.filter;} catch (e) {}
-                                    if (cfg['spoilersBlurAmount']['access']) {
-                                        filter_value = fillArgs('blur({0}px)', cfg['spoilersBlurAmount']['val']);
-                                    }
-
-                                    if (elm.getAttribute('netflex_blur') != 'blurred' && elm.getAttribute('netflex_blur') != 'revealed') {
-                                        add_stats_count('stat_hideSpoilers');
-                                        elm.addEventListener('mouseenter', function() { logEvent('hide_synopsis'); reveal_synopsis(this); });
-                                        elm.addEventListener('mouseleave', function() { logEvent('hide_synopsis'); unreveal_synopsis(this); });
-                                    }
-                                    if ((elm.getAttribute('netflex_blur') != 'blurred' || (filter != '' && filter != filter_value))  && elm.getAttribute('netflex_blur') != 'revealed') {
-                                        elm.style = fillArgs('filter: {0} !important;', filter_value);
-                                        elm.setAttribute('netflex_blur', 'blurred');
-                                        //log('output', '', getLang('description_hidden'));
-                                    }
-                                } else {
-                                    if (elm.getAttribute('netflex_blur') == 'blurred') {
-                                        elm.style = 'filter: inherit;';
+                                    // Initialize attribute
+                                    if (!elm.getAttribute('netflex_blur')) {
                                         elm.setAttribute('netflex_blur', 'shown');
+                                    }
+                                    // Handle styles
+                                    if (cfg['hideSpoilers']['val'] && should_be_blurred) {
+                                        var filter = '';
+                                        var filter_value = 'blur(5px)';
+
+                                        try {filter = elm.style.filter;} catch (e) {}
+                                        if (cfg['spoilersBlurAmount']['access']) {
+                                            filter_value = fillArgs('blur({0}px)', cfg['spoilersBlurAmount']['val']);
+                                        }
+
+                                        if (elm.getAttribute('netflex_blur') != 'blurred' && elm.getAttribute('netflex_blur') != 'revealed') {
+                                            add_stats_count('stat_hideSpoilers');
+                                            elm.addEventListener('mouseenter', function() { logEvent('handle_synopsis_features'); reveal_synopsis(this); });
+                                            elm.addEventListener('mouseleave', function() { logEvent('handle_synopsis_features'); unreveal_synopsis(this); });
+                                        }
+                                        if ((elm.getAttribute('netflex_blur') != 'blurred' || (filter != '' && filter != filter_value))  && elm.getAttribute('netflex_blur') != 'revealed') {
+                                            elm.style = fillArgs('filter: {0} !important;', filter_value);
+                                            elm.setAttribute('netflex_blur', 'blurred');
+                                            //log('output', '', getLang('description_hidden'));
+                                        }
+                                    } else {
+                                        if (elm.getAttribute('netflex_blur') == 'blurred') {
+                                            elm.style = 'filter: inherit;';
+                                            elm.setAttribute('netflex_blur', 'shown');
+                                        }
                                     }
                                 }
                             }
                         }
-                    } catch (e) {}
+                    }
+                }
+            } else {
+                // Show hidden descriptions when extension is disabled
+                var descriptions_list = document.querySelectorAll('[netflex_blur="blurred"]');
+                for (var j = 0; j < descriptions_list.length; j++) {
+                    var elm = descriptions_list[j];
+                    elm.style = 'filter: inherit;';
+                    elm.setAttribute('netflex_blur', 'shown');
                 }
             }
-        }
-    } else {
-        // Show hidden descriptions when extension is disabled
-        var descriptions_list = document.querySelectorAll('[netflex_blur="blurred"]');
-        for (var j = 0; j < descriptions_list.length; j++) {
-            var elm = descriptions_list[j];
-            elm.style = 'filter: inherit;';
-            elm.setAttribute('netflex_blur', 'shown');
         }
     }
 }
@@ -228,120 +248,14 @@ function unreveal_synopsis(obj) {
     obj.setAttribute('netflex_blur', 'shown');
 }
 
-function handle_subtitles_features() {
-    try {var subtitles_block = object_handler('player_subtitles', null);} catch (e) {}
-
-    if (subtitles_block) {
-        if (enableAssistant && check_watch()) {
-            // Apply subtitles highlight
-            if (cfg['highlightSubtitles']['access'] && ((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off']) || hideSubtitles_temp)) {
-                if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
-                    // Hide subtitles
-                    if (!subtitles_block.classList.contains('visually-hidden')) {
-                        add_stats_count('stat_highlightSubtitles');
-                        subtitles_block.classList.add('visually-hidden');
-                    }
-                } else {
-                    // Show subtitles
-                    if (subtitles_block.classList.contains('visually-hidden')) {
-                        subtitles_block.classList.remove('visually-hidden');
-                    }
-
-                    // Handle subtitles style
-                    if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
-                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
-                    }
-                }
-            } else {
-                if (!hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
-                    // Show subtitles
-                    if (subtitles_block.classList.contains('visually-hidden')) {
-                        subtitles_block.classList.remove('visually-hidden');
-                    }
-
-                    if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
-                        subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
-                    }
-                }
-            }
-
-            // Apply subtitles size
-            if (cfg['subtitlesSize']['val'] != cfg['subtitlesSize']['off'] && cfg['subtitlesSize']['access']) {
-                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_size', cfg['subtitlesSize']['val'] + '%', '');
-
-                if (subtitles_block.getAttribute('netflex_sub_size') != 'on') {
-                    subtitles_block.setAttribute('netflex_sub_size', 'on');
-                }
-            } else {
-                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_size');
-                if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
-                    subtitles_block.setAttribute('netflex_sub_size', 'off');
-                }
-            }
-
-            // Apply subtitles color
-            if (cfg['subtitlesColor']['val'] != cfg['subtitlesColor']['off'] && cfg['subtitlesColor']['access']) {
-                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_color', cfg['subtitlesColor']['val'], '');
-
-                if (subtitles_block.getAttribute('netflex_sub_color') != 'on') {
-                    subtitles_block.setAttribute('netflex_sub_color', 'on');
-                }
-            } else {
-                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_color');
-                if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
-                    subtitles_block.setAttribute('netflex_sub_color', 'off');
-                }
-            }
-
-            // Apply subtitles font
-            if (cfg['subtitlesFont']['val'].toLowerCase() != cfg['subtitlesFont']['off'].toLowerCase() && cfg['subtitlesFont']['access']) {
-                subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'].toLowerCase() + '"', '');
-
-                if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
-                    subtitles_block.setAttribute('netflex_sub_font', 'on');
-                }
-            } else {
-                subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_font');
-                if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
-                    subtitles_block.setAttribute('netflex_sub_font', 'off');
-                }
-            }
-        } else {
-            // Show subtitles if hidden
-            if (subtitles_block.classList.contains('visually-hidden')) {
-                subtitles_block.classList.remove('visually-hidden');
-            }
-
-            if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
-                subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
-            }
-
-            // Reset subtitles size
-            if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
-                subtitles_block.setAttribute('netflex_sub_size', 'off');
-            }
-
-            // Reset subtitles color
-            if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
-                subtitles_block.setAttribute('netflex_sub_color', 'off');
-            }
-
-            // Reset subtitles font
-            if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
-                subtitles_block.setAttribute('netflex_sub_font', 'off');
-            }
-        }
-    }
-}
-
 function handle_video_features() {
     try {var video = object_handler('player_video', null);} catch (e) {}
 
-    if (video) {
-        // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
-        // when other extension might be changing them as well
-        if (cfg['enableVideoFeatures']['val'] && cfg['enableVideoFeatures']['access']) {
-            if (enableAssistant && check_watch()) {
+    if (video) { // Check objects
+        if (cfg['enableVideoFeatures']['access'] && check_watch()) { // Check access and page
+            // Only set/change/reset video features when enableVideoFeatures are enabled to avoid changing any values
+            // when other extension might be changing them as well
+            if (enableAssistant && cfg['enableVideoFeatures']['val']) { // Check state, page and if enabled (if cfg is bool)
                 video.setAttribute('netflex_video_features', 'on');
                 videoSpeedRate = video.playbackRate * 100;
 
@@ -469,11 +383,9 @@ function handle_video_features() {
                 }
                 video.style.setProperty('--netflex_video_filter', filter, '');
             } else {
-                reset_videoSpeedRate();
+                //reset_videoSpeedRate();
                 video.removeAttribute('netflex_video_features');
             }
-        } else {
-            video.removeAttribute('netflex_video_features');
         }
     }
 }
@@ -501,51 +413,133 @@ function reset_videoSpeedRate() {
     }
 }
 
-function netflix_assistant() {
-    debug_overflow_entry('netflix_assistant', 10);
+function handle_subtitles_features() {
+    try {var subtitles_block = object_handler('player_subtitles', null);} catch (e) {}
 
-    log('group_start', 'assistant_loop', 'Assistant cycle');
-    log('debug', 'assistant_loop', '# ASSISTANT CYCLE START ##############################');
-    log('debug', 'assistant_loop', 'netflix_assistant');
+    if (subtitles_block) { // Check objects
+        if (check_watch()) { // Check page
+            if (enableAssistant) { // Check state and if enabled (if cfg is bool)
+                // Highlight subtitles
+                if (((cfg['highlightSubtitles']['val'] != cfg['highlightSubtitles']['off']) || hideSubtitles_temp) && cfg['highlightSubtitles']['access']) {
+                    if (cfg['highlightSubtitles']['val'] == 'hidden' || hideSubtitles_temp) {
+                        // Hide subtitles
+                        if (!subtitles_block.classList.contains('visually-hidden')) {
+                            add_stats_count('stat_highlightSubtitles');
+                            subtitles_block.classList.add('visually-hidden');
+                        }
+                    } else {
+                        // Show subtitles
+                        if (subtitles_block.classList.contains('visually-hidden')) {
+                            subtitles_block.classList.remove('visually-hidden');
+                        }
 
-    // Disable context blocker on watch page for debugging
-    if (check_watch()) {
-        try {object_handler('player_container', null).addEventListener('contextmenu', function(e) { e.stopImmediatePropagation(); });} catch (e) {}
-    }
+                        // Handle subtitles style
+                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['val']) {
+                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['val']);
+                        }
+                    }
+                } else {
+                    if (!hideSubtitles_temp && cfg['hideSubtitlesKey']['access']) {
+                        // Show subtitles
+                        if (subtitles_block.classList.contains('visually-hidden')) {
+                            subtitles_block.classList.remove('visually-hidden');
+                        }
 
-    // Prevent all actions when upsell information is shown to avoid unwanted Netflix plan changes
-    if (check_upsell()) {
-        return;
-    }
+                        if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                            subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                        }
+                    }
+                }
 
-    // Adjust video display settings
-    handle_video_features();
+                // Apply subtitles size
+                if (cfg['subtitlesSize']['val'] != cfg['subtitlesSize']['off'] && cfg['subtitlesSize']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_size', cfg['subtitlesSize']['val'] + '%', '');
 
-    // Adjust subtitles settings
-    handle_subtitles_features();
+                    if (subtitles_block.getAttribute('netflex_sub_size') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_size', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_size');
+                    if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_size', 'off');
+                    }
+                }
 
-    var location_changed = false
-    if (full_url != full_url_old) {
-        full_url_old = full_url;
-        location_changed = true;
-        loadTime = new Date(); // Each URL change is basically time of load
-    }
+                // Apply subtitles color
+                if (cfg['subtitlesColor']['val'] != cfg['subtitlesColor']['off'] && cfg['subtitlesColor']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_color', cfg['subtitlesColor']['val'], '');
 
-    // If key is pressed for some time nothing should be performed to avoid errors
-    if (!key_disabled) {
-        // Check if Kids Netflix is shown and extension should be disabled, unless manual override
-        if ((check_kids() || check_kids_profile()) && cfg['autoDisableKids']['val'] && !document.getElementById('extension_manual_override') && cfg['autoDisableKids']['access']) {
-            enableAssistant = false;
+                    if (subtitles_block.getAttribute('netflex_sub_color') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_color', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_color');
+                    if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_color', 'off');
+                    }
+                }
+
+                // Apply subtitles font
+                if (cfg['subtitlesFont']['val'].toLowerCase() != cfg['subtitlesFont']['off'].toLowerCase() && cfg['subtitlesFont']['access']) {
+                    subtitles_block.parentNode.style.setProperty('--netflex_subtitles_font', '"' + cfg['subtitlesFont']['val'].toLowerCase() + '"', '');
+
+                    if (subtitles_block.getAttribute('netflex_sub_font') != 'on') {
+                        subtitles_block.setAttribute('netflex_sub_font', 'on');
+                    }
+                } else {
+                    subtitles_block.parentNode.style.removeProperty('--netflex_subtitles_font');
+                    if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
+                        subtitles_block.setAttribute('netflex_sub_font', 'off');
+                    }
+                }
+            } else {
+                // Show subtitles if hidden
+                if (subtitles_block.classList.contains('visually-hidden')) {
+                    subtitles_block.classList.remove('visually-hidden');
+                }
+
+                if (subtitles_block.getAttribute('netflex_highlighted') != cfg['highlightSubtitles']['off']) {
+                    subtitles_block.setAttribute('netflex_highlighted', cfg['highlightSubtitles']['off']);
+                }
+
+                // Reset subtitles size
+                if (subtitles_block.getAttribute('netflex_sub_size') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_size', 'off');
+                }
+
+                // Reset subtitles color
+                if (subtitles_block.getAttribute('netflex_sub_color') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_color', 'off');
+                }
+
+                // Reset subtitles font
+                if (subtitles_block.getAttribute('netflex_sub_font') != 'off') {
+                    subtitles_block.setAttribute('netflex_sub_font', 'off');
+                }
+            }
         }
+    }
+}
 
-        // Check if extension is disabled
-        if (!enableAssistant) {
-            // Hide/Un-hide title description
-            hide_synopsis();
+function handle_disliked_title_feature() {
+    try {var disliked_obj = object_handler('disliked_title', null);} catch (e) {}
 
-            // Show hidden disliked titles
-            var disliked_obj = object_handler('disliked_title', null);
-            if (disliked_obj) {
+    if (disliked_obj) { // Check objects
+        if (cfg['hideDisliked']['access'] && (check_browse() || check_latest() || check_title() || check_search())) { // Check access and page
+            if (enableAssistant && cfg['hideDisliked']['val']) { // Check state and if enabled (if cfg is bool)
+                // Hide hidden disliked titles
+                for (var i = 0; i < disliked_obj.length; i++) {
+                    var disliked_parent = disliked_obj[i].parentNode.parentNode;
+                    if (disliked_parent.classList.contains('slider-item')) {
+                        if (!disliked_parent.classList.contains('netflex_hide')) {
+                            add_stats_count('stat_hideDisliked');
+                            disliked_parent.classList.add('netflex_hide');
+                            log('output', '', getLang('disliked_hidden'));
+                        }
+                    }
+                }
+            } else {
+                // Show hidden disliked titles
                 for (var i = 0; i < disliked_obj.length; i++) {
                     var disliked_parent = disliked_obj[i].parentNode.parentNode;
                     if (disliked_parent.classList.contains('slider-item')) {
@@ -555,98 +549,49 @@ function netflix_assistant() {
                     }
                 }
             }
+        }
+    }
+}
 
-            // Remove elapsed time objects
-            if (document.querySelector('#netflex_elapsed_time')) {
-                removeDOM(document.querySelector('#netflex_elapsed_time'));
-                window.dispatchEvent(new Event('resize')); // Fix progressbar size
-            }
+function handle_trailers_feature() {
+    try {var trailer_list = object_handler('trailer_list', null);} catch (e) {}
 
-        } else {
-            // Check if title is series or not
-            if (object_handler('button_episodes_list', null)) {
-                is_series = true;
-            } else {
-                is_series = false;
-            }
-
-            // Features on tiles pages
-            if ((check_browse() || check_latest() || check_title() || check_search())) {
-                // Hide disliked titles
-                if (cfg['hideDisliked']['access']) {
-                    var disliked_obj = object_handler('disliked_title', null);
-                    if (disliked_obj) {
-                        for (var i = 0; i < disliked_obj.length; i++) {
-                            var disliked_parent = disliked_obj[i].parentNode.parentNode;
-                            if (disliked_parent.classList.contains('slider-item')) {
-                                if (cfg['hideDisliked']['val']) {
-                                    if (!disliked_parent.classList.contains('netflex_hide')) {
-                                        add_stats_count('stat_hideDisliked');
-                                        disliked_parent.classList.add('netflex_hide');
-                                        log('output', '', getLang('disliked_hidden'));
-                                    }
-                                } else {
-                                    if (disliked_parent.classList.contains('netflex_hide')) {
-                                        disliked_parent.classList.remove('netflex_hide');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Hide/Un-hide title description
-                hide_synopsis();
-
+    if (trailer_list) { // Check objects
+        if (cfg['trailerVideoStop']['access'] && (check_browse() || check_latest() || check_title() || check_search())) { // Check access and page
+            if (enableAssistant && cfg['trailerVideoStop']['val']) { // Check state and if enabled (if cfg is bool)
                 // Stop trailers video
-                if (cfg['trailerVideoStop']['val'] && cfg['trailerVideoStop']['access']) {
-                    var trailer_list = object_handler('trailer_list', null);
-                    if (trailer_list) {
-                        for (var i = 0; i < trailer_list.length; i++) {
-                            if (!trailer_list[i].paused) {
-                                add_stats_count('stat_trailerVideoStop');
-                                trailer_list[i].pause();
-                                trailer_list[i].currentTime = trailer_list[i].duration;
-                                log('output', '', getLang('trailer_stopped'));
-                            }
-                        }
+                for (var i = 0; i < trailer_list.length; i++) {
+                    if (!trailer_list[i].paused) {
+                        add_stats_count('stat_trailerVideoStop');
+                        trailer_list[i].pause();
+                        trailer_list[i].currentTime = trailer_list[i].duration;
+                        log('output', '', getLang('trailer_stopped'));
                     }
                 }
             }
+        }
+    }
+}
 
-            // Features on Chromecast page
-            if (check_cast()) {
-                // Get names of current title, episode and next offered title if available
-                get_title_names();
+function handle_elapsed_time_feature() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var progress_bar = object_handler('progress_bar', null);} catch (e) {}
+    try {var remaining_time = object_handler('remaining_time', null);} catch (e) {}
+    try {var progress_bar_cast = object_handler('progress_bar_cast', null);} catch (e) {}
+    try {var remaining_time_cast = object_handler('remaining_time_cast', null);} catch (e) {}
 
-                // Play next episode
-                var next_episode_obj = object_handler('next_episode', null);
-                if (next_episode_obj) {
-                    // Check configuration if we want to start next episodes
-                    if (cfg['titleEndAction']['val'] == 'skip' && cfg['titleEndAction']['access']) {
-                        // Play next video
-                        log('output', '', getLang('next_episode'));
-                        add_stats_count('stat_titleEndActionSkip');
-                        try {doClick(next_episode_obj);} catch (e) {}
-                    }
-                } else {
-                    // Mark end of loading period
-                    if (oldLink != window.location.href) {
-                        oldLink = window.location.href;
-                    }
-                }
-
-                // Add elapsed video time
-                if (cfg['showElapsedTime']['val'] && cfg['showElapsedTime']['access']) {
-                    var progress_bar = object_handler('progress_bar_cast', null);
-                    var remaining_time = object_handler('remaining_time_cast', null);
-                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar && remaining_time) {
-                        var elapsed_time = remaining_time.cloneNode(true);
+    if ((progress_bar && remaining_time && video) || (progress_bar_cast && remaining_time_cast)) { // Check objects
+        if (cfg['showElapsedTime']['access'] && (check_cast() || check_watch())) { // Check access and page
+            if (enableAssistant && cfg['showElapsedTime']['val']) { // Check state and if enabled (if cfg is bool)
+                // Add elapsed video time to cast page
+                if (check_cast()) {
+                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar_cast && remaining_time_cast) {
+                        var elapsed_time = remaining_time_cast.cloneNode(true);
                         elapsed_time.setAttribute('id','netflex_elapsed_time');
                         elapsed_time.children[0].setAttribute('data-uia','controls-time-elapsed');
                         addCSS(elapsed_time, { 'margin-right': '0em !important', 'margin-left': '1em !important' });
 
-                        try {progress_bar.parentNode.insertBefore(elapsed_time, progress_bar);} catch (e) {}
+                        try {progress_bar_cast.parentNode.insertBefore(elapsed_time, progress_bar_cast);} catch (e) {}
                     }
 
                     // Refresh value or add event that will
@@ -654,39 +599,78 @@ function netflix_assistant() {
                         addDOM(document.querySelector('[data-uia="controls-time-elapsed"]'), convertToInterval(document.querySelector('.scrubber-head').getAttribute('aria-valuenow')));
                         window.dispatchEvent(new Event('resize')); // Prevent progressbar size to overgrow
                     }
-                } else {
-                    if (document.querySelector('#netflex_elapsed_time')) {
-                        removeDOM(document.querySelector('#netflex_elapsed_time'));
+                }
+
+                // Add elapsed video time to watch page
+                if (check_watch()) {
+                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar && remaining_time) {
+                        var elapsed_time = remaining_time.parentNode.cloneNode(true);
+                        elapsed_time.setAttribute('id','netflex_elapsed_time');
+                        elapsed_time.children[0].setAttribute('data-uia','controls-time-elapsed');
+                        addCSS(elapsed_time, { 'padding-left': '0em !important', 'padding-right': '1em !important' });
+
+                        try {progress_bar.parentNode.parentNode.insertBefore(elapsed_time, progress_bar.parentNode.parentNode.children[0]);} catch (e) {}
+                    }
+
+                    // Refresh value or add event that will
+                    if (document.querySelector('[data-uia="controls-time-elapsed"]') && video) {
+                        addDOM(document.querySelector('[data-uia="controls-time-elapsed"]'), convertToInterval(video.currentTime));
+                        window.dispatchEvent(new Event('resize')); // Prevent progressbar size to overgrow
                     }
                 }
+            } else {
+                // Remove elapsed time objects
+                if (document.querySelector('#netflex_elapsed_time')) {
+                    removeDOM(document.querySelector('#netflex_elapsed_time'));
+                    window.dispatchEvent(new Event('resize')); // Fix progressbar size
+                }
             }
+        }
+    }
+}
 
-            // Features on watch page
-            if (check_watch()) {
-                // Get video object
-                try {var video = object_handler('player_video', null);} catch (e) {}
+function handle_next_episode_feature() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var next_episode_offer_wait = object_handler('next_episode_offer_wait', null);} catch (e) {}
+    try {var next_episode_offer_nowait = object_handler('next_episode_offer_nowait', null);} catch (e) {}
+    try {var next_episode_obj = object_handler('next_episode', null);} catch (e) {}
 
-                // Get names of current title, episode and next offered title if available
-                get_title_names();
-
-                // Check if current title is movie or series
-                if ((window.path + '?').split('?')[0] != video_id && video) {
-                    video_id = (window.path + '?').split('?')[0];
+    if (next_episode_offer_wait || next_episode_offer_nowait || next_episode_obj) { // Check objects
+        if (cfg['titleEndAction']['access'] && (check_cast() || check_watch())) { // Check access and page
+            if (enableAssistant && cfg['titleEndAction']['val'] != cfg['titleEndAction']['off']) { // Check state and if enabled (if cfg is bool)
+                // Next episode on cast page
+                if (check_cast()) {
+                    // Play next episode
+                    if (next_episode_obj) {
+                        // Check configuration if we want to start next episodes
+                        if (cfg['titleEndAction']['val'] == 'skip') {
+                            // Play next video
+                            log('output', '', getLang('next_episode'));
+                            add_stats_count('stat_titleEndActionSkip');
+                            try {doClick(next_episode_obj);} catch (e) {}
+                        }
+                    } else {
+                        // Mark end of loading period
+                        if (oldLink != window.location.href) {
+                            oldLink = window.location.href;
+                        }
+                    }
                 }
 
-                // Check if next episode is offered
-                next_is_offered = false;
-                if (object_handler('next_episode_offer_wait', null)) {
-                    next_is_offered = true;
-                    next_no_wait = false;
-                } else if (object_handler('next_episode_offer_nowait', null)) {
-                    next_is_offered = true;
-                    next_no_wait = true;
-                }
+                // Next episode on watch page
+                if (check_watch()) {
+                    // Check if next episode is offered
+                    next_is_offered = false;
+                    if (next_episode_offer_wait) {
+                        next_is_offered = true;
+                        next_no_wait = false;
+                    } else if (next_episode_offer_nowait) {
+                        next_is_offered = true;
+                        next_no_wait = true;
+                    }
 
-                // Perform activities at title end
-                if ((next_is_offered && !loading_next_title) || forceNextEpisode) {
-                    if (cfg['titleEndAction']['val'] != cfg['titleEndAction']['off'] && cfg['titleEndAction']['access']) {
+                    // Perform activities at title end
+                    if ((next_is_offered && !loading_next_title) || forceNextEpisode) {
                         // Check configuration if we want to start next episodes
                         if (cfg['titleEndAction']['val'] == 'skip' || forceNextEpisode) {
                             if (nextVideo != '' || (nextVideo == '' && next_no_wait)) {
@@ -696,10 +680,10 @@ function netflix_assistant() {
                                 }
 
                                 // Check if next video is from different title and we want to stop playing
-                                if (((!is_series && cfg['nextEpisodeStopMovies']['val']) || (is_series && cfg['nextEpisodeStopSeries']['val'])) && currentVideo != nextVideo) {
+                                if (((!check_series() && cfg['nextEpisodeStopMovies']['val']) || (check_series() && cfg['nextEpisodeStopSeries']['val'])) && currentVideo != nextVideo) {
                                     loading_next_title = true;
                                     log('output', '', getLang('next_video_stop'));
-                                    if (!is_series) {
+                                    if (!check_series()) {
                                         add_stats_count('stat_nextEpisodeStopSeries');
                                     } else {
                                         add_stats_count('stat_nextEpisodeStopMovies');
@@ -724,8 +708,8 @@ function netflix_assistant() {
 
                                     // Click to start next episode
                                     var next_episode_buttons = [];
-                                    var next_episode_buttons_list1 = object_handler('next_episode_offer_wait', null);
-                                    var next_episode_buttons_list2 = object_handler('next_episode_offer_nowait', null);
+                                    var next_episode_buttons_list1 = next_episode_offer_wait;
+                                    var next_episode_buttons_list2 = next_episode_offer_nowait;
                                     var button_next_episode = object_handler('button_next_episode', null);
                                     if (next_episode_buttons_list1) {
                                         next_episode_buttons_list1 = Array.prototype.slice.call(next_episode_buttons_list1);
@@ -735,7 +719,7 @@ function netflix_assistant() {
                                     }
                                     next_episode_buttons = next_episode_buttons.concat(next_episode_buttons_list1, next_episode_buttons_list2).filter(item => item !== undefined);
                                     // Last attempt if others fail to click next episode button in video controls
-                                    if (is_series && button_next_episode) {
+                                    if (check_series() && button_next_episode) {
                                         next_episode_buttons.push(button_next_episode);
                                     }
                                     if (next_episode_buttons[0]) {
@@ -769,219 +753,381 @@ function netflix_assistant() {
                                 forceNextEpisode = true;
                             }
                         }
-                    }
-                } else {
-                    forceNextEpisode = false;
-                    nextTitleDelay = 0;
-                    // Mark end of loading period
-                    if (oldLink != window.location.href && workers['title_end_actions'] === false) {
-                        oldLink = window.location.href;
-                        // Delay end action reset
-                        workers['title_end_actions'] = setTimeout(function () {
-                            rolling_credits = false;
-                            loading_next_title = false;
-                            stop_worker('title_end_actions');
-                        }, cfg['titleEndActionsDelay']['val']);
-                    }
-                }
-
-                // Hide/Un-hide title description
-                hide_synopsis();
-
-                // Detect if video is in focus and if to pause/unpause it
-                if (cfg['pauseOnBlur']['val'] != cfg['pauseOnBlur']['off'] && video && cfg['pauseOnBlur']['access']) {
-                    // If window is hidden according to sensitivity in configuration, pause video
-                    if (hiddenCFG && !video.paused) {
-                        // Check if it is not already paused by extension
-                        if (!pausedByExtension) {
-                            // Pause video
-                            try {
-                                add_stats_count('stat_pauseOnBlur');
-                                try {doClick(object_handler('button_pause', null));} catch (e) {}
-                                video.pause();
-                                log('output', '', getLang('lost_focus_pause'));
-                                pausedByExtension = true;
-                            } catch (e) {}
-                        }
                     } else {
-                        // Check if video is visible and paused by extension and is configured to autostart
-                        if (!hiddenCFG && video.paused && pausedByExtension && cfg['playOnFocus']['val']) {
-                            // Autostart video
-                            try {
-                                add_stats_count('stat_playOnFocus');
-                                try {doClick(object_handler('button_play', null));} catch (e) {}
-                                video.play();
-                                log('output', '', getLang('gained_focus_play'));
-                                pausedByExtension = false;
-                            } catch (e) {}
-                        }
-                        // Video is running it is not paused by extension
-                        if (!video.paused) {
-                            pausedByExtension = false;
+                        forceNextEpisode = false;
+                        nextTitleDelay = 0;
+                        // Mark end of loading period
+                        if (oldLink != window.location.href && workers['title_end_actions'] === false) {
+                            oldLink = window.location.href;
+                            // Delay end action reset
+                            workers['title_end_actions'] = setTimeout(function () {
+                                rolling_credits = false;
+                                loading_next_title = false;
+                                stop_worker('title_end_actions');
+                            }, cfg['titleEndActionsDelay']['val']);
                         }
                     }
                 }
-
-                // Add elapsed video time
-                if (cfg['showElapsedTime']['val'] && cfg['showElapsedTime']['access']) {
-                    var progress_bar = object_handler('progress_bar', null);
-                    var remaining_time = object_handler('remaining_time', null);
-                    if (!document.querySelector('#netflex_elapsed_time') && progress_bar && remaining_time) {
-                        var elapsed_time = remaining_time.parentNode.cloneNode(true);
-                        elapsed_time.setAttribute('id','netflex_elapsed_time');
-                        elapsed_time.children[0].setAttribute('data-uia','controls-time-elapsed');
-                        addCSS(elapsed_time, { 'padding-left': '0em !important', 'padding-right': '1em !important' });
-
-                        try {progress_bar.parentNode.parentNode.insertBefore(elapsed_time, progress_bar.parentNode.parentNode.children[0]);} catch (e) {}
-                    }
-
-                    // Refresh value or add event that will
-                    if (document.querySelector('[data-uia="controls-time-elapsed"]') && video) {
-                        addDOM(document.querySelector('[data-uia="controls-time-elapsed"]'), convertToInterval(video.currentTime));
-                        window.dispatchEvent(new Event('resize')); // Prevent progressbar size to overgrow
-                    }
-                } else {
-                    if (document.querySelector('#netflex_elapsed_time')) {
-                        removeDOM(document.querySelector('#netflex_elapsed_time'));
-                    }
-                }
-
-                // Skip all intros & recaps
-                if (!skipping) {
-                    // With new UI it possible to split this, but keeping this has some advantages as well
-                    var skip_button = object_handler('button_skip', null);
-                    if (skip_button && video) {
-                        try {
-                            var is_paused = video.paused;
-                            var button_text = skip_button.innerText.toUpperCase().trim();
-                            log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
-
-                            if (loc_skip_intro.includes(button_text) && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
-                                skipping = true;
-                                log('output', '', getLang('skipping_intro'));
-                                add_stats_count('stat_skipIntros');
-                                doClick(skip_button);
-                            } else if (loc_skip_recap.includes(button_text) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
-                                skipping = true;
-                                log('output', '', getLang('skipping_recap'));
-                                add_stats_count('stat_skipRecaps');
-                                doClick(skip_button);
-                            }
-
-                            // Video sometimes pauses when skipping, this should workaround the issue
-                            if (skipping) {
-                                // Repeated skipping prevention
-                                setTimeout(function() {skipping = false;}, cfg['skippingPreventionTimer']['val']);
-
-                                if (is_paused != video.paused) {
-                                    if (video.paused) {
-                                        video.play();
-                                        // Prevent event handlers to be messed up after skipping intro/recap
-                                        try {doClick(object_handler('button_pause', null));} catch (e) {}
-                                        try {doClick(object_handler('button_play', null));} catch (e) {}
-                                        // Just to make sure we will return into correct state, even if something goes wrong before
-                                        setTimeout(function() {try {doClick(object_handler('button_play', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
-                                    } else {
-                                        video.pause();
-                                        // Prevent event handlers to be messed up after skipping intro/recap
-                                        try {doClick(object_handler('button_play', null));} catch (e) {}
-                                        try {doClick(object_handler('button_pause', null));} catch (e) {}
-                                        // Just to make sure we will return into correct state, even if something goes wrong before
-                                        setTimeout(function() {try {doClick(object_handler('button_pause', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
-                                    }
-                                }
-                            }
-                        } catch (e) {
-                            log('error', '', e.stack);
-                        }
-                    }
-                }
-
-                // Skip interruption if nothing is clicked after X videos played
-                var is_interrupted = false;
-                var video_interrupter_obj = object_handler('video_interrupter', null);
-                if (video_interrupter_obj && cfg['skipInterrupter']['access']) {
-                    is_interrupted = true;
-                    // Check configuration if we want to skip interruptions
-                    if (cfg['skipInterrupter']['val']) {
-                        log('output', '', getLang('skipping_interrupter'));
-                        add_stats_count('stat_skipInterrupter');
-                        doClick(video_interrupter_obj.children[0]);
-                    }
-                }
-
-                // Detect if video playback is stuck and reload, if it is stuck for long enough
-                try {
-                    var timeFromLoadDiff = currentTime - loadTime;
-                    var timeFromLoad = timeFromLoadDiff / 1000; // Convert to seconds
-                    try {currentTimestamp = video.currentTime;} catch (e) {}
-
-                    // Give it a little time for objects to load before considering any reloading (browser load time)
-                    // also tab has to be active to even consider reload, not active pages get paused by browser, what
-                    // may trigger page reload, because next video does not load until tab is in focus, also in case
-                    // we stop at next available episode it is no reason to refresh, or in case we are stopped via
-                    // interruption.
-                    if (!check_error() && timeFromLoad > cfg['timeFromLoadLimit']['val'] && visibleAPI && !next_is_offered && !is_interrupted) {
-                        // If video object does not exist or video is stopped and spinning loader is present or if video is stopped and also it is not paused
-                        var video_spinner_obj = object_handler('video_loading_spinner', null);
-                        if (!video || (currentTimestamp == oldTimestamp && video_spinner_obj) || (currentTimestamp == oldTimestamp && !video.paused)) {
-                            var timerValid = false;
-
-                            // If spinning loader is present give it a time to load video (data load time)
-                            if (video_spinner_obj && cfg['loadingTimeLimit']['access']) {
-                                loadingTime = addTimeFraction(loadingTime, cfg['netflixAssistantTimer']['val']);
-                                // Too long loading, might be stuck, lets start countdown
-                                if (loadingTime >= cfg['loadingTimeLimit']['val']) {
-                                    timerValid = true;
-                                }
-                            } else {
-                                // If spinning loader is not present something is wrong, lets start countdown
-                                timerValid = true;
-                            }
-
-                            if (timerValid) {
-                                // Countdown to reload
-                                if (stuckTime >= cfg['stuckTimeLimit']['val'] && cfg['stuckTimeLimit']['val'] != cfg['stuckTimeLimit']['off'] && cfg['stuckTimeLimit']['access']) {
-                                    // Set reload request for reload worker to pick up
-                                    reload_requests['video_stuck'] = true;
-                                } else {
-                                    stuckTime = addTimeFraction(stuckTime, cfg['netflixAssistantTimer']['val']);
-                                    if (stuckTime % 1 == 0 && stuckTime <= cfg['stuckTimeLimit']['val']) {
-                                        log('output', '', getLang('video_stuck'), stuckTime, ((stuckTime == 1) ? getLang('second') : ((stuckTime < 5) ? getLang('second_less5') : getLang('seconds'))), cfg['stuckTimeLimit']['val']);
-                                    }
-                                }
-                            }
-                        } else {
-                            oldTimestamp = currentTimestamp;
-                            stuckTime = 0;
-                            loadingTime = 0;
-                            reload_requests['video_stuck'] = false;
-                        }
-                    }
-                } catch (e) {}
-
-                // Record episode
-                if (cfg['keepHistory']['access']) {
-                    var history_changed = false;
-                    if (!array_contains(watchHistory, full_url) && cfg['keepHistory']['val'] != cfg['keepHistory']['off']) {
-                        watchHistory[watchHistory.length] = full_url;
-                        history_changed = true;
-                    }
-                    if (watchHistory.length > cfg['keepHistory']['val']) {
-                        watchHistory = watchHistory.slice(watchHistory.length - cfg['keepHistory']['val'], watchHistory.length);
-                        history_changed = true;
-                    }
-                    if (history_changed) {
-                        localStorage.setItem('netflex_watchHistory', JSON.stringify(watchHistory));
-                    }
-                }
-
-                if (location_changed) {
-                    reset_features = true;
-                }
-                reset_temporary_features();
             }
         }
+    }
+}
+
+function handle_pause_on_blur_feature() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+
+    if (video) { // Check objects
+        if (cfg['pauseOnBlur']['access'] && (check_watch())) { // Check access and page
+            if (enableAssistant && cfg['pauseOnBlur']['val'] != cfg['pauseOnBlur']['off']) { // Check state and if enabled (if cfg is bool)
+                // If window is hidden according to sensitivity in configuration, pause video
+                if (hiddenCFG && !video.paused) {
+                    // Check if it is not already paused by extension
+                    if (!pausedByExtension) {
+                        // Pause video
+                        try {
+                            add_stats_count('stat_pauseOnBlur');
+                            try {doClick(object_handler('button_pause', null));} catch (e) {}
+                            video.pause();
+                            log('output', '', getLang('lost_focus_pause'));
+                            pausedByExtension = true;
+                        } catch (e) {}
+                    }
+                } else {
+                    // Check if video is visible and paused by extension and is configured to autostart
+                    if (!hiddenCFG && video.paused && pausedByExtension && cfg['playOnFocus']['val']) {
+                        // Autostart video
+                        try {
+                            add_stats_count('stat_playOnFocus');
+                            try {doClick(object_handler('button_play', null));} catch (e) {}
+                            video.play();
+                            log('output', '', getLang('gained_focus_play'));
+                            pausedByExtension = false;
+                        } catch (e) {}
+                    }
+                    // Video is running it is not paused by extension
+                    if (!video.paused) {
+                        pausedByExtension = false;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function handle_skip_intro_recap_feature() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var skip_button = object_handler('button_skip', null);} catch (e) {} // With new UI it possible to split this, but keeping this has some advantages as well
+
+    if (video && skip_button) { // Check objects
+        if (check_watch()) { // Check access and page
+            if (enableAssistant) { // Check state and if enabled (if cfg is bool)
+                // Skip all intros & recaps
+                if (!skipping) {
+                    var is_paused = video.paused;
+                    var button_text = skip_button.innerText.toUpperCase().trim();
+                    log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
+
+                    if (loc_skip_intro.includes(button_text) && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
+                        skipping = true;
+                        log('output', '', getLang('skipping_intro'));
+                        add_stats_count('stat_skipIntros');
+                        doClick(skip_button);
+                    } else if (loc_skip_recap.includes(button_text) && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
+                        skipping = true;
+                        log('output', '', getLang('skipping_recap'));
+                        add_stats_count('stat_skipRecaps');
+                        doClick(skip_button);
+                    }
+
+                    // Video sometimes pauses when skipping, this should workaround the issue
+                    if (skipping) {
+                        // Repeated skipping prevention
+                        setTimeout(function() {skipping = false;}, cfg['skippingPreventionTimer']['val']);
+
+                        if (is_paused != video.paused) {
+                            if (video.paused) {
+                                video.play();
+                                // Prevent event handlers to be messed up after skipping intro/recap
+                                try {doClick(object_handler('button_pause', null));} catch (e) {}
+                                try {doClick(object_handler('button_play', null));} catch (e) {}
+                                // Just to make sure we will return into correct state, even if something goes wrong before
+                                setTimeout(function() {try {doClick(object_handler('button_play', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
+                            } else {
+                                video.pause();
+                                // Prevent event handlers to be messed up after skipping intro/recap
+                                try {doClick(object_handler('button_play', null));} catch (e) {}
+                                try {doClick(object_handler('button_pause', null));} catch (e) {}
+                                // Just to make sure we will return into correct state, even if something goes wrong before
+                                setTimeout(function() {try {doClick(object_handler('button_pause', null));} catch (e) {}}, cfg['playPauseButtonDelay']['val']);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+function handle_interruption_feature() {
+    try {var video_interrupter_obj = object_handler('video_interrupter', null);} catch (e) {}
+
+    if (video_interrupter_obj) { // Check objects
+        is_interrupted = true;
+        if (cfg['skipInterrupter']['access'] && (check_watch())) { // Check access and page
+            if (enableAssistant && cfg['skipInterrupter']['val']) { // Check state and if enabled (if cfg is bool)
+                // Skip interruption if nothing is clicked after X videos played
+                log('output', '', getLang('skipping_interrupter'));
+                add_stats_count('stat_skipInterrupter');
+                doClick(video_interrupter_obj.children[0]);
+            }
+        }
+    } else {
+        is_interrupted = false;
+    }
+}
+
+function handle_history_feature() {
+    if (true) { // Check objects
+        if (cfg['keepHistory']['access'] && (check_watch())) { // Check access and page
+            if (enableAssistant && cfg['keepHistory']['val'] != cfg['keepHistory']['off']) { // Check state and if enabled (if cfg is bool)
+                // Record episode
+                var history_changed = false;
+                if (!array_contains(watchHistory, full_url)) {
+                    watchHistory[watchHistory.length] = full_url;
+                    history_changed = true;
+                }
+                if (watchHistory.length > cfg['keepHistory']['val']) {
+                    watchHistory = watchHistory.slice(watchHistory.length - cfg['keepHistory']['val'], watchHistory.length);
+                    history_changed = true;
+                }
+                if (history_changed) {
+                    localStorage.setItem('netflex_watchHistory', JSON.stringify(watchHistory));
+                }
+            }
+        }
+    }
+}
+
+function handle_playback_problem_feature() {
+    try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var video_spinner_obj = object_handler('video_loading_spinner', null);} catch (e) {}
+
+    if (true) { // Check objects
+        if (check_watch()) { // Check access and page
+            if (enableAssistant) { // Check state and if enabled (if cfg is bool)
+                // Detect if video playback is stuck and reload, if it is stuck for long enough
+                var timeFromLoadDiff = currentTime - loadTime;
+                var timeFromLoad = timeFromLoadDiff / 1000; // Convert to seconds
+                try {currentTimestamp = video.currentTime;} catch (e) {}
+
+                // Give it a little time for objects to load before considering any reloading (browser load time)
+                // also tab has to be active to even consider reload, not active pages get paused by browser, what
+                // may trigger page reload, because next video does not load until tab is in focus, also in case
+                // we stop at next available episode it is no reason to refresh, or in case we are stopped via
+                // interruption.
+                if (!check_error() && timeFromLoad > cfg['timeFromLoadLimit']['val'] && visibleAPI && !next_is_offered && !is_interrupted) {
+                    // If video object does not exist or video is stopped and spinning loader is present or if video is stopped and also it is not paused
+                    if (!video || (currentTimestamp == oldTimestamp && video_spinner_obj) || (currentTimestamp == oldTimestamp && !video.paused)) {
+                        var timerValid = false;
+
+                        // If spinning loader is present give it a time to load video (data load time)
+                        if (video_spinner_obj && cfg['loadingTimeLimit']['access']) {
+                            loadingTime = addTimeFraction(loadingTime, cfg['netflixAssistantTimer']['val']);
+                            // Too long loading, might be stuck, lets start countdown
+                            if (loadingTime >= cfg['loadingTimeLimit']['val']) {
+                                timerValid = true;
+                            }
+                        } else {
+                            // If spinning loader is not present something is wrong, lets start countdown
+                            timerValid = true;
+                        }
+
+                        if (timerValid) {
+                            // Countdown to reload
+                            if (stuckTime >= cfg['stuckTimeLimit']['val'] && cfg['stuckTimeLimit']['val'] != cfg['stuckTimeLimit']['off'] && cfg['stuckTimeLimit']['access']) {
+                                // Set reload request for reload worker to pick up
+                                reload_requests['video_stuck'] = true;
+                            } else {
+                                stuckTime = addTimeFraction(stuckTime, cfg['netflixAssistantTimer']['val']);
+                                if (stuckTime % 1 == 0 && stuckTime <= cfg['stuckTimeLimit']['val']) {
+                                    log('output', '', getLang('video_stuck'), stuckTime, ((stuckTime == 1) ? getLang('second') : ((stuckTime < 5) ? getLang('second_less5') : getLang('seconds'))), cfg['stuckTimeLimit']['val']);
+                                }
+                            }
+                        }
+                    } else {
+                        oldTimestamp = currentTimestamp;
+                        stuckTime = 0;
+                        loadingTime = 0;
+                        reload_requests['video_stuck'] = false;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
+function handle_TEMPLATE_feature() {
+    try {var xxx = object_handler('xxx', null);} catch (e) {}
+
+    if (xxx) { // Check objects
+        if (cfg['xxx']['access'] && (check_xxx() || check_xxxx())) { // Check access and page
+            if (enableAssistant && cfg['xxx']['val']) { // Check state and if enabled (if cfg is bool)
+                // CODE
+            } else {
+                // CODE
+            }
+        }
+    }
+}
+*/
+
+function netflix_assistant() {
+    debug_overflow_entry('netflix_assistant', 10);
+
+    log('group_start', 'assistant_loop', 'Assistant cycle');
+    log('debug', 'assistant_loop', '# ASSISTANT CYCLE START ##############################');
+    log('debug', 'assistant_loop', 'netflix_assistant');
+
+    // Disable context blocker on watch page for debugging
+    if (check_watch()) {
+        try {object_handler('player_container', null).addEventListener('contextmenu', function(e) { e.stopImmediatePropagation(); });} catch (e) {}
+    }
+
+    // Prevent all actions when upsell information is shown to avoid unwanted Netflix plan changes
+    if (check_upsell()) {
+        return;
+    }
+
+    // Detect if URL changed
+    var location_changed = false
+    if (full_url != full_url_old) {
+        full_url_old = full_url;
+        location_changed = true;
+        loadTime = new Date(); // Each URL change is basically time of load
+    }
+
+    // If key is pressed for some time nothing should be performed to avoid errors
+    if (!key_disabled) {
+        // Handle disable extension on kids profile (keep first)
+        try {
+            handle_disable_on_kids_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_disable_on_kids_feature: ' + e.stack;
+        }
+
+        // Get names of current title, episode and next offered title if available
+        try {
+            find_title_names();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'find_title_names: ' + e.stack;
+        }
+
+        // Handle video display settings
+        try {
+            handle_video_features();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_video_features: ' + e.stack;
+        }
+
+        // Handle subtitles settings
+        try {
+            handle_subtitles_features();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_subtitles_features: ' + e.stack;
+        }
+
+        // Handle title descriptions
+        try {
+            handle_synopsis_features();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_synopsis_features: ' + e.stack;
+        }
+
+        // Handle disliked titles
+        try {
+            handle_disliked_title_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_disliked_title_feature: ' + e.stack;
+        }
+
+        // Handle disabling trailers
+        try {
+            handle_trailers_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_trailers_feature: ' + e.stack;
+        }
+
+        // Handle elapsed time
+        try {
+            handle_elapsed_time_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_elapsed_time_feature: ' + e.stack;
+        }
+
+        // Handle next episodes
+        try {
+            handle_next_episode_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_next_episode_feature: ' + e.stack;
+        }
+
+        // Handle pausing on blur
+        try {
+            handle_pause_on_blur_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_pause_on_blur_feature: ' + e.stack;
+        }
+
+        // Handle skipping on intros and recaps
+        try {
+            handle_skip_intro_recap_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_skip_intro_recap_feature: ' + e.stack;
+        }
+
+        // Handle interruptions
+        try {
+            handle_interruption_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_interruption_feature: ' + e.stack;
+        }
+
+        // Handle history
+        try {
+            handle_history_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_history_feature: ' + e.stack;
+        }
+
+        // Handle playback problems (keep last)
+        try {
+            handle_playback_problem_feature();
+        } catch (e) {
+            error_detected = true;
+            error_message = 'handle_playback_problem_feature: ' + e.stack;
+        }
+    }
+
+    // Reset temporary features with every new title
+    if (check_watch()) {
+        if (location_changed) {
+            reset_features = true;
+        }
+        reset_temporary_features();
     }
 
     // Store statistics database to local storage
@@ -1074,7 +1220,7 @@ function play_random() {
 
 function bind_events() {
     document.onkeyup = function(evt) {
-        key_event_handler(evt);
+        handle_key_event(evt);
     };
 
     window.onwheel = function(evt) {
@@ -1101,7 +1247,7 @@ function unbind_events() {
     window.onfocus = null;
 }
 
-function key_event_handler(evt) {
+function handle_key_event(evt) {
     // Skip binding actions while reporting a problem or searching for titles
     if (check_search_bar() || check_problem_report() || check_options() || isOrphan) {
         return;
@@ -1125,7 +1271,7 @@ function key_event_handler(evt) {
     // Perform activities for valid keys
     // Global
     if (isToggleAssistant) {
-        log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>toggle_assistant');
+        log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>toggle_assistant');
 
         toggle_assistant();
         valid_key = true;
@@ -1134,7 +1280,7 @@ function key_event_handler(evt) {
     // Tiles only
     if (check_browse() || check_latest() || check_title() || check_search()) {
         if (isRandomMovie) {
-            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>rand_movie');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>rand_movie');
 
             play_random();
             valid_key = true;
@@ -1144,7 +1290,7 @@ function key_event_handler(evt) {
     // Watch only
     if (check_watch()) {
         if (isExitPlayer) {
-            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>exit_player');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>exit_player');
 
             var button_exit_player_obj = object_handler('button_exit_player', null);
             if (button_exit_player_obj) {
@@ -1154,7 +1300,7 @@ function key_event_handler(evt) {
         }
 
         if (isPrevEpisode) {
-            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>prev_episode');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>prev_episode');
 
             if ((watchHistory.length - 2) >= 0) {
                 log('output', '', getLang('prev_episode_manual'));
@@ -1169,7 +1315,7 @@ function key_event_handler(evt) {
         }
 
         if (isNextEpisode) {
-            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>next_episode');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>next_episode');
 
             var button_next_episode_obj = object_handler('button_next_episode', null);
             if (button_next_episode_obj) {
@@ -1182,7 +1328,7 @@ function key_event_handler(evt) {
         }
 
         if (isHideSubtitles) {
-            log('debug', 'keypress', 'initContent>bind_events>onkeyup>key_event_handler>hide_subs');
+            log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>hide_subs');
 
             var elm = document.getElementById('feature_tempHideSubtitles');
             if (!hideSubtitles_temp) {

@@ -51,7 +51,9 @@ function injectWindows() {
                                     file: scripts[k]
                                 }, function(e) {
                                     if (chrome.runtime.lastError) {
-                                        console.error('NETFLEX ERROR: Injecting script failed with: ' + chrome.runtime.lastError.message + '. Error was suppressed.');
+                                        if (chrome.runtime.lastError.length() != 0) {
+                                            console.error('NETFLEX ERROR: Injecting script failed with: ' + chrome.runtime.lastError.message + '. Error was suppressed.');
+                                        }
                                     }
                                 });
                             }

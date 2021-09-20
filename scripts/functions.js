@@ -321,7 +321,10 @@ function reload_extension() {
                 }, function(response) {
                     try {
                         if (chrome.runtime.lastError) {
-                            log('error', 'core_errors', chrome.runtime.lastError);
+                            if (chrome.runtime.lastError.length() != 0) {
+                                log('error', 'core_errors', 'Function reload_extension called sendMessage and returned reply error:');
+                                log('error', 'core_errors', chrome.runtime.lastError);
+                            }
                         }
                         if (response.status = 'OK') {
                             isOrphan = true;
@@ -331,7 +334,7 @@ function reload_extension() {
                             } catch (e) {}
                         } else if (response.status = 'ERROR') {
                             if (response.message != '') {
-                                log('error', '', response.message);
+                                log('error', '', 'Response message: ' + response.message);
                             }
                         } else {
                             log('debug', 'background', 'reload_extension()');
@@ -532,11 +535,19 @@ function check_problem_report() {
 }
 
 function check_options() {
-    var opt = document.getElementById('extension_options_integrated')
+    var opt = document.getElementById('extension_options_integrated');
     if (opt) {
         if (opt.style.display == 'table-cell') {
             return true;
         }
+    }
+
+    return false;
+}
+
+function check_series() {
+    if (object_handler('button_episodes_list', null)) {
+        return true;
     }
 
     return false;
@@ -724,6 +735,7 @@ function environment_update() {
         debug_variables['checks']['check_kids'] = check_kids();
         debug_variables['checks']['check_search'] = check_search();
         debug_variables['checks']['check_cast'] = check_cast();
+        debug_variables['checks']['check_series'] = check_series();
         debug_variables['checks']['check_upsell'] = check_upsell();
         debug_variables['checks']['check_search_bar'] = check_search_bar();
         debug_variables['checks']['check_problem_report'] = check_problem_report();
@@ -807,6 +819,7 @@ function environment_update() {
         debug_variables['assistant']['reload_delay'] = reload_delay;
         debug_variables['assistant']['reloading_page'] = reloading_page;
         debug_variables['assistant']['loadingTime'] = loadingTime;
+        debug_variables['assistant']['is_interrupted'] = is_interrupted;
         debug_variables['assistant']['forceNextEpisode'] = forceNextEpisode;
         debug_variables['assistant']['next_is_offered'] = next_is_offered;
         debug_variables['assistant']['next_no_wait'] = next_no_wait;
@@ -816,7 +829,6 @@ function environment_update() {
         debug_variables['assistant']['lastCall'] = lastCall;
         debug_variables['assistant']['video'] = video;
         debug_variables['assistant']['video_id'] = video_id;
-        debug_variables['assistant']['is_series'] = is_series;
         debug_variables['assistant']['currentVideo'] = currentVideo;
         debug_variables['assistant']['currentVideo_1'] = currentVideo_1;
         debug_variables['assistant']['currentVideo_2'] = currentVideo_2;
@@ -1682,5 +1694,5 @@ function show_debug_variables(type) {
     log('output', '', debug_content);
 }
 
-// To shut Firefox up, keep it a last line (result is non-structured-clonable data message)
+// To shut Firefox up, keep it a last line (result is non-structured-cloneable data message)
 undefined;
