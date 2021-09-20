@@ -240,6 +240,10 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.episode-list');
             if (obj) { return obj; }
             break;
+        case 'player_overlay':
+            obj = document.querySelector('[data-uia="evidence-overlay"]');
+            if (obj) { return obj; }
+            break;
         // Ratings elements
         case 'ratings_elements':
             obj = document.querySelectorAll('.jawBoneContainer, .volatile-billboard-animations-container, .previewModal--container.detail-modal, .previewModal--wrapper, .bob-card, .slider-refocus.title-card, .titleCard--container, .title-card-container');

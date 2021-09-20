@@ -789,8 +789,11 @@ function handle_pause_on_blur_feature() {
                         // Pause video
                         try {
                             add_stats_count('stat_pauseOnBlur');
-                            try {doClick(object_handler('button_pause', null));} catch (e) {}
-                            video.pause();
+                            try {
+                                doClick(object_handler('button_pause', null));
+                            } catch (e) {
+                                video.pause();
+                            }
                             log('output', '', getLang('lost_focus_pause'));
                             pausedByExtension = true;
                         } catch (e) {}
@@ -801,8 +804,20 @@ function handle_pause_on_blur_feature() {
                         // Autostart video
                         try {
                             add_stats_count('stat_playOnFocus');
-                            try {doClick(object_handler('button_play', null));} catch (e) {}
-                            video.play();
+                            try {doClick(object_handler('player_overlay', null));} catch (e) {}
+                            try {
+                                doClick(object_handler('button_play', null));
+                            } catch (e) {
+                                // Lets try delay for overlay to come up
+                                setTimeout(function() {
+                                    try {
+                                        doClick(object_handler('button_play', null));
+                                    } catch (e) {
+                                        // Well, whatever happens at least play the video
+                                        video.play();
+                                    }
+                                }, 500);
+                            }
                             log('output', '', getLang('gained_focus_play'));
                             pausedByExtension = false;
                         } catch (e) {}
