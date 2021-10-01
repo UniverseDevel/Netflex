@@ -130,6 +130,10 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.button-nfplayerReportAProblem, [data-uia="control-question"]');
             if (obj) { return obj; }
             break;
+        case 'button_audio_subtitle':
+            obj = document.querySelector('[data-uia="control-audio-subtitle"]');
+            if (obj) { return obj; }
+            break;
         case 'input_search':
             obj = document.querySelector('.searchInput');
             if (obj) { return obj; }
@@ -242,6 +246,10 @@ function object_handler(object_category, related_object) {
             break;
         case 'player_overlay':
             obj = document.querySelector('[data-uia="evidence-overlay"]');
+            if (obj) { return obj; }
+            break;
+        case 'audio_subtitle_selector':
+            obj = document.querySelector('.watch-video--selector-audio-subtitle');
             if (obj) { return obj; }
             break;
         // Ratings elements

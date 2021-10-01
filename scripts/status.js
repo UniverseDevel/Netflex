@@ -1406,26 +1406,34 @@ function switch_simulation(state, type) {
     if (!isOrphan) {
         //debug_overflow_entry('switch_simulation ('+type+')', 10);
 
+        var event;
         var elm;
 
         // Keep pop-up visible
         switch (type) {
             case 'netflex_bubble_container':
                 // Element that will be triggering mouse move event
-                elm = object_handler('button_report_problem', null);
+                var elm_button_question = object_handler('button_report_problem', null);
+                event = 'move';
+
+                //var elm_button_audio_subtitle = object_handler('button_audio_subtitle', null);
+                //event = 'click';
+
+                elm = elm_button_question;
 
                 // Actions perform when event is raised and finished
-                var el_pop_content = document.getElementById('netflex_bubble_container');
+                var elm_pop_content = document.getElementById('netflex_bubble_container');
+                var elm_container = object_handler('player_video_container', null);
 
                 if (state) {
                     try {
-                        addCSS(el_pop_content, {'display': 'inherit'});
+                        addCSS(elm_pop_content, {'display': 'inherit'});
 
                         status_bubble_opened = true;
                     } catch (e) {}
                 } else {
                     try {
-                        addCSS(el_pop_content, {'display': 'none'});
+                        addCSS(elm_pop_content, {'display': 'none'});
 
                         hide_extension_containers('status_bubble');
 
@@ -1437,7 +1445,7 @@ function switch_simulation(state, type) {
 
         // Handle the element registration
         if (state) {
-            simulation_objects[type] = elm;
+            simulation_objects[type] = [ event, elm ];
         } else {
             delete simulation_objects[type];
         }
@@ -1451,74 +1459,83 @@ function mouse_simulation() {
     for (var key in simulation_objects) {
         if (simulation_objects.hasOwnProperty(key)) {
             try {
-                var elm = simulation_objects[key];
-                if (elm) {
-                    if (movement_offset == 0) {
-                        movement_offset = 1;
-                    } else {
-                        movement_offset = 0;
+                var event = simulation_objects[key][0];
+                var elm = simulation_objects[key][1];
+
+                if (elm && event) {
+                    switch (event) {
+                        case 'move':
+                            if (movement_offset == 0) {
+                                movement_offset = 1;
+                            } else {
+                                movement_offset = 0;
+                            }
+
+                            if (cfg['debug']['val'].includes('mouse_simulation')) {
+                                var dbg_el1 = document.createElement('div');
+                                dbg_el1.className = 'netflex_mouse_move_debug';
+                                dbg_el1.setAttribute('data-creation', new Date().getTime());
+                                addCSS(dbg_el1, {
+                                    'width': '1px',
+                                    'height': '1px',
+                                    'border': '1px solid green',
+                                    'background-color': 'green',
+                                    'position': 'absolute',
+                                    'z-index': '9999999999',
+                                    'top': (elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset + 1) + 'px',
+                                    'left': (elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset + 1) + 'px'
+                                })
+                                elm.appendChild(dbg_el1);
+
+                                var dbg_el2 = document.createElement('div');
+                                dbg_el2.className = 'netflex_mouse_move_debug';
+                                dbg_el2.setAttribute('data-creation', new Date().getTime());
+                                addCSS(dbg_el2, {
+                                    'width': '1px',
+                                    'height': '1px',
+                                    'border': '1px solid red',
+                                    'background-color': 'red',
+                                    'position': 'absolute',
+                                    'z-index': '9999999999',
+                                    'top': (elm.offsetHeight/2 + movement_offset + 2) + 'px',
+                                    'left': (elm.offsetWidth/2 + movement_offset + 2) + 'px'
+                                })
+                                elm.appendChild(dbg_el2);
+
+                                var dbg_el3 = document.createElement('div');
+                                dbg_el3.className = 'netflex_mouse_move_debug';
+                                dbg_el3.setAttribute('data-creation', new Date().getTime());
+                                addCSS(dbg_el3, {
+                                    'width': '1px',
+                                    'height': '1px',
+                                    'border': '1px solid blue',
+                                    'background-color': 'blue',
+                                    'position': 'absolute',
+                                    'z-index': '9999999999',
+                                    'top': (elm.offsetHeight/2 + movement_offset + 3) + 'px',
+                                    'left': (elm.offsetWidth/2 + movement_offset + 3) + 'px'
+                                })
+                                elm.appendChild(dbg_el3);
+                            }
+
+                            // Keep controls displayed
+                            var eventOptions = {
+                                'bubbles': true,
+                                'button': 0,
+                                'clientX': elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset,
+                                'clientY': elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset,
+                                'offsetX': elm.offsetWidth/2 + movement_offset,
+                                'offsetY': elm.offsetHeight/2 + movement_offset,
+                                'pageX': elm.offsetWidth/2 + movement_offset,
+                                'pageY': elm.offsetHeight/2 + movement_offset,
+                                'currentTarget': elm[0]
+                            };
+                            elm.dispatchEvent(new MouseEvent('mousemove', eventOptions));
+                            break;
+                        case 'click':
+                            doClick(elm);
+                            break;
                     }
-
-                    if (cfg['debug']['val'].includes('mouse_simulation')) {
-                        var dbg_el1 = document.createElement('div');
-                        dbg_el1.className = 'netflex_mouse_move_debug';
-                        dbg_el1.setAttribute('data-creation', new Date().getTime());
-                        addCSS(dbg_el1, {
-                            'width': '1px',
-                            'height': '1px',
-                            'border': '1px solid green',
-                            'background-color': 'green',
-                            'position': 'absolute',
-                            'z-index': '9999999999',
-                            'top': (elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset + 1) + 'px',
-                            'left': (elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset + 1) + 'px'
-                        })
-                        elm.appendChild(dbg_el1);
-
-                        var dbg_el2 = document.createElement('div');
-                        dbg_el2.className = 'netflex_mouse_move_debug';
-                        dbg_el2.setAttribute('data-creation', new Date().getTime());
-                        addCSS(dbg_el2, {
-                            'width': '1px',
-                            'height': '1px',
-                            'border': '1px solid red',
-                            'background-color': 'red',
-                            'position': 'absolute',
-                            'z-index': '9999999999',
-                            'top': (elm.offsetHeight/2 + movement_offset + 2) + 'px',
-                            'left': (elm.offsetWidth/2 + movement_offset + 2) + 'px'
-                        })
-                        elm.appendChild(dbg_el2);
-
-                        var dbg_el3 = document.createElement('div');
-                        dbg_el3.className = 'netflex_mouse_move_debug';
-                        dbg_el3.setAttribute('data-creation', new Date().getTime());
-                        addCSS(dbg_el3, {
-                            'width': '1px',
-                            'height': '1px',
-                            'border': '1px solid blue',
-                            'background-color': 'blue',
-                            'position': 'absolute',
-                            'z-index': '9999999999',
-                            'top': (elm.offsetHeight/2 + movement_offset + 3) + 'px',
-                            'left': (elm.offsetWidth/2 + movement_offset + 3) + 'px'
-                        })
-                        elm.appendChild(dbg_el3);
-                    }
-
-                    // Keep controls displayed
-                    var eventOptions = {
-                        'bubbles': true,
-                        'button': 0,
-                        'clientX': elm.getBoundingClientRect().left + elm.offsetWidth/2 + movement_offset,
-                        'clientY': elm.getBoundingClientRect().top + elm.offsetHeight/2 + movement_offset,
-                        'offsetX': elm.offsetWidth/2 + movement_offset,
-                        'offsetY': elm.offsetHeight/2 + movement_offset,
-                        'pageX': elm.offsetWidth/2 + movement_offset,
-                        'pageY': elm.offsetHeight/2 + movement_offset,
-                        'currentTarget': elm[0]
-                    };
-                    elm.dispatchEvent(new MouseEvent('mousemove', eventOptions));
                 }
             } catch (e) {}
         }
