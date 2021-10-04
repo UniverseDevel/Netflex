@@ -906,6 +906,34 @@ function init_configuration() {
             'dependency' : null,
             'notice' : false
         },
+        'hideSpoilersObjects' : {
+            'type' : 'array',
+            'category' : 'assistant',
+            'access' : true,
+            'order' : cfg_order['assistant']++,
+            'val' : [],
+            'def' : [
+                'description',
+                'runner_thumbnail'
+            ],
+            'min' : null,
+            'max' : null,
+            'step' : null,
+            'off' : null,
+            'list': [
+                'description',
+                'episode_name',
+                'episode_picture',
+                'runner_thumbnail'
+            ],
+            'callback' : null,
+            'units' : null,
+            'permissions' : null,
+            'dependency' : {
+                'hideSpoilers' : [ true ]
+            },
+            'notice' : false
+        },
         'revealSpoilers' : {
             'type' : 'range',
             'category' : 'assistant',
@@ -940,34 +968,6 @@ function init_configuration() {
             'list': [],
             'callback' : null,
             'units' : 'pct',
-            'permissions' : null,
-            'dependency' : {
-                'hideSpoilers' : [ true ]
-            },
-            'notice' : false
-        },
-        'hideSpoilersObjects' : {
-            'type' : 'array',
-            'category' : 'assistant',
-            'access' : true,
-            'order' : cfg_order['assistant']++,
-            'val' : [],
-            'def' : [
-                'description',
-                'runner_thumbnail'
-            ],
-            'min' : null,
-            'max' : null,
-            'step' : null,
-            'off' : null,
-            'list': [
-                'description',
-                'episode_name',
-                'episode_picture',
-                'runner_thumbnail'
-            ],
-            'callback' : null,
-            'units' : null,
             'permissions' : null,
             'dependency' : {
                 'hideSpoilers' : [ true ]
