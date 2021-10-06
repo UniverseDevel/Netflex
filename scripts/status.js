@@ -1330,8 +1330,8 @@ function get_status_objects() {
 
     if (check_watch()) {
         obj['controls_type'] = 'watch';
-        if (object_handler('player_controls_report_problem', null)) {
-            obj['iconTemplateElm'] = object_handler('player_controls_report_problem', null).parentNode;
+        if (object_handler('player_extension_status_location', null)) {
+            obj['iconTemplateElm'] = object_handler('player_extension_status_location', null).parentNode;
             obj['iconPlaceBeforeElm'] = obj['iconTemplateElm'].parentNode.children[0];
         }
 

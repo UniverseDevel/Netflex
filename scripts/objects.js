@@ -228,8 +228,8 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.title-name-container a');
             if (obj) { return obj; }
             break;
-        case 'player_controls_report_problem':
-            obj = document.querySelector('.ReportAProblemPopupContainer, [data-uia="control-question"]');
+        case 'player_extension_status_location':
+            obj = document.querySelector('.ReportAProblemPopupContainer, [data-uia="control-question"], [data-uia="control-next"], [data-uia="control-audio-subtitle"]');
             if (obj) { return obj; }
             break;
         case 'navigation_menu_account':
