@@ -127,7 +127,7 @@ function object_handler(object_category, related_object) {
             if (obj) { return obj; }
             break;
         case 'button_report_problem':
-            obj = document.querySelector('.button-nfplayerReportAProblem, [data-uia="control-question"]');
+            obj = document.querySelector('.button-nfplayerReportAProblem, [data-uia="control-question"], [data-uia="control-flag"]');
             if (obj) { return obj; }
             break;
         case 'button_audio_subtitle':
