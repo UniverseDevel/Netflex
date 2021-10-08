@@ -146,8 +146,12 @@ function object_handler(object_category, related_object) {
             obj = document.querySelector('.button-nfplayerPause, [data-uia="control-play-pause-play"][aria-label="Pause"], [data-uia="control-play-pause-pause"][aria-label="Pause"]');
             if (obj) { return obj; }
             break;
-        case 'button_skip':
-            obj = document.querySelector('.skip-credits a .nf-flat-button-text, [data-uia="player-skip-intro"], [data-uia="player-skip-recap"]');
+        case 'button_skip_intro':
+            obj = document.querySelector('[data-uia="player-skip-intro"]');
+            if (obj) { return obj; }
+            break;
+        case 'button_skip_recap':
+            obj = document.querySelector('[data-uia="player-skip-recap"]');
             if (obj) { return obj; }
             break;
         case 'player_subtitles':

@@ -40,11 +40,21 @@ var netflix_body = object_handler('body', null);
 var styles_list = {
     'netflex-ui': {
         'src': chrome.runtime.getURL('styles/netflex-ui.css'),
-        'cache': false
+        'cache': false,
+        'enabled': true
     },
     'netflex-features': {
         'src': chrome.runtime.getURL('styles/netflex-features.css'),
-        'cache': false
+        'cache': false,
+        'enabled': true
+    }
+};
+
+var scripts_list = {
+    'netflex-interface': {
+        'src': chrome.runtime.getURL('scripts/interface.js'),
+        'cache': false,
+        'enabled': false
     }
 };
 
@@ -264,71 +274,3 @@ var rating_expiration_not_found = 15; // Days
 var rating_expiration_timeout = 1; // Days
 var rating_expiration_limit = 1; // Days
 var rating_expiration_error = 1; // Days
-
-// Always store as UPPERCASE
-var loc_skip_intro = [
-    'LEWATI INTRO', // Bahasa Indonesia
-    'LANGKAU PENGENALAN', // Bahasa Melayu
-    'SPRING INTRO OVER', // Dansk
-    'INTRO ÜBERSPRINGEN', // Deutsch
-    'SKIP INTRO', // English
-    'OMITIR INTRO', // Español
-    'IGNORER L\'INTRODUCTION', // Français
-    'PRESKOČI UVOD', // Hrvatski
-    'SALTA L\'INTRO', // Italiano
-    'RUKA UTANGULIZI', // Kiswahili
-    'BEVEZETÉS KIHAGYÁSA', // Magyar
-    'INTRO OVERSLAAN', // Nederlands
-    'HOPP OVER INTRO', // Norsk Bokmål
-    'POMIŃ CZOŁÓWKĘ', // Polski
-    'PULAR ABERTURA', // Português
-    'FĂRĂ INTRODUCERE', // Română
-    'OHITA INTRO', // Suomi
-    'HOPPA ÖVER INTRO', // Svenska
-    'BỎ QUA GIỚI THIỆU', // Tiếng Việt
-    'İNTROYU ATLA', // Türkçe
-    'PŘESKOČIT ÚVOD', // Čeština
-    'ΠΑΡΑΛΕΙΨΗ ΕΙΣΑΓΩΓΗΣ', // Ελληνικά
-    'ПРОПУСТИТЬ ИНТРО', // Русский
-    'דלג על התקציר', // עברית
-    'تخطي المقدمة', // العربية
-    'इंट्रो स्किप करें', // हिन्दी
-    'ข้ามตอนต้น', // ไทย
-    '跳过简介', // 中文
-    'イントロをスキップ', // 日本語
-    '오프닝 건너뛰기', // 한국어
-];
-
-// Always store as UPPERCASE
-var loc_skip_recap = [
-    'LEWATI RINGKASAN', // Bahasa Indonesia
-    'LANGKAU IKHTISAR', // Bahasa Melayu
-    'SPRING RESUMÉ OVER', // Dansk
-    'RÜCKBLICK ÜBERSPRINGEN', // Deutsch
-    'SKIP RECAP', // English
-    'OMITIR RESUMEN', // Español
-    'IGNORER LE RÉCAP', // Français
-    'PRESKOČI SAŽETAK', // Hrvatski
-    'SALTA IL RIASSUNTO', // Italiano
-    'RUKA MARUDIO', // Kiswahili
-    'ÖSSZEFOGLALÓ KIHAGYÁSA', // Magyar
-    'OVERZICHT OVERSLAAN', // Nederlands
-    'HOPP OVER SAMMENDRAG', // Norsk Bokmål
-    'POMIŃ PODSUMOWANIE', // Polski
-    'PULAR O RESUMO', // Português
-    'FĂRĂ RECAPITULARE', // Română
-    'OHITA KERTAUS', // Suomi
-    'HOPPA ÖVER SAMMANFATTNING', // Svenska
-    'BỎ QUA TÓM TẮT', // Tiếng Việt
-    'ÖZETI ATLA', // Türkçe
-    'PŘESKOČIT REKAPITULACI', // Čeština
-    'ΠΑΡΑΛΕΙΨΗ ΠΕΡΙΛΗΨΗΣ', // Ελληνικά
-    'ПРОПУСТИТЬ КРАТКОЕ СОДЕРЖАНИЕ', // Русский
-    'דלג על ההקדמה', // עברית
-    'تخطي الملخص', // العربية
-    'रीकैप स्किप करें', // हिन्दी
-    'ข้ามความเดิม', // ไทย
-    '跳过剧情回顾', // 中文
-    '本編へスキップ', // 日本語
-    '줄거리 건너뛰기', // 한국어
-];

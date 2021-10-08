@@ -34,6 +34,7 @@ function events_injector() {
                 var status_update_limit = new Date(status_update_time).addMilliseconds(cfg['elementHandlerTimer']['val']);
                 if (status_update_limit < new Date()) {
                     inject_styles();
+                    inject_scripts();
                     element_handler();
                     stop_worker('elements');
                 }
@@ -619,6 +620,7 @@ function environment_update() {
         setInjected();
 
         inject_styles();
+        inject_scripts();
 
         //load_configuration();
 
@@ -925,12 +927,14 @@ function add_stats_count(stat_key) {
 
 function inject_styles() {
     for (var style_name in styles_list) {
-        if (!document.getElementById('netflix_extended_styles_' + style_name)) {
-            addStyle(style_name);
-        } else {
-            if (document.getElementById('netflix_extended_styles_' + style_name).getAttribute('run_id') != run_id.toString()) {
-                removeDOM(document.getElementById('netflix_extended_styles_' + style_name));
-                addStyle(style_name)
+        if (styles_list[style_name]['enabled']) {
+            if (!document.getElementById('netflix_extended_styles_' + style_name)) {
+                addStyle(style_name);
+            } else {
+                if (document.getElementById('netflix_extended_styles_' + style_name).getAttribute('run_id') != run_id.toString()) {
+                    removeDOM(document.getElementById('netflix_extended_styles_' + style_name));
+                    addStyle(style_name)
+                }
             }
         }
     }
@@ -949,6 +953,35 @@ function addStyle(style_name) {
     style.setAttribute('run_id', run_id);
 
     netflix_head.appendChild(style);
+}
+
+function inject_scripts() {
+    for (var script_name in scripts_list) {
+        if (scripts_list[script_name]['enabled']) {
+            if (!document.getElementById('netflix_extended_styles_' + script_name)) {
+                addScript(script_name);
+            } else {
+                if (document.getElementById('netflix_extended_styles_' + script_name).getAttribute('run_id') != run_id.toString()) {
+                    removeDOM(document.getElementById('netflix_extended_styles_' + script_name));
+                    addScript(script_name)
+                }
+            }
+        }
+    }
+}
+
+function addScript(script_name) {
+    var cache_disabler = '';
+    if (!scripts_list[script_name]['cache']) {
+        cache_disabler = '?_=' + run_id;
+    }
+    var script = document.createElement('script');
+    script.setAttribute('id', 'netflix_extended_styles_' + script_name);
+    script.setAttribute('src', scripts_list[script_name]['src'] + cache_disabler);
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('run_id', run_id);
+
+    netflix_head.appendChild(script);
 }
 
 function normalize_version(version, pads) {

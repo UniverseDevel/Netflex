@@ -100,7 +100,7 @@
 7.0.1    - 2021.09.13 - Bugfixes. Added option to disable showing specific ratings sources. Added dependency system into configuration that clearly states which configuration is dependent on other configuration and its value, this is also shown in options and is enforced with highlighting dependency if conditions are not met. Added units to values in configuration so values are better understood. Added option to enable or disable configuration options on Kids profile, Kids options were moved to their own section.
 7.0.2    - 2021.09.18 - Bugfixes. Added elapsed time to Chromecast screen. Added more options for styling subtitles. Updated DOMPurify library.
 7.1.0    - 2021.10.06 - Bugfixes. Assistant features refactoring. Updated DOMPurify library. Fixed extension status icon for new changes in player UI.
-7.1.1    - 2021.10.06 - Bugfixes.
+7.1.1    - 2021.10.08 - Bugfixes. Added support to inject code into Netflix page itself to work withing the Netflix scope. Removed legacy skip button distinction and added proper object lookup as new UI has this possibility, which removes language dependency.
 
 TODO:
 

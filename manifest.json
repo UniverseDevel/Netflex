@@ -54,7 +54,7 @@
         "scripts": [
             "scripts/distribution.js",
 
-            "scripts/background.js"
+            "scripts/worker.js"
         ]
     },
 
@@ -76,6 +76,8 @@
 
         "styles/netflex-ui.css",
         "styles/netflex-features.css",
+
+        "scripts/interface.js",
 
         "libs/dompurify/purify.min.js.map"
     ]

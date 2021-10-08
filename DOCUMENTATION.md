@@ -1,7 +1,7 @@
 Fork info:
   
 - Do not use same/similar extension name, description or icons.
-- Edit values in 'manifest.json' and 'scripts/distribution.js' to use your API keys.
+- Edit values in 'manifest.json' and 'scripts/distribution.js' to use your API keys and URLs.
 - Edit names in '_locales/*/messages.json', do not change array item 'founder'.
 
 Libraries description:
@@ -60,9 +60,6 @@ General notes:
   variable '$libraries' with array of data for each library that needs to be checked. It also contains variable '$github_token' 
   that is optional, but filling it will remove API rate limits. Token can be stored separate from script in external file, 
   check variable '$github_token_path'.
-- Files need to be in UTF-8 encoding as Skip buttons are detected by inner text and this one is different for every
-  language. Each new Netflix language needs to be implemented as new phrases in the array of phrases. Location 'vars.js' in
-  arrays 'loc_skip_intro' and 'loc_skip_recap'.
 - Ratings are shown by detecting Netflix ID of the show then contacting WikiData API (https://www.wikidata.org/wiki/Wikidata:Main_Page)
   via Ajax call with SPARQL query using Netflix ID to find IMDb ID. IMDb ID is then used when contacting OMDB API
   (https://www.omdbapi.com/), who is the provider of ratings in this extension. To contact OMDB API, API key is used which
