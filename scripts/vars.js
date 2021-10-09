@@ -12,7 +12,8 @@ var movement_offset = 0;
 
 var injected = false;
 var run_id = Date.now();
-var injected_flag = 'Netflex';
+var injected_flag = 'netflex';
+var interface_data = undefined;
 
 var workers = {};
 workers['startup'] = false;
@@ -172,7 +173,6 @@ var stuckTime = 0;
 var loadingTime = 0;
 var nextTitleDelay = 0;
 var forceReloadDifference = 0;
-var pingUpdateDifference = 0;
 var key_pressed = '';
 var wheel_direction = '';
 var lastForceReload = new Date(1970, 0, 1, 0, 0, 0);

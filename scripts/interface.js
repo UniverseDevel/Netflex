@@ -1,16 +1,72 @@
-// TODO: unused for now until the implementation is decided and finished, check variable scripts_list
-
-
-if (!window.netflex) {
-    window.netflex = {};
+// VARIABLES
+if (workers) {
+    // If workers are already defined, stop all running workers
+    for (var key in workers) {
+        if (workers[key]) {
+            clearInterval(workers[key]);
+            clearTimeout(workers[key]);
+        }
+    }
+} else {
+    var workers = {};
 }
 
-function dataProvider() {
-    // TODO: Create element that will hold all data that we can collect from Netflix scope for extension to scrape, maybe
-    //       chrome.runtime.onMessage could be used and it might be better, need to test this as well
+workers['startup'] = false;
+workers['environment'] = false;
+
+var injected_flag = 'netflex';
+var run_id = document.getElementById('netflix_extended_styles_netflex-interface').getAttribute('run_id');
+var interface = null;
+
+// FUNCTIONS
+function startupInterface() {
+    interface = document.getElementById(injected_flag);
+
+    if (interface) {
+        if (interface.getAttribute('run-id') == run_id) {
+            if (!window.netflex) {
+                window.netflex = {};
+            }
+
+            injectWindowCalls();
+
+            workers['environment'] = setInterval(environment_update, 500);
+
+            clearInterval(workers['startup']);
+        }
+    }
 }
 
-function generateScopeData(obj, level) {
+function injectWindowCalls() {
+    // Inject JSON.parser to spoof Netflix responses from server
+    /**-/
+    if (!window.netflex.json_parse) {
+        window.netflex.json_parse = JSON.parse;
+    }
+    window.JSON.parse = function(...args) {
+        var parsed_json = window.netflex.json_parse.call(JSON, ...args);
+        if (parsed_json) {
+            console.log(parsed_json);
+        }
+        return parsed_json;
+    };
+    /**/
+}
+
+function environment_update() {
+    interface = document.getElementById(injected_flag);
+
+    if (interface) {
+        if (interface.getAttribute('run-id') == run_id) {
+            interface.setAttribute('ping-interface', JSON.stringify(new Date()).replace(/\"/gi, ''));
+            interface.setAttribute('data-interface', JSON.stringify(generateInterfaceData()));
+        } else {
+            clearInterval(workers['environment']);
+        }
+    }
+}
+
+function generateScopeData(obj, level, output_string) {
     var netflix_copy = {};
 
     for (var key in obj) {
@@ -20,7 +76,7 @@ function generateScopeData(obj, level) {
         } catch (e) {
             //console.log(key + ' => ' + level);
             if (level < 5) { // Descend only few levels to avoid "Maximum call stack size exceeded"
-                netflix_copy[key] = generateScopeData(obj[key], ++level);
+                netflix_copy[key] = generateScopeData(obj[key], ++level, false);
             } else {
                 //console.log(key + ' => skip');
                 netflix_copy[key] = 'Too deep...';
@@ -29,38 +85,83 @@ function generateScopeData(obj, level) {
     }
 
     if (level == 0) {
-        return JSON.stringify(netflix_copy);
+        if (output_string) {
+            return JSON.stringify(netflix_copy);
+        } else {
+            return netflix_copy;
+        }
     } else {
         return netflix_copy;
     }
 }
 
-function getUserInfo() {
-    return netflix.reactContext.models.userInfo.data;
+function generateInterfaceData() {
+    var data = {};
+
+    data[run_id] = {};
+    data[run_id]['profile_name'] = getProfileName();
+    data[run_id]['is_account_test'] = checkAccountTest();
+    data[run_id]['environment'] = getEnvironment();
+    data[run_id]['cadmium_version'] = getCadmiumVersion();
+
+    return data;
+}
+
+function getProfileName() {
+    var data = {};
+
+    try {
+        data['value'] = netflix.reactContext.models.userInfo.data.name;
+        data['state'] = 'OK';
+    } catch (e) {
+        data['value'] = e.stack;
+        data['state'] = 'ERROR';
+    }
+
+    return data;
 }
 
 function checkAccountTest() {
-    return netflix.reactContext.models.userInfo.data.isTestAccount;
+    var data = {};
+
+    try {
+        data['value'] = netflix.reactContext.models.userInfo.data.isTestAccount;
+        data['state'] = 'OK';
+    } catch (e) {
+        data['value'] = e.stack;
+        data['state'] = 'ERROR';
+    }
+
+    return data;
 }
 
 function getEnvironment() {
-    return netflix.data.config.ui.initParams.environment;
+    var data = {};
+
+    try {
+        data['value'] = netflix.reactContext.models.playerModel.data.config.ui.initParams.environment;
+        data['state'] = 'OK';
+    } catch (e) {
+        data['value'] = e.stack;
+        data['state'] = 'ERROR';
+    }
+
+    return data;
 }
 
 function getCadmiumVersion() {
-    return netflix.reactContext.models.playerModel.data.config.core.assets.version;
+    var data = {};
+
+    try {
+        data['value'] = netflix.reactContext.models.playerModel.data.config.core.assets.version;
+        data['state'] = 'OK';
+    } catch (e) {
+        data['value'] = e.stack;
+        data['state'] = 'ERROR';
+    }
+
+    return data;
 }
 
-// Inject JSON.parser to spoof Netflix responses from server
-/**-/
-if (!window.netflex.json_parse) {
-    window.netflex.json_parse = JSON.parse;
-}
-window.JSON.parse = function(...args) {
-    var parsed_json = window.netflex.json_parse.call(JSON, ...args);
-    if (parsed_json) {
-        console.log(parsed_json);
-    }
-    return parsed_json;
-};
-/**/
+// INIT
+workers['startup'] = setInterval(startupInterface, 1000);

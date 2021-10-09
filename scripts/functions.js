@@ -249,7 +249,7 @@ function setInjected() {
         flag.setAttribute('id', injected_flag);
         flag.setAttribute('run-id', run_id);
         flag.setAttribute('startup-id', workers['startup']);
-        flag.setAttribute('ping', JSON.stringify(new Date()).replace(/\"/gi, ''));
+        flag.setAttribute('ping-extension', JSON.stringify(new Date()).replace(/\"/gi, ''));
         netflix_body.appendChild(flag);
     } else {
         if (flag.getAttribute('run-id') != run_id.toString()) {
@@ -260,7 +260,7 @@ function setInjected() {
             debug_overflow_entry('startup-id', 1);
             flag.setAttribute('startup-id', workers['startup']);
         }
-        flag.setAttribute('ping', JSON.stringify(new Date()).replace(/\"/gi, ''));
+        flag.setAttribute('ping-extension', JSON.stringify(new Date()).replace(/\"/gi, ''));
     }
 }
 
@@ -615,9 +615,30 @@ function local_storage_total_size() {
     }
 }
 
+function readInterface() {
+    try {
+        var flag = document.getElementById(injected_flag);
+
+        if (flag) {
+            var data = flag.getAttribute('data-interface');
+            if (data) {
+                interface_data = JSON.parse(data, JSON.dateParser)[run_id];
+            } else {
+                interface_data = undefined;
+            }
+        } else {
+            interface_data = undefined;
+        }
+    } catch (e) {
+        interface_data = undefined;
+        log('error', 'core', e.stack);
+    }
+}
+
 function environment_update() {
     try {
         setInjected();
+        readInterface();
 
         inject_styles();
         inject_scripts();
@@ -747,6 +768,7 @@ function environment_update() {
 
         debug_variables['variables']['run_id'] = run_id;
         debug_variables['variables']['injected_flag'] = injected_flag;
+        debug_variables['variables']['interface_data'] = interface_data;
         debug_variables['variables']['extension_version'] = extension_version;
         debug_variables['variables']['extension_version_normalized'] = extension_version_normalized;
         debug_variables['variables']['last_version'] = last_version;
