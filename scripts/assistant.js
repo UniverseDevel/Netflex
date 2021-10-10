@@ -834,19 +834,32 @@ function handle_pause_on_blur_feature() {
 
 function handle_skip_intro_recap_feature() {
     try {var video = object_handler('player_video', null);} catch (e) {}
+    try {var skip_button = object_handler('button_skip', null);} catch (e) {} // Backwards compatibility
     try {var skip_intro_button = object_handler('button_skip_intro', null);} catch (e) {}
     try {var skip_recap_button = object_handler('button_skip_recap', null);} catch (e) {}
 
-    if (video && (skip_intro_button || skip_recap_button)) { // Check objects
+    if (video && (skip_intro_button || skip_recap_button || skip_button)) { // Check objects
         if (check_watch()) { // Check access and page
             if (enableAssistant) { // Check state and if enabled (if cfg is bool)
                 // Skip all intros & recaps
                 if (!skipping) {
                     var is_paused = video.paused;
 
+                    // Backwards compatibility
+                    if (skip_button && !skip_intro_button && !skip_recap_button) {
+                        var button_old_text = skip_button.innerText.toUpperCase().trim();
+                        log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_old_text);
+
+                        if (loc_skip_intro.includes(button_old_text)) {
+                            skip_intro_button = skip_button;
+                        } else if (loc_skip_recap.includes(button_old_text)) {
+                            skip_recap_button = skip_button;
+                        }
+                    }
+
                     if (skip_intro_button && cfg['skipIntros']['val'] && cfg['skipIntros']['access']) {
                         var button_text = skip_intro_button.innerText.toUpperCase().trim();
-                        log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
+                        log('debug', 'skip_button_text', 'Skip intro button text found: "{0}".', button_text);
 
                         skipping = true;
                         log('output', '', getLang('skipping_intro'));
@@ -854,7 +867,7 @@ function handle_skip_intro_recap_feature() {
                         doClick(skip_intro_button);
                     } else if (skip_recap_button && cfg['skipRecaps']['val'] && cfg['skipRecaps']['access']) {
                         var button_text = skip_recap_button.innerText.toUpperCase().trim();
-                        log('debug', 'skip_button_text', 'Skip button text found: "{0}".', button_text);
+                        log('debug', 'skip_button_text', 'Skip recap button text found: "{0}".', button_text);
 
                         skipping = true;
                         log('output', '', getLang('skipping_recap'));
