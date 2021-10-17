@@ -33,7 +33,7 @@
 #netflex_icon_status {
     stroke: var(--netflex_icon_bord_color, #FFFFFF) !important;
     stroke-width: 80px;
-    color: var(--netflex_icon_stat_color, #00b642) !important;
+    color: var(--netflex_icon_stat_color, transparent) !important;
     transform-origin: center center !important;
 }
 

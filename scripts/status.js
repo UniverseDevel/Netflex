@@ -932,7 +932,7 @@ function status_updater() {
     var netflix_status_profile = 'general';
     var icon_class = '';
     var icon_body_class = '';
-    var icon_status_color = '#00b642'; // green
+    var icon_status_color = 'transparent'; // green
     var icon_border_color = '#FFFFFF';
     var bubble_status_text = getLang('status_text_ok');
     var bubble_offset_right = 'auto';
@@ -1247,7 +1247,7 @@ function create_status_objects() {
 
                 icon_container = obj['iconTemplateElm'].cloneNode(true);
                 try {icon_container.querySelector('svg, a').parentNode.removeChild(icon_container.querySelector('svg, a'));} catch (e) {}
-                icon_container.setAttribute('style','color: #00b642; stroke: #FFFFFF; stroke-width: 80px; transform-origin: center center;');
+                icon_container.setAttribute('style','color: transparent; stroke: #FFFFFF; stroke-width: 80px; transform-origin: center center;');
                 icon_container.setAttribute('id','netflex_icon_container');
                 icon_container.setAttribute('run-id',run_id);
 
