@@ -102,7 +102,7 @@
 7.1.0    - 2021.10.06 - Bugfixes. Assistant features refactoring. Updated DOMPurify library. Fixed extension status icon for new changes in player UI.
 7.1.1    - 2021.10.09 - Bugfixes. Added support to inject code into Netflix page itself to work withing the Netflix scope. Removed legacy skip button distinction and added proper object lookup as new UI has this possibility, which removes language dependency.
 7.1.2    - 2021.10.10 - Added backwards compatibility for skip intro and recap.
-7.1.3    - 2021.10.17 - Changed icon color to be transparent when everything is working as expected.
+7.1.3    - 2021.10.21 - Changed icon color to be transparent when everything is working as expected.
 
 TODO:
 
