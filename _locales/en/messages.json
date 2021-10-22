@@ -620,7 +620,7 @@
         "description":""
     },
     "cfg_value_not_changed":{
-        "message":"Value is same as default",
+        "message":"Value is the same as default",
         "description":""
     },
     "cfg_value_changed":{
