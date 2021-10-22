@@ -230,7 +230,7 @@
 
 #extension_options_scrollable .cfg_default_mark {
     display: inline-block;
-	background-color: transparent;
+	background-color: #000000;
 }
 
 #extension_options_scrollable .cfg_default_mark.cfg_is_default {

@@ -616,7 +616,7 @@
         "description":""
     },
     "cfg_value_not_changed":{
-        "message":"Value is default",
+        "message":"Value is same as default",
         "description":""
     },
     "cfg_value_changed":{
