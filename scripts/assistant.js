@@ -734,6 +734,11 @@ function handle_next_episode_feature() {
                                             }
                                         }
                                     }
+                                    // Delay end skip reset
+                                    workers['title_end_actions'] = setTimeout(function () {
+                                        loading_next_title = false;
+                                        stop_worker('title_end_actions');
+                                    }, cfg['titleEndActionsDelay']['val']);
                                 } else {
                                     nextTitleDelay = addTimeFraction(nextTitleDelay, cfg['netflixAssistantTimer']['val']);
                                     if (nextTitleDelay % 1 == 0) {
@@ -747,6 +752,11 @@ function handle_next_episode_feature() {
                                 log('output', '', getLang('roll_credits'));
                                 add_stats_count('stat_titleEndActionRoll');
                                 try {doClick(object_handler('watch_credits', null));} catch (e) {}
+                                // Delay end roll reset
+                                workers['title_end_actions'] = setTimeout(function () {
+                                    rolling_credits = false;
+                                    stop_worker('title_end_actions');
+                                }, cfg['titleEndActionsDelay']['val']);
                             }
                             if (video) {
                                 if (video.duration - 1 < video.currentTime) {

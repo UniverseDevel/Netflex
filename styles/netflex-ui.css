@@ -275,7 +275,13 @@
 
 #extension_options_scrollable .cfg_current_value {
 	font-size: 15px;
+	color: #00b642;
 }
+
+#extension_options_scrollable .cfg_current_value.cfg_val_default {
+ 	font-size: 15px;
+	color: #ffffff;
+ }
 
 @keyframes fadingShade {
     0%   { background-color: transparent; }
@@ -371,17 +377,40 @@
 }
 
 #netflex_bubble_container[profile="general"] #extension_features_scrollable input[type="text"],
-#netflex_bubble_container[profile="general"] #extension_features_scrollable select,
-#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"],
-#netflex_bubble_container[profile="general"] #extension_options_scrollable select {
+#netflex_bubble_container[profile="general"] #extension_features_scrollable select {
 	border: 1px solid #ffffff;
 }
 
 #netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type="text"],
-#netflex_bubble_container[profile="kids"] #extension_features_scrollable select,
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable select {
+	border: 1px solid #000000;
+}
+
+#extension_features_scrollable select,
+#extension_options_scrollable select {
+    width: 300px;
+}
+
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="color"],
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"],
+#netflex_bubble_container[profile="general"] #extension_options_scrollable select {
+    border: 1px solid #00b642;
+}
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="color"].cfg_val_default,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"].cfg_val_default,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable select.cfg_val_default {
+    border: 1px solid #ffffff;
+}
+
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="color"],
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="text"],
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
-	border: 1px solid #000000;
+    border: 1px solid #00b642;
+}
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="color"].cfg_val_default,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="text"].cfg_val_default,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable select.cfg_val_default {
+    border: 1px solid #000000;
 }
 
 #extension_options_scrollable select option {
@@ -395,18 +424,34 @@
     display: none;
 }
 
+#extension_features_scrollable .checked {
+    color: #00b642;
+}
 #extension_features_scrollable .checked,
 #extension_options_scrollable .checked {
-    color: #00b642;
     background-color: transparent;
     cursor: pointer;
 }
+#extension_options_scrollable .checked {
+    color: #00b642;
+}
+#extension_options_scrollable .checked.cfg_val_default {
+    color: #ffffff;
+}
 
+#extension_features_scrollable .unchecked {
+    color: #00b642;
+}
 #extension_features_scrollable .unchecked,
 #extension_options_scrollable .unchecked {
-    color: #00b642;
     background-color: transparent;
     cursor: pointer;
+}
+#extension_options_scrollable .unchecked {
+    color: #00b642;
+}
+#extension_options_scrollable .unchecked.cfg_val_default {
+    color: #ffffff;
 }
 
 #extension_features_scrollable input[type="checkbox"]:checked ~ .checked,

@@ -155,18 +155,52 @@ function generate_options_data(load_tab) {
             var cfg_hidden_input = '';
             var cfg_form_element = '';
             switch (cfg[cfg_key]['type']) {
+                case 'bool':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] && !disableOptValChangeColor) {
+                        def_class = ' cfg_val_default';
+                    }
+                    cfg_input_type = 'checkbox';
+                    cfg_input_value = fillArgs('{0}', ((cfg[cfg_key]['val']) ? ' checked' : ''));
+                    cfg_input_face = fillArgs('<i class="far fa-square unchecked{0}"></i><i class="fas fa-check-square checked{0}"></i>', def_class);
+                    cfg_hidden_input = '';
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>{3}', cfg_input_type, cfg_key, cfg_input_value, cfg_input_face);
+                    break;
+                case 'text':
+                case 'api':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' class="cfg_val_default"';
+                    }
+                    cfg_input_type = 'text';
+                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
+                    cfg_hidden_input = '';
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}"{2} name="{1}" autocomplete="off" {3}>', cfg_input_type, cfg_key, def_class, cfg_input_value);
+                    break;
                 case 'number':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' class="cfg_val_default"';
+                    }
                     cfg_input_type = 'number';
                     cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>', cfg_input_type, cfg_key, cfg_input_value);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}"{2} name="{1}" {3}>', cfg_input_type, cfg_key, def_class, cfg_input_value);
                 case 'color':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' class="cfg_val_default"';
+                    }
                     cfg_input_type = 'color';
                     cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>', cfg_input_type, cfg_key, cfg_input_value);
+                    cfg_form_element = fillArgs('<input type="{0}" id="{1}"{2} name="{1}" {3}>', cfg_input_type, cfg_key, def_class, cfg_input_value);
                     break;
                 case 'range':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' cfg_val_default';
+                    }
                     cfg_input_type = 'range';
                     cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
                     cfg_hidden_input = '';
@@ -189,36 +223,71 @@ function generate_options_data(load_tab) {
                         log('error', '', getLang('error_range_config'), cfg_key);
                     }
 
-                    cfg_form_element = fillArgs('<table class="cfg_range_tab"><tr><td><input type="{0}" id="{1}" name="{1}" min="{2}" max="{3}" step="{4}" style="width: 95%;" {5}></td><td style="width: 20%;"><span id="{1}_current_val" class="cfg_current_value">{6}</span>{7}</td></tr></table>', cfg_input_type, cfg_key, min_value, max_value, step_value, cfg_input_value, cfg[cfg_key]['val'], transform_units(cfg[cfg_key]['units']));
+                    cfg_form_element = fillArgs('<table class="cfg_range_tab"><tr><td><input type="{0}" id="{1}" name="{1}" min="{2}" max="{3}" step="{4}" style="width: 95%;" {5}></td><td style="width: 20%;" class="cfg_current_value{6}"><span id="{1}_current_val">{7}</span>{8}</td></tr></table>', cfg_input_type, cfg_key, min_value, max_value, step_value, cfg_input_value, def_class, cfg[cfg_key]['val'], transform_units(cfg[cfg_key]['units']));
                     break;
-                case 'bool':
-                    cfg_input_type = 'checkbox';
-                    cfg_input_value = fillArgs('{0}', ((cfg[cfg_key]['val']) ? ' checked' : ''));
-                    cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
+                case 'select':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' class="cfg_val_default"';
+                    }
+                    cfg_input_type = 'select';
+                    cfg_input_value = '';
                     cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" {2}>{3}', cfg_input_type, cfg_key, cfg_input_value, cfg_input_face);
+                    var size_arg = '';
+                    //if (isFirefox) {
+                        size_arg = ' size="5"';
+                    //}
+                    cfg_form_element = fillArgs('<select id="{0}"{1} name="{0}"{2}>{3}</select>', cfg_key, def_class, size_arg, generate_select_options(cfg_key));
+                    break;
+                case 'binding':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] || disableOptValChangeColor) {
+                        def_class = ' class="cfg_val_default"';
+                    }
+                    cfg_input_type = 'binding';
+                    cfg_input_value = '';
+                    cfg_hidden_input = '';
+                    var size_arg = '';
+                    //if (isFirefox) {
+                        size_arg = ' size="5"';
+                    //}
+                    cfg_form_element = fillArgs('<select id="{0}"{1} name="{0}"{2}>{3}</select>', cfg_key, def_class, size_arg, generate_bindings(cfg_key));
                     break;
                 case 'array':
                     cfg_input_type = 'checkbox';
                     cfg_input_value = JSON.stringify(cfg[cfg_key]['val']);
-                    cfg_input_face = '<i class="far fa-square unchecked"></i><i class="fas fa-check-square checked"></i>';
                     cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" value=\'{1}\'>', cfg_key, cfg_input_value);
                     var list_items = [];
                     var index = 0;
                     for (var l = 0; l < cfg[cfg_key]['list'].length; l++) {
+                        var def_class = '';
+                        if (
+                            ((cfg[cfg_key]['def'].includes(cfg[cfg_key]['list'][l]) && cfg[cfg_key]['val'].includes(cfg[cfg_key]['list'][l]))
+                            || (!cfg[cfg_key]['def'].includes(cfg[cfg_key]['list'][l]) && !cfg[cfg_key]['val'].includes(cfg[cfg_key]['list'][l])))
+                            && !disableOptValChangeColor
+                        ) {
+                            def_class = ' cfg_val_default';
+                        }
+                        cfg_input_face = fillArgs('<i class="far fa-square unchecked{0}"></i><i class="fas fa-check-square checked{0}"></i>', def_class);
+
                         var is_checked = '';
                         if (cfg[cfg_key]['val'].includes(cfg[cfg_key]['list'][l])) {
                             is_checked = ' checked';
                         }
+
                         list_items.push(fillArgs('<label class="cfg_option"><input type="checkbox" name="{0}" id="{0}{1}" value="{2}"{3}>{4} {5}</label>', cfg_key, index++, cfg[cfg_key]['list'][l], is_checked, cfg_input_face, getLang(cfg_key + '_type_' + cfg[cfg_key]['list'][l])));
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
                     break;
                 case 'option':
+                    var def_class = '';
+                    if (cfg[cfg_key]['val'] == cfg[cfg_key]['def'] && !disableOptValChangeColor) {
+                        def_class = ' cfg_val_default';
+                    }
                     cfg_input_type = 'radio';
                     cfg_input_value = '';
-                    cfg_input_face = '<i class="far fa-circle unchecked"></i><i class="fas fa-check-circle checked"></i>';
+                    cfg_input_face = fillArgs('<i class="far fa-circle unchecked{0}"></i><i class="fas fa-check-circle checked{0}"></i>', def_class);
                     cfg_hidden_input = fillArgs('<input type="hidden" id="{0}" name="{0}" value="{1}">', cfg_key, cfg[cfg_key]['val']);
                     var list_items = [];
                     var index = 0;
@@ -231,33 +300,6 @@ function generate_options_data(load_tab) {
                     }
                     list_items = list_items.join('<br>');
                     cfg_form_element = list_items;
-                    break;
-                case 'select':
-                    cfg_input_type = 'select';
-                    cfg_input_value = '';
-                    cfg_hidden_input = '';
-                    var size_arg = '';
-                    //if (isFirefox) {
-                        size_arg = ' size="5"';
-                    //}
-                    cfg_form_element = fillArgs('<select id="{0}" style="width:300px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_select_options(cfg_key));
-                    break;
-                case 'binding':
-                    cfg_input_type = 'binding';
-                    cfg_input_value = '';
-                    cfg_hidden_input = '';
-                    var size_arg = '';
-                    //if (isFirefox) {
-                        size_arg = ' size="5"';
-                    //}
-                    cfg_form_element = fillArgs('<select id="{0}" style="width:300px;" name="{0}"{1}>{2}</select>', cfg_key, size_arg, generate_bindings(cfg_key));
-                    break;
-                case 'text':
-                case 'api':
-                    cfg_input_type = 'text';
-                    cfg_input_value = fillArgs(' value="{0}"', cfg[cfg_key]['val']);
-                    cfg_hidden_input = '';
-                    cfg_form_element = fillArgs('<input type="{0}" id="{1}" name="{1}" autocomplete="off" {2}>', cfg_input_type, cfg_key, cfg_input_value);
                     break;
             }
 
@@ -519,9 +561,23 @@ function remove_highlight() {
 }
 
 function update_current_value(option) {
-    addDOM(document.getElementById(option.id + '_current_val'), document.getElementById(option.id).value);
+    var elm_val = document.getElementById(option.id);
+    var val_tag = document.getElementById(option.id + '_current_val');
+    addDOM(val_tag, elm_val.value);
     // Apply current value before configuration is saved to preview changes
-    cfg[option.id]['val'] = Number(document.getElementById(option.id).value);
+    cfg[option.id]['val'] = Number(elm_val.value);
+    // Handle class for default value
+    /*if (!disableOptValChangeColor) {
+        if (cfg[option.id]['val'] == cfg[option.id]['def']) {
+            if (!val_tag.parentNode.classList.contains('cfg_val_default')) {
+                val_tag.parentNode.classList.add('cfg_val_default');
+            }
+        } else {
+            if (val_tag.parentNode.classList.contains('cfg_val_default')) {
+                val_tag.parentNode.classList.remove('cfg_val_default');
+            }
+        }
+    }*/
 }
 
 function process_preset(key, value) {
