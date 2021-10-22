@@ -122,6 +122,7 @@ function generate_options_data(load_tab) {
         }
     }
 
+    var cfg_generated_string = fillArgs('"version":"{0}", ', extension_version);
     var conf_cat_count = [];
     // Generate tabs per category
     for (var key in conf_cat) {
@@ -276,6 +277,10 @@ function generate_options_data(load_tab) {
                     break;
             }
 
+            if (!cfg_is_default) {
+                cfg_generated_string += fillArgs('"{0}":{1}, ', cfg_key, JSON.stringify(cfg[cfg_key]['val']).replace(/","/g, '", "'));
+            }
+
             var cfg_form = fillArgs('<span class="cfg_form" data-type="{0}">{1}{2}</span>', cfg[cfg_key]['type'], cfg_hidden_input, cfg_form_element);
 
             var cfg_reset = '';
@@ -396,6 +401,11 @@ function generate_options_data(load_tab) {
             'CAT_FIELDS': fields
         };
         conf += fillKeys(cat_content, cat_keys);
+    }
+
+    var about_ele = document.getElementById('about_cfg_string');
+    if (about_ele) {
+        about_ele.value = fillArgs('{ {0} }', cfg_generated_string.trim().replace(/,$/, ''));
     }
 
     //log('debug', 'options_generation', conf);
@@ -736,6 +746,7 @@ function fill_about() {
     addDOM(document.getElementById('about_developer_name'), getLang('developed_by') + ' ' + getLang('developer'));
     addDOM(document.getElementById('about_disclaimer'), getLang('disclaimer'));
     addDOM(document.getElementById('about_extension_version'), getLang('version') + ' ' + extension_version);
+    addDOM(document.getElementById('about_cfg_string_text'), getLang('about_cfg_string_text'));
 
     if (stores_urls[browser] != '') {
         addDOM(document.getElementById('about_web_store'), '<a href="' + stores_urls[browser] + '" style="display: unset;" target="_blank">' + getLang('extension_webstore') + '</a>');

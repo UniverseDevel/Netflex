@@ -346,6 +346,19 @@
 	margin-bottom: 5px;
 }
 
+#extension_options_scrollable .about_cfg_string {
+	width: 300px;
+	height: 100px;
+}
+
+#extension_options_scrollable .about_cfg_string_text {
+	font-weight: bold;
+}
+
+#extension_options_scrollable textarea {
+	cursor: text !important;
+}
+
 #extension_features_scrollable a,
 #extension_options_scrollable a {
 	color: #00b642;
@@ -362,8 +375,10 @@
 }
 
 #netflex_bubble_container[profile="general"] #extension_features_scrollable input,
+#netflex_bubble_container[profile="general"] #extension_features_scrollable textarea,
 #netflex_bubble_container[profile="general"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable input,
+#netflex_bubble_container[profile="general"] #extension_options_scrollable textarea,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable select {
 	background-color: transparent;
 	color: #ffffff;
@@ -371,8 +386,10 @@
 }
 
 #netflex_bubble_container[profile="kids"] #extension_features_scrollable input,
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable textarea,
 #netflex_bubble_container[profile="kids"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable input,
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable textarea,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
 	background-color: transparent;
 	color: #000000;
@@ -380,15 +397,19 @@
 }
 
 #netflex_bubble_container[profile="general"] #extension_features_scrollable input[type="text"],
+#netflex_bubble_container[profile="general"] #extension_features_scrollable textarea,
 #netflex_bubble_container[profile="general"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable input[type="text"],
+#netflex_bubble_container[profile="general"] #extension_options_scrollable textarea,
 #netflex_bubble_container[profile="general"] #extension_options_scrollable select {
 	border: 1px solid #ffffff;
 }
 
 #netflex_bubble_container[profile="kids"] #extension_features_scrollable input[type="text"],
+#netflex_bubble_container[profile="kids"] #extension_features_scrollable textarea,
 #netflex_bubble_container[profile="kids"] #extension_features_scrollable select,
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable input[type="text"],
+#netflex_bubble_container[profile="kids"] #extension_options_scrollable textarea.
 #netflex_bubble_container[profile="kids"] #extension_options_scrollable select {
 	border: 1px solid #000000;
 }

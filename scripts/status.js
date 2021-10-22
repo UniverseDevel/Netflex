@@ -414,6 +414,8 @@ function generate_options() {
                         <span id="about_source" class="about_source"></span><br><br>
                         <span id="about_disclaimer" class="about_disclaimer"></span><br><br>
                         <span id="about_web_store" class="about_web_store"></span><br><br>
+                        <span id="about_cfg_string_text" class="about_cfg_string_text"></span><br>
+                        <textarea id="about_cfg_string" class="about_cfg_string" readonly></textarea><br><br>
                         <button id="button_debug" class="control button_debug"></button>
                     </div>
                     <hr style="height: 1px;">
