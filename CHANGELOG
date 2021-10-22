@@ -117,7 +117,8 @@ TODO:
 - Ideas:
     - Mark last time ratings were loaded and shown, also mark if rating is already old (means rating value will most likely not be updated) and such ratings will not
       be removed after fixed period of time but based on when it was last shown, not shown ratings are probably not needed.
-    - Highlight config values that are not default dto easier indicate change.
+    - Playlist. People could store titles they like and extension would play them when playlist is started.
+    - Indefinite playback loop of title.
 
 Known issues:
 
