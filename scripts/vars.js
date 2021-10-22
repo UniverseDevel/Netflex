@@ -251,7 +251,6 @@ var visibleWND = true;
 var hiddenCFG = false;
 var pausedByExtension = false;
 
-var disableOptValChangeColor = true; // Enable/Disable highlight color when values are different from default
 var disabled_flag = '##DISABLED##';
 var enableProactiveRatings = false; // WARNING: This will eat trough OMDB API key limit like crazy
 var ratingsDB = {};

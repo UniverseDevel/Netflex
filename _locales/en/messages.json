@@ -615,6 +615,14 @@
         "message":"Configuration has changed. (Affected variables: {0})",
         "description":""
     },
+    "cfg_value_not_changed":{
+        "message":"Value is default",
+        "description":""
+    },
+    "cfg_value_changed":{
+        "message":"Value is different from default",
+        "description":""
+    },
     "cfg_default_on":{
         "message":"On",
         "description":""
