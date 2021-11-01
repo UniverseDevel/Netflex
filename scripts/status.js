@@ -255,14 +255,14 @@ function generate_news_entry(news_item) {
 }
 
 function generate_news_content(reset_unread_values) {
-    var last_news_read_old = last_news_read;
+    var last_news_read_old = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsRead'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
     if (reset_unread_values) {
         unread_news_count = 0;
-        last_news_read = new Date();
-        localStorage.setItem('netflex_lastNewsRead', JSON.stringify(last_news_read));
+        localStorage.setItem('netflex_lastNewsRead', JSON.stringify(new Date()));
     }
 
     // Reorder news items
+    var news_data = JSON.parse(nvl(localStorage.getItem('netflex_newsData'), "{}"), JSON.dateParser);
     var ordered_news = {};
     for (var key in news_data) {
         if (news_data.hasOwnProperty(key)) {
@@ -1111,36 +1111,36 @@ function update_status_objects() {
                     // If bubble offset right changed, update it
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
-                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != old_value) {
                         //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_right')) {
                             elm.style.setProperty('--netflex_bubble_off_right', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
-                        }
+                        //}
                     }
                     break;
                 case 'bubble_offset_top':
                     // If bubble offset top changed, update it
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
-                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != old_value) {
                         //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_top')) {
                             elm.style.setProperty('--netflex_bubble_off_top', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
-                        }
+                        //}
                     }
                     break;
                 case 'bubble_offset_bottom':
                     // If bubble offset bottom changed, update it
                     var elm = document.getElementById('netflex_bubble_container');
                     if (elm) {
-                        if (status_data[key] != old_value) {
+                        //if (status_data[key] != old_value) {
                         //if (status_data[key] != elm.style.getPropertyValue('--netflex_bubble_off_bottom')) {
                             elm.style.setProperty('--netflex_bubble_off_bottom', status_data[key], '');
                             status_data_old[key] = status_data[key];
                             updated_keys.push(key);
-                        }
+                        //}
                     }
                     break;
                 // OTHER
@@ -1208,7 +1208,7 @@ function create_status_objects() {
                 bubble_container = document.createElement('div');
                 bubble_container.setAttribute('style','display: none; position: fixed;');
                 bubble_container.setAttribute('id','netflex_bubble_container');
-                bubble_container.setAttribute('profile',netflix_profile);
+                bubble_container.setAttribute('profile',localStorage.getItem('netflex_profile'));
                 bubble_container.setAttribute('controls',obj['controls_type']);
                 bubble_container.setAttribute('run-id',run_id);
                 addDOM(bubble_container, generate_status_data());

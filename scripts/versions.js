@@ -67,6 +67,16 @@ function stat_remove(stat_key) {
 }
 
 function version_consistency_changes() {
+    // Last version to be loaded, if value is not same as current version, version changes will be applied and value will be updated
+    var last_version = ((localStorage.getItem('lastVersion') != null) ? localStorage.getItem('lastVersion') : localStorage.getItem('netflex_lastVersion'));
+    var last_version_normalized = normalize_version(last_version, 4);
+    // Previous version
+    var previous_version = localStorage.getItem('netflex_previousVersion');
+    var previous_version_normalized = normalize_version(previous_version, 4);
+    // Last applied change from versions.js file for specific version
+    var applied_version = localStorage.getItem('netflex_appliedVersion');
+    var applied_version_normalized = normalize_version(applied_version, 4);
+
     log('info', '', getLang('extension_version'), extension_version);
     log('info', '', getLang('last_version'), last_version);
     log('info', '', getLang('previous_version'), previous_version);

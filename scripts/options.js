@@ -148,7 +148,11 @@ function generate_options_data(load_tab) {
 
             var cfg_key = conf_cat[key][i];
 
-            var cfg_name = fillArgs('<span class="cfg_name" data-type="{0}">{1}</span>', cfg[cfg_key]['type'], getLang(fillArgs('cfg_{0}_name', cfg_key)));
+            var cfg_technical_name = '';
+            if (!isProd) {
+                cfg_technical_name = fillArgs(' title="{0}"', cfg_key);
+            }
+            var cfg_name = fillArgs('<span class="cfg_name" data-type="{0}"{1}>{2}</span>', cfg[cfg_key]['type'], cfg_technical_name, getLang(fillArgs('cfg_{0}_name', cfg_key)));
 
             // Add values based on type
             var cfg_is_default = true;
@@ -367,7 +371,6 @@ function generate_options_data(load_tab) {
                 'CFG_DEFAULT_MARK_TEXT': ((!cfg_is_default) ? getLang('cfg_value_changed') : getLang('cfg_value_not_changed')),
                 'CFG_LABEL_START': label_start,
                 'CFG_LABEL_END': label_end,
-                'CFG_NAME': cfg_name,
                 'CFG_NAME': cfg_name,
                 'CFG_NEW_LINE': ((!new_line.includes(cfg[cfg_key]['type'])) ? '<br>' : ' '),
                 'CFG_FORM': cfg_form,
@@ -1033,6 +1036,11 @@ function fill_statistics() {
         <hr style="height: 1px;">
 `;
 
+    var stats_counter = {};
+    if (localStorage.getItem('netflex_statistics') !== null) {
+        stats_counter = JSON.parse(localStorage.getItem('netflex_statistics'));
+    }
+
     var collection_start = new Date().toLocaleString(undefined, date_format['full']);
     if (stats_counter['collection_start']) {
         collection_start = new Date(stats_counter['collection_start']).toLocaleString(undefined, date_format['full']);
@@ -1069,6 +1077,10 @@ function fill_statistics() {
         }
     };
 
+    var ratingsDB = {};
+    if (localStorage.getItem('netflex_ratingsDB') !== null) {
+        ratingsDB = JSON.parse(localStorage.getItem('netflex_ratingsDB'));
+    }
     for (var key in ratingsDB[ratings_version]) {
         var rating = ratingsDB[ratings_version][key];
 

@@ -1515,6 +1515,10 @@
         "message":"Time fractions counter",
         "description":""
     },
+    "debug_type_visibility_status":{
+        "message":"Visibility status",
+        "description":""
+    },
     "debug_type_background":{
         "message":"Background communication",
         "description":""

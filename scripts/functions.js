@@ -110,6 +110,10 @@ function events_injector() {
 }
 
 function page_reloader() {
+    var lastForceReload = new Date(1970, 0, 1, 0, 0, 0);
+    if (localStorage.getItem('netflex_lastForceReload') !== null) {
+        lastForceReload = JSON.parse(localStorage.getItem('netflex_lastForceReload'), JSON.dateParser);
+    }
     var reload_requested_before = reload_requested;
     reload_requested = false;
     forceReloadDifference = Math.floor(Math.round((cfg['forceReloadDelay']['val'] - ((new Date().getTime() - new Date(lastForceReload).getTime()) / 1000)) * 10) / 10);
@@ -164,22 +168,6 @@ function initContent() {
 
         workers['injector'] = setInterval(events_injector, cfg['injectorTimer']['val']);
         workers['reloader'] = setInterval(page_reloader, cfg['pageReloadTimer']['val']);
-
-        if (localStorage.getItem('netflex_watchHistory') !== null) {
-            watchHistory = JSON.parse(localStorage.getItem('netflex_watchHistory'), JSON.dateParser);
-        }
-
-        if (localStorage.getItem('netflex_lastForceReload') !== null) {
-            lastForceReload = JSON.parse(localStorage.getItem('netflex_lastForceReload'), JSON.dateParser);
-        }
-
-        if (localStorage.getItem('netflex_ratingsDB') !== null) {
-            ratingsDB = JSON.parse(localStorage.getItem('netflex_ratingsDB'));
-        }
-
-        if (localStorage.getItem('netflex_statistics') !== null) {
-            stats_counter = JSON.parse(localStorage.getItem('netflex_statistics'));
-        }
 
         bind_events();
     }
@@ -470,11 +458,13 @@ function check_profile() {
 }
 
 function check_general_profile() {
+    var netflix_profile = localStorage.getItem('netflex_profile');
     return (netflix_profile == 'general');
 }
 
 function check_kids_profile() {
     checkProfile();
+    var netflix_profile = localStorage.getItem('netflex_profile');
     return (netflix_profile == 'kids');
 }
 
@@ -771,12 +761,12 @@ function environment_update() {
         debug_variables['variables']['interface_data'] = interface_data;
         debug_variables['variables']['extension_version'] = extension_version;
         debug_variables['variables']['extension_version_normalized'] = extension_version_normalized;
-        debug_variables['variables']['last_version'] = last_version;
-        debug_variables['variables']['last_version_normalized'] = last_version_normalized;
-        debug_variables['variables']['previous_version'] = previous_version;
-        debug_variables['variables']['previous_version_normalized'] = previous_version_normalized;
-        debug_variables['variables']['applied_version'] = applied_version;
-        debug_variables['variables']['applied_version_normalized'] = applied_version_normalized;
+        debug_variables['variables']['last_version'] = localStorage.getItem('lastVersion');
+        debug_variables['variables']['last_version_normalized'] = normalize_version(localStorage.getItem('lastVersion'), 4);
+        debug_variables['variables']['previous_version'] = localStorage.getItem('netflex_previousVersion');
+        debug_variables['variables']['previous_version_normalized'] = normalize_version(localStorage.getItem('netflex_previousVersion'), 4);
+        debug_variables['variables']['applied_version'] = localStorage.getItem('netflex_appliedVersion');
+        debug_variables['variables']['applied_version_normalized'] = normalize_version(localStorage.getItem('netflex_appliedVersion'), 4);
         debug_variables['variables']['cadmium_version'] = cadmium_version;
         debug_variables['variables']['cadmium_version_normalized'] = cadmium_version_normalized;
         debug_variables['variables']['show_donation_link'] = show_donation_link;
@@ -804,7 +794,7 @@ function environment_update() {
         debug_variables['variables']['error_detected'] = error_detected;
         debug_variables['variables']['error_message'] = error_message;
         debug_variables['variables']['error_count'] = error_count;
-        debug_variables['variables']['netflix_profile'] = netflix_profile;
+        debug_variables['variables']['netflix_profile'] = localStorage.getItem('netflex_profile');
         debug_variables['variables']['reload_requests'] = reload_requests;
         debug_variables['variables']['reload_requested'] = reload_requested;
         debug_variables['variables']['api_keys'] = api_keys;
@@ -830,7 +820,7 @@ function environment_update() {
         debug_variables['assistant']['forceReloadDifference'] = forceReloadDifference;
         debug_variables['assistant']['key_pressed'] = key_pressed;
         debug_variables['assistant']['wheel_direction'] = wheel_direction;
-        debug_variables['assistant']['lastForceReload'] = lastForceReload;
+        debug_variables['assistant']['lastForceReload'] = JSON.parse(localStorage.getItem('netflex_lastForceReload'), JSON.dateParser);
         debug_variables['assistant']['oldTimestamp'] = oldTimestamp;
         debug_variables['assistant']['currentTimestamp'] = currentTimestamp;
         debug_variables['assistant']['hiddenCFG'] = hiddenCFG;
@@ -893,9 +883,9 @@ function environment_update() {
         debug_variables['assistant']['videoSepia_temp'] = videoSepia_temp;
         debug_variables['assistant']['hideSubtitles_temp'] = hideSubtitles_temp;
         debug_variables['assistant']['reset_features'] = reset_features;
-        debug_variables['assistant']['news_data'] = news_data;
-        debug_variables['assistant']['last_news_update'] = last_news_update;
-        debug_variables['assistant']['last_news_read'] = last_news_read;
+        debug_variables['assistant']['news_data'] = JSON.parse(nvl(localStorage.getItem('netflex_newsData'), "{}"), JSON.dateParser);
+        debug_variables['assistant']['last_news_update'] = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsUpdate'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
+        debug_variables['assistant']['last_news_read'] = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsRead'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
         debug_variables['assistant']['unread_news_count'] = unread_news_count;
         debug_variables['assistant']['news_update_running'] = news_update_running;
         debug_variables['assistant']['news_force_update'] = news_force_update;
@@ -922,12 +912,12 @@ function environment_update() {
         debug_variables['cfg']['cfg_loading_end'] = cfg_loading_end;
         debug_variables['cfg'] = cfg;
 
-        debug_variables['statistics'] = stats_counter;
+        debug_variables['statistics'] = JSON.parse(localStorage.getItem('netflex_statistics'));
         debug_variables['ratingsDB'] = ratingsDB;
         debug_variables['overflowData'] = overflowData;
         debug_variables['simulation_objects'] = simulation_objects;
 
-        debug_variables['storage']['watchHistory'] = watchHistory;
+        debug_variables['storage']['watchHistory'] = JSON.parse(localStorage.getItem('netflex_watchHistory'), JSON.dateParser);
     } catch (e) {
         error_detected = true;
         error_message = 'environment_update: ' + e.stack;
@@ -936,6 +926,10 @@ function environment_update() {
 
 function add_stats_count(stat_key) {
     try {
+        var stats_counter = {};
+        if (localStorage.getItem('netflex_statistics') !== null) {
+            stats_counter = JSON.parse(localStorage.getItem('netflex_statistics'));
+        }
         if (!stats_counter.hasOwnProperty('collection_start')) {
             stats_counter['collection_start'] = JSON.stringify(new Date()).replace(/\"/gi, '');
         }
@@ -944,6 +938,7 @@ function add_stats_count(stat_key) {
         } else {
             stats_counter[stat_key] = 1;
         }
+        localStorage.setItem('netflex_statistics', JSON.stringify(stats_counter));
     } catch (e) {}
 }
 
@@ -1188,6 +1183,10 @@ function checkVisibility() {
             hiddenCFG = false;
             break;
     }
+
+    if (cfg['debug']['val'].includes('visibility_status')) {
+        document.title = fillArgs('vA:{0};vW:{1};hC:{2};', ((visibleAPI) ? 1 : 0), ((visibleWND) ? 1 : 0), ((hiddenCFG) ? 1 : 0));
+    }
 }
 
 function checkNews() {
@@ -1197,6 +1196,9 @@ function checkNews() {
     }
 
     if (!isOrphan) {
+        var news_data = JSON.parse(nvl(localStorage.getItem('netflex_newsData'), "{}"), JSON.dateParser);
+        var last_news_update = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsUpdate'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
+        var last_news_read = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsRead'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
         // Check if news are expired and if yes, download current news
         var news_expiration = new Date(last_news_update).addMinutes(news_update_interval);
         if ((news_expiration < new Date() || news_force_update) && !news_update_running) {
@@ -1315,8 +1317,7 @@ function checkNews() {
 
         // If news are opened mark constantly as read
         if (news_opened) {
-            last_news_read = new Date();
-            localStorage.setItem('netflex_lastNewsRead', JSON.stringify(last_news_read));
+            localStorage.setItem('netflex_lastNewsRead', JSON.stringify(new Date()));
         }
 
         // Count new entries
@@ -1348,26 +1349,28 @@ function checkNews() {
 }
 
 function checkProfile() {
-    netflix_profile = localStorage.getItem('netflex_profile');
-    var netflix_profile_copy = netflix_profile;
-    if (netflix_profile) {
-        // If we are on browse page we can determine what profile is used
-        if (check_browse()) {
-            if (check_kids()) {
-                netflix_profile = 'kids';
+    if (visibleAPI) {
+        var netflix_profile = localStorage.getItem('netflex_profile');
+        var netflix_profile_copy = netflix_profile;
+        if (netflix_profile) {
+            // If we are on browse page we can determine what profile is used
+            if (check_browse()) {
+                if (check_kids()) {
+                    netflix_profile = 'kids';
+                } else {
+                    netflix_profile = 'general';
+                }
             } else {
-                netflix_profile = 'general';
+                // Keep profile that is stored
             }
         } else {
-            // Keep profile that is stored
+            // If nothing is set, lets use general profile as default
+            netflix_profile = 'general';
         }
-    } else {
-        // If nothing is set, lets use general profile as default
-        netflix_profile = 'general';
-    }
 
-    if (netflix_profile != netflix_profile_copy) {
-        localStorage.setItem('netflex_profile', netflix_profile);
+        if (netflix_profile != netflix_profile_copy) {
+            localStorage.setItem('netflex_profile', netflix_profile);
+        }
     }
 }
 

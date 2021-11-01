@@ -97,6 +97,7 @@ function handle_disable_on_kids_feature() {
     try {var manual_override = document.getElementById('extension_manual_override');} catch (e) {}
 
     if (!manual_override) { // Check objects
+        enableAssistant = true;
         if (cfg['autoDisableKids']['access'] && (check_kids() || check_kids_profile())) { // Check access and page
             if (cfg['autoDisableKids']['val']) { // Check state and if enabled (if cfg is bool)
                 enableAssistant = false;
@@ -938,6 +939,10 @@ function handle_history_feature() {
             if (enableAssistant && cfg['keepHistory']['val'] != cfg['keepHistory']['off']) { // Check state and if enabled (if cfg is bool)
                 // Record episode
                 var history_changed = false;
+                var watchHistory = [];
+                if (localStorage.getItem('netflex_watchHistory') !== null) {
+                    watchHistory = JSON.parse(localStorage.getItem('netflex_watchHistory'), JSON.dateParser);
+                }
                 if (!array_contains(watchHistory, full_url)) {
                     watchHistory[watchHistory.length] = full_url;
                     history_changed = true;
@@ -1176,9 +1181,6 @@ function netflix_assistant() {
         reset_temporary_features();
     }
 
-    // Store statistics database to local storage
-    localStorage.setItem('netflex_statistics', JSON.stringify(stats_counter));
-
     log('debug', 'assistant_loop', '# ASSISTANT CYCLE STOP ###############################');
     log('group_end', 'assistant_loop', '');
 
@@ -1348,6 +1350,10 @@ function handle_key_event(evt) {
         if (isPrevEpisode) {
             log('debug', 'keypress', 'initContent>bind_events>onkeyup>handle_key_event>prev_episode');
 
+            var watchHistory = [];
+            if (localStorage.getItem('netflex_watchHistory') !== null) {
+                watchHistory = JSON.parse(localStorage.getItem('netflex_watchHistory'), JSON.dateParser);
+            }
             if ((watchHistory.length - 2) >= 0) {
                 log('output', '', getLang('prev_episode_manual'));
                 watchHistory = watchHistory.slice(0, watchHistory.length - 1);

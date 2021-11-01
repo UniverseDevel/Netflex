@@ -73,19 +73,9 @@ var isOrphan = false;
 // Current extension version
 var extension_version = chrome.runtime.getManifest().version;
 var extension_version_normalized = normalize_version(extension_version, 4);
-// Last version to be loaded, if value is not same as current version, version changes will be applied and value will be updated
-var last_version = ((localStorage.getItem('lastVersion') != null) ? localStorage.getItem('lastVersion') : localStorage.getItem('netflex_lastVersion'));
-var last_version_normalized = normalize_version(last_version, 4);
-// Previous version
-var previous_version = localStorage.getItem('netflex_previousVersion');
-var previous_version_normalized = normalize_version(previous_version, 4);
-// Last applied change from versions.js file for specific version
-var applied_version = localStorage.getItem('netflex_appliedVersion');
-var applied_version_normalized = normalize_version(applied_version, 4);
 
 var cadmium_version = null;
 var cadmium_version_normalized = null;
-var netflix_profile = localStorage.getItem('netflex_profile');
 
 var api_keys = load_api_keys();
 var donation_urls = load_donation_urls();
@@ -175,18 +165,12 @@ var nextTitleDelay = 0;
 var forceReloadDifference = 0;
 var key_pressed = '';
 var wheel_direction = '';
-var lastForceReload = new Date(1970, 0, 1, 0, 0, 0);
 var loadTime = new Date();
 var lastCall = new Date();
 var currentTime = new Date();
-var watchHistory = [];
-var stats_counter = {};
 var simulation_objects = {};
 var overflowData = {};
 
-var news_data = JSON.parse(nvl(localStorage.getItem('netflex_newsData'), "{}"), JSON.dateParser);
-var last_news_update = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsUpdate'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
-var last_news_read = JSON.parse(nvl(localStorage.getItem('netflex_lastNewsRead'), JSON.stringify(new Date(1970, 0, 1, 0, 0, 0))), JSON.dateParser);
 var unread_news_count = 0;
 var news_update_interval = 60; // Minutes
 var news_update_running = false;

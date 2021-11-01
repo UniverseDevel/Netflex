@@ -1886,6 +1886,7 @@ function init_configuration() {
                 'wheelturn',
                 'mouse_simulation',
                 'fractions_counter',
+                'visibility_status',
                 'background'
             ],
             'callback' : null,

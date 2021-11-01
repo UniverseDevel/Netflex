@@ -344,6 +344,11 @@ function handle_ratingsDB_entry(title_id, netflix_id, wikidata_url, imdb_id, rt_
         }
     };
 
+    // Store only activity of opened tab
+    if (visibleAPI) {
+        localStorage.setItem('netflex_ratingsDB', JSON.stringify(ratingsDB));
+    }
+
     log('group_start', 'ratings', 'Ratings local DB changes for {0}', title_id);
     log('debug', 'ratings', 'Rating entry updated.');
     log('debug', 'ratings', 'Old state="{0}" => New state="{1}"', old_state, ratingsDB[ratings_version][title_id]['state']);
@@ -755,6 +760,10 @@ function ratings_icon_animate(object, animate) {
 function remove_expired() {
     var count = 0;
 
+    if (localStorage.getItem('netflex_ratingsDB') !== null) {
+        ratingsDB = JSON.parse(localStorage.getItem('netflex_ratingsDB'));
+    }
+
     // Find all expired titles and delete them
     for (var title_id in ratingsDB[ratings_version]) {
         if (ratingsDB[ratings_version].hasOwnProperty(title_id)) {
@@ -771,6 +780,11 @@ function remove_expired() {
                 delete ratingsDB[ratings_version][title_id];
             }
         }
+    }
+
+    // Store only activity of opened tab
+    if (visibleAPI) {
+        localStorage.setItem('netflex_ratingsDB', JSON.stringify(ratingsDB));
     }
 
     if (count > 0) {
@@ -797,6 +811,10 @@ function netflix_ratings() {
     // If we have ratings turned on perform activities with ratings, else remove
     // all instances of ratings, but keep already gathered data
     if (cfg['showRatings']['val'] && cfg['showRatings']['access']) {
+        if (localStorage.getItem('netflex_ratingsDB') !== null) {
+            ratingsDB = JSON.parse(localStorage.getItem('netflex_ratingsDB'));
+        }
+
         // Check if there is new ratings version and if yes, perform cleanup and define new version
         if (!ratingsDB[ratings_version]) {
             // Remove old values
@@ -891,6 +909,10 @@ function netflix_ratings() {
                         // WARNING: Setting enableProactiveRatings to true will eat trough OMDB API key limit like crazy
                         if (!enableProactiveRatings) {
                             if (!ratingsDB[ratings_version].hasOwnProperty('nflx' + object_id)) {
+                                var check_elm = findChildClass(object, 'extension_rating_' + object_id);
+                                if (check_elm) {
+                                    removeDOM(check_elm);
+                                }
                                 continue;
                             }
                         }
@@ -926,8 +948,11 @@ function netflix_ratings() {
                         || findChildClass(object, 'slider-refocus') && findChildClass(object, 'boxart-container')) {
                         // Get ratings only if ratings element is missing or expired
                         if (!findChildClass(object, 'extension_rating_' + object_id) || has_expired) {
-                            log('debug', 'ratings', 'Getting ratings for ID {0}.', object_id);
-                            ratings_handler(object, object_id);
+                            // Perform ratings operations only for opened tab
+                            if (visibleAPI) {
+                                log('debug', 'ratings', 'Getting ratings for ID {0}.', object_id);
+                                ratings_handler(object, object_id);
+                            }
                         } else {
                             // Check for last change and update element if changed
                             var change_time_db = JSON.stringify(ratingsDB[ratings_version]['nflx' + object_id]['last_sync']).replace(/\"/gi, '');
@@ -941,8 +966,10 @@ function netflix_ratings() {
             }
         }
 
-        // Store ratings database to local storage
-        localStorage.setItem('netflex_ratingsDB', JSON.stringify(ratingsDB));
+        // Store ratings database to local storage only for opened tab
+        if (visibleAPI) {
+            localStorage.setItem('netflex_ratingsDB', JSON.stringify(ratingsDB));
+        }
 
         // Find all expired titles and delete them
         remove_expired();
