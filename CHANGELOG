@@ -104,7 +104,7 @@
 7.1.2    - 2021.10.10 - Added backwards compatibility for skip intro and recap.
 7.1.3    - 2021.10.21 - Changed icon color to be transparent when everything is working as expected.
 7.1.4    - 2021.10.22 - Bugfixes. Added a way how to highlight changed options. Added a way to easily provide configuration export for debug purposes.
-7.1.5    - 2021.11.01 - Bugfixes. Added a way to show technical option name when on non production environment.
+7.2.0    - 2021.11.06 - Bugfixes. Added a way to show technical option name when on non production environment. Added option to reload title at the end.
 
 TODO:
 

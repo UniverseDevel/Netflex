@@ -808,7 +808,8 @@ function init_configuration() {
             'list': [
                 'none',
                 'skip',
-                'roll'
+                'roll',
+                'repeat'
             ],
             'callback' : null,
             'units' : null,

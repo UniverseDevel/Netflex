@@ -287,6 +287,10 @@
         "message":"Rolling credits...",
         "description":""
     },
+    "repeat_title":{
+        "message":"Attempting title repeat...",
+        "description":""
+    },
     "skipping_intro":{
         "message":"Skipping intro...",
         "description":""
@@ -1371,6 +1375,10 @@
         "message":"Roll credits and skip after",
         "description":""
     },
+    "titleEndAction_type_repeat":{
+        "message":"Repeat episode",
+        "description":""
+    },
     "highlightSubtitles_type_hidden":{
         "message":"Hide subtitles",
         "description":""
@@ -1765,6 +1773,10 @@
     },
     "stat_titleEndActionRoll":{
         "message":"Title end credits rolled",
+        "description":""
+    },
+    "stat_titleEndActionRepeat":{
+        "message":"Title repeated",
         "description":""
     },
     "stat_nextEpisodeStopSeries":{

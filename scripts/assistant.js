@@ -766,6 +766,19 @@ function handle_next_episode_feature() {
                             } else {
                                 forceNextEpisode = true;
                             }
+                        } else if (cfg['titleEndAction']['val'] == 'repeat') {
+                            if ((nextVideo != '' || (nextVideo == '' && next_no_wait)) && !repeating_title) {
+                                repeating_title = true;
+                                log('output', '', getLang('repeat_title'));
+                                add_stats_count('stat_titleEndActionRoll');
+                                reload_requests['repeat_title'] = true;
+                                // Delay end repeat reset
+                                workers['title_end_actions'] = setTimeout(function () {
+                                    repeating_title = false;
+                                    reload_requests['repeat_title'] = false;
+                                    stop_worker('title_end_actions');
+                                }, cfg['titleEndActionsDelay']['val']);
+                            }
                         }
                     } else {
                         forceNextEpisode = false;
