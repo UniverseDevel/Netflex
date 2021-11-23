@@ -6,30 +6,28 @@ Fork info:
 
 Libraries description:
   
-- jquery.min.js - Official jQuery library. If updated, change version in description as well.
-- purify.min.js - Official DOMPurify library. If updated, change version in description as well. Official library contains
-                  path to map file which is not part of the project and this line has to be removed from library. If updated, 
-                  change version in description as well.
-- fontawesome.js - Official FontAwesome library that provides variety of icons. If updated, change version in description
+- jquery.min.js - Official jQuery library. If updated, change version in 'POLICY.md' as well.
+- purify.min.js - Official DOMPurify library. If updated, change version in 'POLICY.md' as well.
+- fontawesome.js - Official FontAwesome library that provides variety of icons. If updated, change version in 'POLICY.md'
                    as well.
 - firework.js - Library for Easter Egg. When you start a video title in Netflix and you click on N logo in status bubble,
                 fireworks will start to fly over video. Useless, but I love Easter Eggs.
 
 Scripts description:
   
-- globals.js - Functions that are needed to generate core extension behavior like: browser detection, extension API load,
-               localisation messages load and log handling functions.
+- globals.js - Functions that are needed to generate core extension behavior like: browser detection, configuration handling 
+              and configuration default, localisation handling and log handling functions.
 - worker.js - Some functions that are used by extension to work and also some background adjustments like different
               icons of extension for development, test and for production version. In case you will create your own 
               test extension (published only to testers), change values in 'distribution.js' to ID of this 
               test extension.
-- init.js - This script contains functions to inject JS scripts into Netflix page (look for comment '// MAIN'). Functions
+- init.js - This script contains functions to inject JS scripts into Netflix page (look for function 'main();'). Functions
             here handle injecting, re-injecting (in case of extension update/disable/enable or failure), all main
-            internal intervals and loops. These intervals are responsible for everything running.
+            internal intervals and loops. These intervals are responsible for everything running. There is also Ajax call
+            loading language JSON from extension into variable so we can do more stuff with localisations.
 - versions.js - This script contains function that executes version specific changes after extension is injected.
-- vars.js - All global variables are defined here, so they can be reached from other scripts. Default configuration is
-            provided here. In case you will create your own test extension (published only to testers), change value
-            in 'distribution.js' to ID of this test extension.
+- vars.js - All global variables are defined here, so they can be reached from other scripts. Initial values are
+            provided here.
 - distribution.js - Contains function to define some deployment specific variables, here you should put your new OMDB API key.
                     It also contains values of other providers like donation links or web store links.
 - functions.js - All functions that are somehow general or used by multiple other scripts are in this script.
@@ -60,7 +58,7 @@ General notes:
   variable '$libraries' with array of data for each library that needs to be checked. It also contains variable '$github_token' 
   that is optional, but filling it will remove API rate limits. Token can be stored separate from script in external file, 
   check variable '$github_token_path'.
-- Ratings are shown by detecting Netflix ID of the show then contacting WikiData API (https://www.wikidata.org/wiki/Wikidata:Main_Page)
+- Ratings are shown by detecting Netflix ID of the show, then contacting WikiData API (https://www.wikidata.org/wiki/Wikidata:Main_Page)
   via Ajax call with SPARQL query using Netflix ID to find IMDb ID. IMDb ID is then used when contacting OMDB API
   (https://www.omdbapi.com/), who is the provider of ratings in this extension. To contact OMDB API, API key is used which
   needs to be generated either for free at https://www.omdbapi.com/apikey.aspx (limited to 1 000 daily queries) or by
