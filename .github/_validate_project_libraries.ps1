@@ -121,6 +121,11 @@ $github_token = load_github_token "$($github_token)"
 
 if ($github_token -ne "" -and $github_token -ne $null) {
     $headers.Add("Authorization", "token $($github_token)")
+    
+    # Check token user
+    $user_data = Invoke-WebRequest -Uri "$($github_url)/user" -Headers $headers -UseBasicParsing | ConvertFrom-Json
+    #write-host $user_data | FT
+    write-host "Token owner: $($user_data.login) ($($user_data.name), $($user_data.id))"
 }
 if ($github_token -eq "" -or $github_token -eq $null) {
     write-host "GitHub token not found, rate limits may apply."
