@@ -105,7 +105,7 @@
 7.1.3    - 2021.10.21 - Changed icon color to be transparent when everything is working as expected.
 7.1.4    - 2021.10.22 - Bugfixes. Added a way how to highlight changed options. Added a way to easily provide configuration export for debug purposes.
 7.2.0    - 2021.11.06 - Bugfixes. Added a way to show technical option name when on non production environment. Added option to reload title at the end.
-7.2.1    - 2021.11.23 - Moved GitHub repository, URLs updated.
+7.3.0    - 2021.12.14 - Moved GitHub repository, URLs updated.
 
 TODO:
 
