@@ -7,9 +7,9 @@ General features:
 - Clicking on extension icon will open Netflix™ page in new tab
 - Clicking on extension status icon in a video player, disable/enable all extension features
 - Extension has options menu which allows you to change extension behaviour, this is accessible via an icon that is shown when hovering on extension status icon or in browser extension management page
-- Extension adds a coloured icon at Netflix™ video player controls that indicate extension state and show more extension info when hovered upon
+- Extension adds a coloured icon at video player controls that indicate extension state and show more extension info when hovered upon
 - Extension will try to automatically recover if it stops working or updates itself
-- Options can be changed directly from Netflix™ page via extension status information bubble options button
+- Options can be changed via extension status information bubble options button in browse or video player pages
 - If configured, extension will auto-disable itself on Kids profile
 
 Title screen key bindings:
@@ -29,14 +29,14 @@ Video player key bindings:
 - Press 'B' in the player if you want to go to the previous episode during the current episode (can be changed in the configuration)
 - Press 'Escape' in the player to return to browse page (can be changed in the configuration)
 - Press 'H' in the player to temporarily disable subtitles (can be changed in the configuration)
-- Press 'Up Arrow' in the player to increase volume (original Netflix™ feature)
-- Press 'Down Arrow' in the player to decrease volume (original Netflix™ feature)
-- Press 'M' in the player to mute/unmute (original Netflix™ feature)
-- Press 'Space/Enter' in the player to play/pause (original Netflix™ feature)
-- Press 'Right Arrow' in the player to skip forward (original Netflix™ feature)
-- Press 'Left Arrow' in the player to skip backward (original Netflix™ feature)
-- Press 'F' in the player to make video full screen (original Netflix™ feature)
-- Press 'S' in the player to make skip intro or recap, if skip button is shown by Netflix™ (original Netflix™ feature)
+- Press 'Up Arrow' in the player to increase volume (original feature)
+- Press 'Down Arrow' in the player to decrease volume (original feature)
+- Press 'M' in the player to mute/unmute (original feature)
+- Press 'Space/Enter' in the player to play/pause (original feature)
+- Press 'Right Arrow' in the player to skip forward (original feature)
+- Press 'Left Arrow' in the player to skip backward (original feature)
+- Press 'F' in the player to make video full screen (original feature)
+- Press 'S' in the player to make skip intro or recap, if skip button is shown in UI (original feature)
 
 Video player features:
 
@@ -47,7 +47,7 @@ Video player features:
 - If configured, extension will stop playing if previous title of a movie and next title are different titles
 - If video is stuck on loading for longer than 5 seconds, it will be reloaded within next 15 seconds if nothing changes (can be changed in the configuration)
 - Any Skip Intro or Skip Recap button will be clicked automatically (can be changed in the configuration)
-- If all skip features are turned off, Netflix™ will ask every few episodes if you are still watching, this will be automatically skipped (can be changed in the configuration)
+- If all skip features are turned off, video player will ask every few episodes if you are still watching, this will be automatically skipped (can be changed in the configuration)
 - Extension keeps 100 unique entries as history in local browser storage (can be changed in the configuration)
 - If configured, video will automatically pause, if not in focus and can also automatically start, if focus is regained
 - If configured, highlight shadow around subtitles to stand out more with possibility to remove subtitles, change subtitles size, color and font as well
@@ -56,8 +56,8 @@ Video player features:
 
 Chromecast player key bindings:
 
-- Press 'M' in the player to mute/unmute (original Netflix™ feature)
-- Press 'Space/Enter' in the player to play/pause (original Netflix™ feature)
+- Press 'M' in the player to mute/unmute (original feature)
+- Press 'Space/Enter' in the player to play/pause (original feature)
 
 Chromecast player features:
 
@@ -68,7 +68,7 @@ Title ratings:
 
 - Support for this feature is very limited as data are obtained from external sources (https://omdbapi.com/ & https://query.wikidata.org/) that are out of reach
 - Title ratings are turned off by default to prevent unwanted internet calls on background, this can be changed in configuration if wanted
-- Many ratings may not be available or might be out of date, OMDb API may not find the title by name that Netflix™ uses when it is translated due to localisation settings, or many other reasons why it may fail obtaining ratings
+- Many ratings may not be available or might be out of date
 - Due to limited number of calls that we can make to OMDb API daily, it is possible that ratings will stop working because we use this feature too much
 - Once title rating was obtained, it is stored in local browser storage for some number of days before they get refreshed to reduce number of calls to OMDb API, so we can all enjoy this feature
 - Currently, OMDb API provides ratings from Internet Movie Database (IMDb), Rotten Tomatoes (RT) and MetaCritic (Meta), if available
@@ -77,12 +77,7 @@ Title ratings:
 
 Note:
 
-- At any time Netflix™ can change/update their UI and make this extension not work or misbehave, extension will be updated to work with this new UI once the UI reaches developers and as Netflix™ updates are not rolled out all at same time this may take a while
-
-Removed features:
-
-- Touch screen disable - this feature caused multiple problems and never worked as expected, without possible fix
-- Mute trailers on browse page - after Netflix™ GUI got updated, this feature no longer worked, it was also obsolete as Netflix™ remembers last audio setting for trailers you choose
+- At any time Netflix™ can change/update their UI and make this extension not work or misbehave, extension will be updated to work with this new UI once the UI reaches developers and as their updates are not rolled out all at same time this may take a while
 
 Supported browsers (all in their own web stores):
 

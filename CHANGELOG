@@ -106,6 +106,7 @@
 7.1.4    - 2021.10.22 - Bugfixes. Added a way how to highlight changed options. Added a way to easily provide configuration export for debug purposes.
 7.2.0    - 2021.11.06 - Bugfixes. Added a way to show technical option name when on non production environment. Added option to reload title at the end.
 7.3.0    - 2021.12.14 - Moved GitHub repository, URLs updated. Updated DOMPurify library.
+7.3.1    - 2021.12.15 - Changed extension provider. Change in description.
 
 TODO:
 
