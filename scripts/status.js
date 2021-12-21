@@ -188,21 +188,21 @@ function generate_status_data() {
         'VERSION': extension_version,
         'STATUS_TEXT': getLang('data_loading'),
         'WEBSTORE_URL': stores_urls[browser],
-        'SHOW_WEBSTORE': ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;' ),
+        'SHOW_WEBSTORE': ((!check_kids() && !check_kids_profile() && !isDiscontinued) ? '' : 'display: none;' ),
         'RATE_EXTENSION': getLang('rate_extension'),
-        'SHOW_DONATIONS': ((show_donation_link) ? '' : 'display: none;'),
+        'SHOW_DONATIONS': ((show_donation_link && !isDiscontinued) ? '' : 'display: none;'),
         'DONATE': getLang('donate'),
         'DONATION_LINKS': donations,
         'NEWS': getLang('news'),
-        'SHOW_NEWS_ICON': ((!isProd && !isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ), // TODO: Remove !isProd when supported on production environment
+        'SHOW_NEWS_ICON': ((!isProd && !isDiscontinued && !isOrphan && !check_kids() && !check_kids_profile()) ? '' : 'display: none;' ), // TODO: Remove !isProd when supported on production environment
         'UNREAD_NEWS_COUNT': notification_format(unread_news_count),
         'NEWS_UNREAD_CLASS': ((unread_news_count == 0) ? '' : ' unread'),
-        'NEWS_CONTENT': ((!isOrphan) ? generate_news() : ''),
+        'NEWS_CONTENT': ((!isOrphan && !isDiscontinued) ? generate_news() : ''),
         'OPTIONS': getLang('options'),
-        'SHOW_OPTIONS_ICON': ((!isOrphan) ? ((cfg['allowKidsConfig']['val'] && cfg['allowKidsConfig']['access'] && (check_kids() || check_kids_profile())) ? '' : ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;')) : 'display: none;' ),
-        'OPTIONS_CONTENT': ((!isOrphan) ? generate_options() : ''),
+        'SHOW_OPTIONS_ICON': ((!isOrphan && !isDiscontinued) ? ((cfg['allowKidsConfig']['val'] && cfg['allowKidsConfig']['access'] && (check_kids() || check_kids_profile())) ? '' : ((!check_kids() && !check_kids_profile()) ? '' : 'display: none;')) : 'display: none;' ),
+        'OPTIONS_CONTENT': ((!isOrphan && !isDiscontinued) ? generate_options() : ''),
         'FEATURES': getLang('features'),
-        'FEATURES_CONTENT': generate_status_features()
+        'FEATURES_CONTENT': ((!isOrphan && !isDiscontinued) ? generate_status_features() : '')
     };
     status_data = fillKeys(status_data, keys);
 
@@ -963,6 +963,11 @@ function status_updater() {
         icon_status_color = '#E70000'; // red
         bubble_status_text = getLang('status_text_broken');
     }
+    if (isDiscontinued) {
+        icon_status_color = '#E70000'; // red
+        bubble_status_text = ((discontinued_redirect == '' || !discontinued_redirect) ? getLang('status_text_discontinued') : fillArgs(getLang('status_text_discontinued_redirect'), discontinued_redirect));
+        enableAssistant = discontinued_disable;
+    }
     if (isOrphan) {
         icon_status_color = '#E70074'; // purple
         bubble_status_text = getLang('status_text_update');
@@ -1101,7 +1106,11 @@ function update_status_objects() {
                     // If status text changed, update it
                     var elm = document.getElementById('netflex_status_text');
                     if (elm) {
-                        if (status_data[key] != elm.innerHTML) {
+                        var existing_content = '1';
+                        var new_content = '2';
+                        try {existing_content = elm.innerHTML.replace(/<(.|\n)*?>|['"]*/g, '');} catch (e) {}
+                        try {new_content = status_data[key].replace(/<(.|\n)*?>|['"]*/g, '');} catch (e) {}
+                        if (new_content != existing_content) {
                             addDOM(elm, status_data[key]);
                             updated_keys.push(key);
                         }

@@ -30,6 +30,21 @@
     background-color: rgba(255,255,255,0.85);
 }
 
+#netflex_bubble_container a.highlight {
+    color: #00b642 !important;
+    text-decoration: underline;
+}
+
+#netflex_bubble_container[profile="general"] a.highlight:hover {
+    color: #FFFFFF !important;
+    text-decoration: none;
+}
+
+#netflex_bubble_container[profile="kids"] a.highlight:hover {
+    color: #000000 !important;
+    text-decoration: none;
+}
+
 #netflex_icon_status {
     stroke: var(--netflex_icon_bord_color, #FFFFFF) !important;
     stroke-width: 80px;

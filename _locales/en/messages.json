@@ -419,6 +419,14 @@
         "message":"Extension assistant features are currently disabled.<br>Click on status icon to enable all assistant features.",
         "description":""
     },
+    "status_text_discontinued":{
+        "message":"This extension has been discontinued.",
+        "description":""
+    },
+    "status_text_discontinued_redirect":{
+        "message":"This extension has been discontinued, replacement extension can be found <a href='{0}' class='highlight' target='_blank'>here</a>.",
+        "description":""
+    },
     "status_text_broken":{
         "message":"Consider reloading Netflix™, extension is not working.",
         "description":""

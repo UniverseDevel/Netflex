@@ -50,33 +50,35 @@ function events_injector() {
                 stop_worker('elements');
             }
 
-            // Perform on all Netflix tabs, assistant helps with features on all of them
-            if (!workers['assistant']) {
-                workers['assistant'] = setInterval(netflix_assistant, cfg['netflixAssistantTimer']['val']);
-                netflix_assistant();
-            } else {
-                currentTime = new Date();
-                var difference = (currentTime.getTime() - lastCall.getTime());
+            if (!isDiscontinued) {
+                // Perform on all Netflix tabs, assistant helps with features on all of them
+                if (!workers['assistant']) {
+                    workers['assistant'] = setInterval(netflix_assistant, cfg['netflixAssistantTimer']['val']);
+                    netflix_assistant();
+                } else {
+                    currentTime = new Date();
+                    var difference = (currentTime.getTime() - lastCall.getTime());
 
-                // If last assistant call is too old, there might be a problem and
-                // we try to restart assistant in next loop, when on non-watch page
-                // this condition may be occurring due to tabs being suspended to
-                // one second per interval/timeout
-                var worker_delay_limit = 1500;
-                if (difference > worker_delay_limit) {
-                    log('error', 'core_errors', getLang('error_core_assistant_delay'), currentTime.getTime(), lastCall.getTime(), difference, worker_delay_limit);
-                    stop_worker('assistant');
-                    lastCall = new Date();
+                    // If last assistant call is too old, there might be a problem and
+                    // we try to restart assistant in next loop, when on non-watch page
+                    // this condition may be occurring due to tabs being suspended to
+                    // one second per interval/timeout
+                    var worker_delay_limit = 1500;
+                    if (difference > worker_delay_limit) {
+                        log('error', 'core_errors', getLang('error_core_assistant_delay'), currentTime.getTime(), lastCall.getTime(), difference, worker_delay_limit);
+                        stop_worker('assistant');
+                        lastCall = new Date();
+                    }
                 }
-            }
 
-            // Perform on all visible Netflix tabs as even video can show ratings, if we have it
-            if (visibleAPI) {
-                if (!workers['ratings']) {
-                    workers['ratings'] = setInterval(netflix_ratings, cfg['netflixRatingsTimer']['val']);
+                // Perform on all visible Netflix tabs as even video can show ratings, if we have it
+                if (visibleAPI) {
+                    if (!workers['ratings']) {
+                        workers['ratings'] = setInterval(netflix_ratings, cfg['netflixRatingsTimer']['val']);
+                    }
+                } else {
+                    stop_worker('ratings');
                 }
-            } else {
-                stop_worker('ratings');
             }
 
             injected = true;
@@ -774,6 +776,9 @@ function environment_update() {
         debug_variables['variables']['options_tab_selected'] = options_tab_selected;
         debug_variables['variables']['extension_id'] = extension_id;
         debug_variables['variables']['environment'] = environment;
+        debug_variables['variables']['discontinued_redirect'] = discontinued_redirect;
+        debug_variables['variables']['discontinued_disable'] = discontinued_disable;
+        debug_variables['variables']['isDiscontinued'] = isDiscontinued;
         debug_variables['variables']['isDev'] = isDev;
         debug_variables['variables']['isTest'] = isTest;
         debug_variables['variables']['isProd'] = isProd;
@@ -1601,7 +1606,7 @@ function process_debug_variables(data, error, filter) {
 
 function addDOM(object, content) {
     // Sanitize content
-    var options = {
+    var domPurify_options = {
         // Added chrome-extension:// or moz-extension:// to allowed URI protocols, original regex copied from lib developer
         ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|xxx|(.+)-extension):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
         // jQuery used to remove warning on Firefox
@@ -1614,7 +1619,7 @@ function addDOM(object, content) {
             'target'
         ]
     };
-    var cleanHTML = DOMPurify.sanitize(content, options);
+    var cleanHTML = DOMPurify.sanitize(content, domPurify_options);
 
     log('group_start', 'dom_activities', 'Add HTML content to DOM object for {0}()', nvl(arguments.callee.caller.name, 'function'));
     log('debug', 'dom_activities', 'DOM object:');

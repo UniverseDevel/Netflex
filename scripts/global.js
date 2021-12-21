@@ -8,6 +8,9 @@ var error_reload = false;
 // ------------------------
 
 var environment = 'developement';
+var discontinued_redirect = '';
+var discontinued_disable = false;
+var isDiscontinued = false;
 var isDev = true;
 var isTest = false;
 var isProd = false;
@@ -16,20 +19,38 @@ var isSimulated = false;
 var extension_id = chrome.runtime.id;
 var prod_extension_list = load_prod_ids();
 var test_extension_list = load_test_ids();
+var discontinued_extension_list = load_discontinued_ids();
 
 function determine_environment() {
     if (prod_extension_list.includes(extension_id)) { // PROD
         environment = 'production';
+        discontinued_redirect = '';
+        discontinued_disable = false;
+        isDiscontinued = false;
         isDev = false;
         isTest = false;
         isProd = true;
     } else if (test_extension_list.includes(extension_id)) { // TEST
         environment = 'test';
+        discontinued_redirect = '';
+        discontinued_disable = false;
+        isDiscontinued = false;
         isDev = false;
         isTest = true;
         isProd = false;
+    } else if (discontinued_extension_list.hasOwnProperty(extension_id)) { // DISCONTINUED
+        environment = 'production';
+        try {discontinued_redirect = discontinued_extension_list[extension_id]['redirect'];} catch (e) {}
+        try {discontinued_disable = discontinued_extension_list[extension_id]['disable_features'];} catch (e) {}
+        isDiscontinued = true;
+        isDev = false;
+        isTest = false;
+        isProd = true;
     } else { // DEV
         environment = 'developement';
+        discontinued_redirect = '';
+        discontinued_disable = false;
+        isDiscontinued = false;
         isDev = true;
         isTest = false;
         isProd = false;
